@@ -1,0 +1,67 @@
+name: OKX Third Round Sensitivity Research v0.3
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Historical lookback days (365 first; 730 later)'
+        type: choice
+        options:
+          - '365'
+          - '730'
+        default: '365'
+  push:
+    paths:
+      - '.github/workflows/okx-sensitivity.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: okx-sensitivity-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: okx-monitor/backtest/requirements.txt
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Existing regression suite
+        run: python -m unittest -v tests.py test_diagnostic.py
+      - name: Third-round regression suite
+        run: python -m unittest -v test_sensitivity.py
+      - name: Historical sensitivity research (NO ORDERS)
+        env:
+          DAYS: ${{ github.event.inputs.days || '365' }}
+        run: >-
+          python sensitivity_backtest.py
+          --days "$DAYS"
+          --warmup 90
+          --end-utc 2026-10-01T00:00:00Z
+          --symbols BTC ETH SOL XRP ADA DOGE LINK AVAX
+          --output sensitivity_v03.json
+      - name: Upload research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-third-round-365-or-730-day-results
+          path: |
+            okx-monitor/backtest/sensitivity_v03.json
+            okx-monitor/backtest/sensitivity_v03.scenarios.csv
+            okx-monitor/backtest/sensitivity_v03.markets.csv
+            okx-monitor/backtest/sensitivity_v03.trades.csv
+          if-no-files-found: warn
+          retention-days: 30
