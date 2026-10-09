@@ -1,0 +1,18 @@
+services:
+  - type: cron
+    name: okx-macd-strategy-first
+    runtime: python
+    plan: starter
+    region: singapore
+    schedule: "2,32 * * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python scanner.py
+    envVars:
+      - key: ENABLE_PUSH
+        value: "false"
+      - key: RESEARCH_ACK
+        value: "false"
+      - key: COINGECKO_API_KEY
+        sync: false
+      - key: NTFY_TOPIC
+        sync: false
