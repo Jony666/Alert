@@ -1,0 +1,49 @@
+name: OKX Historical Backtest Pilot
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'okx-monitor/backtest/**'
+      - '.github/workflows/okx-backtest.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - name: Checkout public source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: okx-monitor/backtest/requirements.txt
+      - name: Install data dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Verify backtest logic
+        run: python -m unittest -v tests.py
+      - name: Run historical pilot with REAL OKX confirmed candles
+        run: >-
+          python historical_backtest.py
+          --symbols BTC ETH SOL XRP ADA DOGE LINK AVAX
+          --days 180
+          --warmup 75
+          --output backtest_report.json
+      - name: Upload historical research report and per-trade CSV
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-backtest-pilot-results
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            okx-monitor/backtest/backtest_report.json
+            okx-monitor/backtest/backtest_report.trades.csv
