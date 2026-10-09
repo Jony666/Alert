@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - 'okx-monitor/backtest/**'
-      - '.github/workflows/okx-backtest.yml'
+      - '.github/workflows/.github/workflows/okx-backtest.yml'
 
 permissions:
   contents: read
