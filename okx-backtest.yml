@@ -2,11 +2,12 @@ name: OKX Historical Backtest Pilot
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'okx-monitor/backtest/**'
-      - '.github/workflows/.github/workflows/okx-backtest.yml'
-
+  
+push:
+  paths:
+    - 'okx-monitor/backtest/**'
+    - '.github/workflows/okx-backtest.yml'
+   
 permissions:
   contents: read
 
