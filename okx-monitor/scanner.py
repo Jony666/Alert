@@ -1,4 +1,4 @@
-"""OKX 30m strategy-first market scanner. RESEARCH ONLY. No exchange credentials/trading.
+"""OKX 30m BNF-inspired ONLY research scanner. No exchange credentials/trading.
 
 Requires: requests, pandas. Cron: 2,32 * * * * (UTC).
 Only closed OKX bars are considered. Notifications fail closed if not configured.
@@ -22,8 +22,8 @@ NOTIFY = os.environ.get("ENABLE_PUSH", "false").lower() == "true"
 ACK = os.environ.get("RESEARCH_ACK", "false").lower() == "true"
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "").strip()
 REQUEST_TIMEOUT = (7, 16)
-BARS = ("30m", "1H", "2H", "4H", "6H", "12H", "1D")
-BAR_SECONDS = {"30m": 1800, "1H": 3600, "2H": 7200, "4H": 14400, "6H": 21600, "8H": 28800, "12H": 43200, "1D": 86400}
+BARS = ("1H", "4H", "1D")  # A_BNF_MACD uses ONLY these timeframes
+BAR_SECONDS = {"1H": 3600, "4H": 14400, "1D": 86400}
 _lock = threading.Lock()
 _next_request_time = 0.0
 
@@ -162,23 +162,6 @@ def candles(inst_id, bar):
     return frame.reset_index(drop=True)
 
 
-def resample_8h(frame_4h):
-    """Build confirmed 8H candles from complete 4H pairs, UTC+8 midnight aligned."""
-    arr = frame_4h.copy()
-    arr["bucket"] = (arr["ts"] // (8 * 3600 * 1000)) * (8 * 3600 * 1000)
-    groups = []
-    for bucket, group in arr.groupby("bucket", sort=True):
-        group = group.sort_values("ts")
-        if len(group)!=2 or int(group.ts.iloc[0])!=bucket or int(group.ts.iloc[1])!=bucket+4*3600*1000:
-            continue
-        groups.append((bucket, float(group.open.iloc[0]), float(group.high.max()),
-                       float(group.low.min()), float(group.close.iloc[-1]), float(group.volume.sum())))
-    out = pd.DataFrame(groups, columns=["ts","open","high","low","close","volume"])
-    if len(out)<45:
-        raise RuntimeError("Insufficient complete 8H candles")
-    return out
-
-
 def signals_df(frame):
     df = frame.copy()
     close = df.close.astype(float)
@@ -195,34 +178,6 @@ def signals_df(frame):
     tr = pd.concat([(df.high-df.low), (df.high-prev).abs(), (df.low-prev).abs()],axis=1).max(axis=1)
     df["atr"] = tr.ewm(alpha=1/14, adjust=False).mean()
     return df
-
-
-def bottoms(df, left=3, right=3, scan=60):
-    """Only pivots fully confirmed by >=right subsequent closed bars."""
-    lows = df.low.to_numpy()
-    pivots = []
-    start = max(left, len(df)-scan)
-    for i in range(start, len(df)-right):
-        v = lows[i]
-        if all(v < a for a in lows[i-left:i]) and all(v < a for a in lows[i+1:i+right+1]):
-            pivots.append(i)
-    return pivots
-
-
-def bullish_divergence(df):
-    pivots = bottoms(df)
-    if len(pivots)<2:
-        return None
-    a,b = pivots[-2:]
-    if b-a < 6 or len(df)-1-b > 12:
-        return None
-    rowa, rowb = df.iloc[a],df.iloc[b]
-    if not (rowb.low < rowa.low and rowb.dif > rowa.dif):
-        return None
-    return {"old_ts":int(rowa.ts),"new_ts":int(rowb.ts),
-            "old_low":float(rowa.low),"new_low":float(rowb.low),
-            "old_dif":float(rowa.dif),"new_dif":float(rowb.dif),
-            "hist_confirm":bool(rowb["hist"] > rowa["hist"])}
 
 
 def structural_breakout(df, lookback=12):
@@ -257,27 +212,8 @@ def strategy_a(d):
             and h4["hist"].iloc[-1]>=h4["hist"].iloc[-2]
             and 25<=h.rsi.iloc[-1]<=75):
         return None
-    return {"strategy":"A_BNF_MACD", "detail":f"25D BIAS={bias:.2f}%, Z={z:.2f}, 1H MACD金叉+量價突破"}
-
-
-def strategy_b(d):
-    result={}
-    for period in ("30m","1H","2H","4H","6H","8H","12H","1D"):
-        div = bullish_divergence(d[period])
-        if div: result[period]=div
-    higher = "12H" in result or "1D" in result
-    if len(result)<4 or "4H" not in result or not higher:
-        return None
-    h=d["1H"]
-    half=d["30m"]
-    if not ((structural_breakout(half, 8) and strong_volume(half))
-            or (structural_breakout(h, 12) and strong_volume(h))):
-        return None
-    if not (h["hist"].iloc[-1] > h["hist"].iloc[-2] and 25 <=h.rsi.iloc[-1] <= 75):
-        return None
-    return {"strategy":"B_MULTI_TIMEFRAME_DIVERGENCE",
-            "detail":f"確認{len(result)}/8週期MACD DIF底背離: {','.join(result.keys())}",
-            "divergences":result}
+    # Our experimental MACD/RSI/ATR additions are NOT verified BNF original rules.
+    return {"strategy":"A_BNF_MACD", "detail":f"研究版: 25D BIAS={bias:.2f}%, Z={z:.2f}, 1H MACD金叉+量價突破"}
 
 
 def plan_trade(x,d,signal):
@@ -328,21 +264,20 @@ def plan_trade(x,d,signal):
          "signal_time_utc":datetime.fromtimestamp(stamp/1000,UTC).isoformat(),
          "expiry_utc":datetime.fromtimestamp((stamp+7200000)/1000,UTC).isoformat(),
          "event":hashlib.sha256(event.encode()).hexdigest()[:16],"reason":signal["detail"],
-         "divergences":signal.get("divergences",{})}
+         "study_mode":"BNF_INSPIRED_UNVALIDATED","divergences":{}}
     return out
 
 
 def scan_instrument(x):
     try:
         frames={period: signals_df(candles(x["id"],period)) for period in BARS}
-        frames["8H"]=signals_df(resample_8h(frames["4H"]))
-        candidates=[]
-        for fn in (strategy_a,strategy_b):
-            hit=fn(frames)
-            if hit:
-                out=plan_trade(x,frames,hit)
-                if out:candidates.append(out)
-        return candidates
+        # B_MULTI_TIMEFRAME_DIVERGENCE explicitly retired at user request.
+        # Do not apply any 30m/2H/6H/8H/12H/1D divergence gate here.
+        hit=strategy_a(frames)
+        if hit:
+            out=plan_trade(x,frames,hit)
+            if out:return [out]
+        return []
     except Exception as exc:
         LOG.warning("%s excluded: %s",x["id"], str(exc)[:180])
         return []
@@ -397,6 +332,7 @@ def main():
     universe=select_contracts(coins)
     if not universe:
         raise RuntimeError("No valid OKX candidates; no signal")
+    LOG.info("Active research strategy=A_BNF_MACD only; multi-timeframe divergence retired; these MACD thresholds are researcher-defined, not BNF source rules")
     LOG.info("Eligible global top-cap=%s; matched liquid OKX contracts=%s",len(coins),len(universe))
     results=[]
     with ThreadPoolExecutor(max_workers=5) as pool:
@@ -414,7 +350,9 @@ def main():
         if len(picked)>=3:
             break
     print(json.dumps({"date_utc":datetime.now(UTC).isoformat(),"candidate_coins":len(coins),
-         "eligible_swaps":len(universe),"qualified_signals":len(results),
+         "eligible_swaps":len(universe),"active_strategies":["A_BNF_MACD"],
+         "removed_strategy":"B_MULTI_TIMEFRAME_DIVERGENCE",
+         "qualified_signals":len(results),
          "selected":picked,"push_enabled":bool(NOTIFY and ACK and NTFY_TOPIC),
          "elapsed_seconds":round(time.monotonic()-start,1)}, ensure_ascii=False))
     if picked:publish(picked)
