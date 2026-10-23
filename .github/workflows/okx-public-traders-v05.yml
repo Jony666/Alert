@@ -1,0 +1,64 @@
+name: OKX Three Public Traders Research V05
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Confirmed OKX history length; first use 730'
+        required: false
+        type: choice
+        options: ['730', '1095']
+        default: '730'
+  push:
+    paths:
+      - '.github/workflows/okx-public-traders-v05.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: okx-public-traders-v05-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: okx-monitor/backtest/requirements.txt
+      - name: Install existing dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run previous 22 tests and new v05 regression tests
+        run: python -m unittest -v test_trader_strategies_v04.py test_public_traders_v05.py
+      - name: Backtest 3 public traders using REAL confirmed OKX OHLCV ONLY
+        env:
+          DAYS: ${{ github.event.inputs.days || '730' }}
+        run: >-
+          python public_traders_v05.py
+          --symbols BTC ETH SOL XRP
+          --days "$DAYS"
+          --warmup-days 320
+          --end-utc 2026-10-01T00:00:00Z
+          --output trader_v05.json
+      - name: Upload separate diagnostics and completed-trade ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-public-traders-v05-results
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            okx-monitor/backtest/trader_v05.json
+            okx-monitor/backtest/trader_v05.summary.csv
+            okx-monitor/backtest/trader_v05.trades.csv
+            okx-monitor/backtest/trader_v05.diagnostic.csv
