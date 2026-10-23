@@ -1,0 +1,44 @@
+name: OKX Turtle S1 S2 BTC Bear Forward PAPER V07
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '8,38 * * * *'
+
+# READ-ONLY workflow: no git pushes, no code commits, no Render deployments.
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: okx-turtle-paper-forward-v07
+  cancel-in-progress: false
+
+jobs:
+  paper-forward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify forward-only paper system (stdlib only)
+        run: python -m unittest -v test_turtle_forward_v07.py
+      - name: Restore latest verified prior state artifact (fail closed when missing)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python turtle_forward_v07.py restore --state paper_v07/state.json
+      - name: Fetch confirmed PUBLIC OKX bars, update paper state, export reports
+        run: python turtle_forward_v07.py scan --state paper_v07/state.json --out paper_v07
+      - name: Save persistent paper state and human-readable reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-turtle-forward-v07-state
+          path: okx-monitor/backtest/paper_v07/
+          if-no-files-found: error
+          retention-days: 90
