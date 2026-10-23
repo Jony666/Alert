@@ -1,0 +1,68 @@
+name: OKX Round Six Turtle SHORT Portfolio Research V06
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Calendar days of real confirmed OKX 30m history (1095 first; 730 fallback only when run manually)'
+        required: true
+        default: '1095'
+        type: choice
+        options:
+          - '1095'
+          - '730'
+  push:
+    paths:
+      - '.github/workflows/okx-turtle-short-v06.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: okx-turtle-short-v06-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  turtle-short-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: okx-monitor/backtest/requirements.txt
+      - name: Install existing research dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Regression - previous 45 and new v06 tests
+        run: python -m unittest -v test_trader_strategies_v04.py test_public_traders_v05.py test_turtle_short_v06.py
+      - name: Historical multicontract short-only portfolio study - NO ORDER ROUTING
+        env:
+          DAYS: ${{ github.event.inputs.days || '1095' }}
+        run: >-
+          python turtle_short_v06.py
+          --days "$DAYS"
+          --warmup-days 320
+          --min-covered 8
+          --end-utc 2026-10-01T00:00:00Z
+          --symbols BTC ETH SOL XRP ADA DOGE LINK AVAX LTC BCH DOT TRX
+          --output turtle_v06.json
+      - name: Upload research diagnostics and portfolio equity histories
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-turtle-short-v06-real-history-results
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            okx-monitor/backtest/turtle_v06.json
+            okx-monitor/backtest/turtle_v06.summary.csv
+            okx-monitor/backtest/turtle_v06.trades.csv
+            okx-monitor/backtest/turtle_v06.diagnostic.csv
+            okx-monitor/backtest/turtle_v06.equity.csv
