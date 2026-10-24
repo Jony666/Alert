@@ -58,7 +58,7 @@ jobs:
           from copy import deepcopy
           from v09.forward.storage import GitHubStore, safe_extract
           import v09.forward.__main__ as cli
-          
+
           MODEL = 'e8863f819f29ef0cf2806ea06157aae7ac3a633e'
           STUDY = 'okx-v095-4e85ee42786c6564'
           CONFIG = '4e85ee42786c656414f4a038093fcb12ce2516bdb1f5e6cdbe6b3752b578c5fa'
@@ -68,8 +68,8 @@ jobs:
           SEED_ARTIFACT = 12562330593
           SEED_SHA = '53920d342c65459d2faeabab37f9ce0783187f81083f8afe1d032a21bbab0be3'
           PREFIX = 'forward-state-' + STUDY + '-'
-          
-          
+
+
           def choose(old_control, old_runs, new_runs, artifact, source, current):
               """No cross-workflow run_number comparison, silent reset, or older fallback."""
               if old_control['state'] != 'disabled_manually':
@@ -105,8 +105,8 @@ jobs:
               if not artifact.get('digest', '').startswith('sha256:') or len(artifact['digest']) != 71:
                   raise ValueError('artifact SHA256 missing; cannot verify download')
               return source
-          
-          
+
+
           class ScheduledStore(GitHubStore):
               def pages(self, path, key):
                   result = []
@@ -116,7 +116,7 @@ jobs:
                       if len(rows) < 100:
                           return result
                   raise ValueError('history pagination exhausted; stop rather than truncate')
-          
+
               def runs(self):
                   old_control = self.get('/actions/workflows/' + OLD)
                   old_runs = self.pages('/actions/workflows/' + OLD + '/runs?branch=research/okx-v09', 'workflow_runs')
@@ -139,14 +139,14 @@ jobs:
                   # Frozen resolver receives one validated parent, preserving its normal
                   # checksum/anchor/manifest/state/provenance/age checks and financial engine.
                   return [self.selected]
-          
+
               def artifacts(self, run_id):
                   rows = super().artifacts(run_id)
                   states = [a for a in rows if a['name'].startswith(PREFIX)]
                   if len(states) != 1 or states[0]['id'] != self.checkpoint['id']:
                       raise ValueError('latest owner state ambiguous or changed during restore')
                   return states
-          
+
               def download(self, artifact_id, destination):
                   if artifact_id != self.checkpoint['id']:
                       raise ValueError('unselected artifact download refused')
@@ -157,8 +157,8 @@ jobs:
                   if 'sha256:' + hashlib.sha256(response.content).hexdigest() != self.checkpoint['digest']:
                       raise ValueError('downloaded artifact digest mismatch')
                   safe_extract(response.content, destination)
-          
-          
+
+
           def guard(freeze, mode):
               if os.environ.get('GITHUB_REPOSITORY') != 'Jony666/Alert' or os.environ.get('GITHUB_REF') != 'refs/heads/master':
                   raise ValueError('scheduled writer must execute on repository default branch')
@@ -170,8 +170,8 @@ jobs:
                   raise ValueError('initialization forbidden after ownership handoff')
               if freeze['config_hash'] != CONFIG or freeze['study_id'] != STUDY or freeze['code_commit_sha'] != MODEL:
                   raise ValueError('unreviewed freeze or model version')
-          
-          
+
+
           def main():
               args = cli.parser().parse_args()
               freeze = json.loads(Path(args.freeze).read_text())
@@ -197,8 +197,8 @@ jobs:
                   'dispatch a fresh resume/verify_replay run instead.\n'
                   'GitHub cron may be delayed or disabled by inactivity/quota; monitor Actions manually.\n')
               return result
-          
-          
+
+
           class HandoffTests(unittest.TestCase):
               def setUp(self):
                   self.old = dict(id=395120760, state='disabled_manually')
@@ -278,8 +278,8 @@ jobs:
                       with self.assertRaises(ValueError): guard(dict(freeze, code_commit_sha='HEAD'), 'resume')
                       with patch.dict(os.environ, GITHUB_RUN_ATTEMPT='2'):
                           with self.assertRaises(ValueError): guard(freeze, 'resume')
-          
-          
+
+
           if __name__ == '__main__':
               import sys
               if sys.argv[1:] == ['--self-test']:
@@ -301,17 +301,17 @@ jobs:
           import json
           from pathlib import Path
           import subprocess
-          
-          
+
+
           def gh_read(arguments):
               result = subprocess.run(['gh', 'api', *arguments], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
               if result.returncode:
                   raise ValueError('GitHub read/export failed; no archive is accepted. Check gh login/network locally.')
               return result.stdout
-          
+
           PREFIX = 'forward-state-okx-v095-4e85ee42786c6564-'
           REPO = 'Jony666/Alert'
-          
+
           def main():
               import argparse
               p = argparse.ArgumentParser(description=__doc__)
@@ -346,7 +346,7 @@ jobs:
                                       run_id=a['workflow_run']['id']))
               (args.destination / 'SHA256-index.json').write_text(json.dumps(results, indent=2) + '\n')
               print('Verified exported study artifacts:', len(results))
-          
+
           if __name__ == '__main__':
               main()
           PY
