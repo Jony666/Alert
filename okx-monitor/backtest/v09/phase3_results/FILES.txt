@@ -1,0 +1,27 @@
+Relative to second-stage PR head f208423; every added/modified third-stage file:
+
+.github/workflows/okx-swing-v09.yml
+okx-monitor/backtest/test_phase3_v09.py
+okx-monitor/backtest/v09/PHASE3.md
+okx-monitor/backtest/v09/README.md
+okx-monitor/backtest/v09/phase3/__init__.py
+okx-monitor/backtest/v09/phase3/__main__.py
+okx-monitor/backtest/v09/phase3/evaluation.py
+okx-monitor/backtest/v09/phase3/strategies.py
+okx-monitor/backtest/v09/phase3_results/FILES.txt
+okx-monitor/backtest/v09/phase3_results/METRICS.md
+okx-monitor/backtest/v09/phase3_results/RESULTS.md
+okx-monitor/backtest/v09/phase3_results/cloud-validation.json
+okx-monitor/backtest/v09/phase3_results/coverage.json
+okx-monitor/backtest/v09/phase3_results/equity.jsonl.gz
+okx-monitor/backtest/v09/phase3_results/events.json
+okx-monitor/backtest/v09/phase3_results/forward-protocol.json
+okx-monitor/backtest/v09/phase3_results/freeze.json
+okx-monitor/backtest/v09/phase3_results/ohlcv.tar.gz
+okx-monitor/backtest/v09/phase3_results/sources.json
+okx-monitor/backtest/v09/phase3_results/summary.json
+okx-monitor/backtest/v09/phase3_results/test-initial-failure.txt
+okx-monitor/backtest/v09/phase3_results/trades.jsonl.gz
+okx-monitor/backtest/v09/phase3_results/unit-tests.txt
+okx-monitor/backtest/v09/phase3_results/validation.json
+okx-monitor/backtest/v09/research.py

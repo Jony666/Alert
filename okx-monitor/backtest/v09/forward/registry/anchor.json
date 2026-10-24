@@ -1,0 +1,9 @@
+{
+  "study_id": "okx-v095-4e85ee42786c6564",
+  "root_run_id": "40097744951",
+  "root_artifact_id": 12562075458,
+  "genesis_hash": "a25cca358da7b6f82d2a6a3075b6da28924aec3928f6ba08e091b71777b9b6cc",
+  "root_state_hash": "6f4aed05770c6b0fe35f7f046f16ecaf75119a7d4f1ce8c662a808862f8d0a5b",
+  "frozen_code_commit": "e8863f819f29ef0cf2806ea06157aae7ac3a633e",
+  "artifact_sha256": "ed0642c135d16f9e7ca8dedf705690c225588095b4897a67305eeba83c89cfb4"
+}

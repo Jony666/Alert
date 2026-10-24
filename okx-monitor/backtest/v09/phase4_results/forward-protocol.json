@@ -1,0 +1,10 @@
+{
+  "status": "PENDING_B_NOT_PROMOTED_NO_FORWARD_TRADES",
+  "pinned_commit": "184c3895cb08734e676d2a40e3a09d5c66ed5193",
+  "observe_only_after_commit_utc": "2026-10-24T12:04:57Z",
+  "context": "Only minutes of post-freeze time exist at delivery; not enough for 1\u20133d forward outcomes. Past 2026 data is not claimed as forward.",
+  "actual_orders": false,
+  "scheduler_enabled": false,
+  "notification_enabled": false,
+  "conditions": "No retuning; preserve all capital/risk/60%/netRR3 rules; no live qualification without credible forward and official cross verification"
+}

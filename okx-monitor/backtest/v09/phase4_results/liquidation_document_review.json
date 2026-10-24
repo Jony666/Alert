@@ -1,0 +1,20 @@
+{
+  "source": "https://www.okx.com/docs-v5/en/",
+  "http_status": 200,
+  "sha256": "4f64bdcdb7a52af2bd1a8e1e1e6c4beddaf049b78e01e93b6e614201e235cc13",
+  "terms_present": {
+    "liqPx": true,
+    "mgnRatio": true,
+    "posMode": true,
+    "cross": true,
+    "trade-fee": true
+  },
+  "conclusion": "Official documentation fields identified only; no account API queried, no official liquidation certification",
+  "review_required": [
+    "account mode/position mode",
+    "all collateral haircut, debt and shared positions",
+    "tier/mark effective timestamp",
+    "actual fee tier",
+    "liquidation sequence and ADL"
+  ]
+}

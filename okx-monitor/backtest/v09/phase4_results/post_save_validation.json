@@ -1,0 +1,8 @@
+{
+  "scenarios": 732,
+  "baseline_exact_replays": 108,
+  "scenario_trades_not_independent": 2650,
+  "post_save_checks": "PASS risk<=1000/2000, positions<=3, hold<=3d, net planned RR>=3, partial fractions sum1, gate/entries reconcile",
+  "historical_coverage": "90/90 SHA and complete calendars verified by runner",
+  "path_analysis": "Exact assumed exit slippage/fees on each partial, full funding bound; not a predicted realized path"
+}

@@ -1,0 +1,264 @@
+test_anchor_prevents_history_deleted_reset (test_forward_v09.ForwardArtifactTests.test_anchor_prevents_history_deleted_reset) ... ok
+test_expired_artifact_rejected (test_forward_v09.ForwardArtifactTests.test_expired_artifact_rejected) ... ok
+test_first_only_initialization (test_forward_v09.ForwardArtifactTests.test_first_only_initialization) ... ok
+test_history_prevents_silent_reset (test_forward_v09.ForwardArtifactTests.test_history_prevents_silent_reset) ... ok
+test_latest_missing_artifact_no_older_fallback (test_forward_v09.ForwardArtifactTests.test_latest_missing_artifact_no_older_fallback) ... ok
+test_unverified_profitability_is_null_with_no_trades (test_forward_v09.ForwardArtifactTests.test_unverified_profitability_is_null_with_no_trades) ... ok
+test_cost_cash_reconcile (test_forward_v09.ForwardLifecycleTests.test_cost_cash_reconcile) ... ERROR
+test_expired_limit_records_unfilled (test_forward_v09.ForwardLifecycleTests.test_expired_limit_records_unfilled) ... ERROR
+test_first_initialization_no_historical_trades (test_forward_v09.ForwardLifecycleTests.test_first_initialization_no_historical_trades) ... ok
+test_funding_stable_id_no_double_charge (test_forward_v09.ForwardLifecycleTests.test_funding_stable_id_no_double_charge) ... ERROR
+test_limit_partial_and_cancel_remainder_after_exit (test_forward_v09.ForwardLifecycleTests.test_limit_partial_and_cancel_remainder_after_exit) ... ERROR
+test_limit_touch_alone_no_fill (test_forward_v09.ForwardLifecycleTests.test_limit_touch_alone_no_fill) ... ERROR
+test_not_durable_before_scheduled_open_refused (test_forward_v09.ForwardLifecycleTests.test_not_durable_before_scheduled_open_refused) ... ERROR
+test_pending_before_observation_cannot_fill_past_open (test_forward_v09.ForwardLifecycleTests.test_pending_before_observation_cannot_fill_past_open) ... ERROR
+test_same_input_rerun_is_financially_idempotent (test_forward_v09.ForwardLifecycleTests.test_same_input_rerun_is_financially_idempotent) ... ERROR
+test_second_restore_and_third_continue_nonzero (test_forward_v09.ForwardLifecycleTests.test_second_restore_and_third_continue_nonzero) ... ERROR
+test_stop_target_same_bar_stop_first (test_forward_v09.ForwardLifecycleTests.test_stop_target_same_bar_stop_first) ... ERROR
+test_tp1_protection_only_next_bar (test_forward_v09.ForwardLifecycleTests.test_tp1_protection_only_next_bar) ... ERROR
+test_anchor_mismatch_refused (test_forward_v09.ForwardPersistenceTests.test_anchor_mismatch_refused) ... ok
+test_append_chain_cannot_rewrite_previous_event (test_forward_v09.ForwardPersistenceTests.test_append_chain_cannot_rewrite_previous_event) ... ok
+test_atomic_interruption_has_no_commit (test_forward_v09.ForwardPersistenceTests.test_atomic_interruption_has_no_commit) ... ok
+test_bundle_roundtrip_reports_and_provenance (test_forward_v09.ForwardPersistenceTests.test_bundle_roundtrip_reports_and_provenance) ... FAIL
+test_cloud_style_fault_checks_preserve_source (test_forward_v09.ForwardPersistenceTests.test_cloud_style_fault_checks_preserve_source) ... ok
+test_concurrent_writer_rejected (test_forward_v09.ForwardPersistenceTests.test_concurrent_writer_rejected) ... ok
+test_corrupt_state_rejected (test_forward_v09.ForwardPersistenceTests.test_corrupt_state_rejected) ... ok
+test_missing_state_never_initializes (test_forward_v09.ForwardPersistenceTests.test_missing_state_never_initializes) ... ok
+test_zip_slip_refused (test_forward_v09.ForwardPersistenceTests.test_zip_slip_refused) ... ok
+test_book_isolation (test_forward_v09.ForwardSafetyTests.test_book_isolation) ... ok
+test_config_change_cannot_mix (test_forward_v09.ForwardSafetyTests.test_config_change_cannot_mix) ... ok
+test_default_quality_and_unknown_news_fail_closed (test_forward_v09.ForwardSafetyTests.test_default_quality_and_unknown_news_fail_closed) ... ok
+test_drawdown_persistent_after_recovery (test_forward_v09.ForwardSafetyTests.test_drawdown_persistent_after_recovery) ... ok
+test_expired_state_does_not_reset (test_forward_v09.ForwardSafetyTests.test_expired_state_does_not_reset) ... ok
+test_fee_budget_halt (test_forward_v09.ForwardSafetyTests.test_fee_budget_halt) ... ok
+test_historical_book_refused (test_forward_v09.ForwardSafetyTests.test_historical_book_refused) ... ok
+test_latched_daily_halt_cancels_pending (test_forward_v09.ForwardSafetyTests.test_latched_daily_halt_cancels_pending) ... ERROR
+test_mark_time_unknown_refused (test_forward_v09.ForwardSafetyTests.test_mark_time_unknown_refused) ... ok
+test_missing_bar_refused_preserves_old_state (test_forward_v09.ForwardSafetyTests.test_missing_bar_refused_preserves_old_state) ... ok
+test_paper_profit_does_not_raise_verified_capital (test_forward_v09.ForwardSafetyTests.test_paper_profit_does_not_raise_verified_capital) ... ok
+test_real_runner_cannot_use_synthetic_data (test_forward_v09.ForwardSafetyTests.test_real_runner_cannot_use_synthetic_data) ... ok
+test_risk_cap_restore_refuses_invalid_pending (test_forward_v09.ForwardSafetyTests.test_risk_cap_restore_refuses_invalid_pending) ... ok
+test_stale_snapshot_refused (test_forward_v09.ForwardSafetyTests.test_stale_snapshot_refused) ... ok
+test_total_risk_cap_and_slots_restore (test_forward_v09.ForwardSafetyTests.test_total_risk_cap_and_slots_restore) ... ok
+
+======================================================================
+ERROR: test_cost_cash_reconcile (test_forward_v09.ForwardLifecycleTests.test_cost_cash_reconcile)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 86, in test_cost_cash_reconcile
+    f,x,s=initial();pending(s,x);(s2,_),_=next_step(s,f,842);(s3,_),_=next_step(s2,f,843,'3')
+                                          ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_expired_limit_records_unfilled (test_forward_v09.ForwardLifecycleTests.test_expired_limit_records_unfilled)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 97, in test_expired_limit_records_unfilled
+    (s2,_),_=next_step(s,f,842);self.assertFalse(s2['positions']);self.assertFalse(s2['pending'])
+             ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_funding_stable_id_no_double_charge (test_forward_v09.ForwardLifecycleTests.test_funding_stable_id_no_double_charge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 91, in test_funding_stable_id_no_double_charge
+    s2,_=advance(s,f,x2,'2',x2['observed_at_utc'],s['last_success_at'],allow_test=True)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_limit_partial_and_cancel_remainder_after_exit (test_forward_v09.ForwardLifecycleTests.test_limit_partial_and_cancel_remainder_after_exit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 76, in test_limit_partial_and_cancel_remainder_after_exit
+    (s2,_),_=next_step(s,f,842);p=s2['positions']['order'];self.assertEqual(p['units_total'],2.);self.assertTrue(p['tp1_done']);self.assertNotIn('order',s2['pending'])
+             ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_limit_touch_alone_no_fill (test_forward_v09.ForwardLifecycleTests.test_limit_touch_alone_no_fill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 73, in test_limit_touch_alone_no_fill
+    s2,_=advance(s,f,x2,'2',x2['observed_at_utc'],s['last_success_at'],allow_test=True);self.assertFalse(s2['positions'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_not_durable_before_scheduled_open_refused (test_forward_v09.ForwardLifecycleTests.test_not_durable_before_scheduled_open_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 70, in test_not_durable_before_scheduled_open_refused
+    (s2,_),_=next_step(s,f,842,parent=iso(p['eligible_open_ts']+1));self.assertFalse(s2['positions']);self.assertFalse(s2['pending'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_pending_before_observation_cannot_fill_past_open (test_forward_v09.ForwardLifecycleTests.test_pending_before_observation_cannot_fill_past_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 67, in test_pending_before_observation_cannot_fill_past_open
+    (s2,_),_=next_step(s,f,841);self.assertFalse(s2['positions']);self.assertTrue(s2['pending'])
+             ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_same_input_rerun_is_financially_idempotent (test_forward_v09.ForwardLifecycleTests.test_same_input_rerun_is_financially_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 62, in test_same_input_rerun_is_financially_idempotent
+    f,x,s=initial();pending(s,x);(s2,_),x2=next_step(s,f,842)
+                                           ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_second_restore_and_third_continue_nonzero (test_forward_v09.ForwardLifecycleTests.test_second_restore_and_third_continue_nonzero)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 57, in test_second_restore_and_third_continue_nonzero
+    (s2,_),x2=next_step(s,f,842);self.assertEqual(len(s2['positions']),1);self.assertTrue(s2['positions']['order']['tp1_done'])
+              ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_stop_target_same_bar_stop_first (test_forward_v09.ForwardLifecycleTests.test_stop_target_same_bar_stop_first)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 83, in test_stop_target_same_bar_stop_first
+    s2,_=advance(s,f,x2,'2',x2['observed_at_utc'],s['last_success_at'],allow_test=True)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_tp1_protection_only_next_bar (test_forward_v09.ForwardLifecycleTests.test_tp1_protection_only_next_bar)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 78, in test_tp1_protection_only_next_bar
+    f,x,s=initial();pending(s,x);(s2,_),_=next_step(s,f,842)
+                                          ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+ERROR: test_latched_daily_halt_cancels_pending (test_forward_v09.ForwardSafetyTests.test_latched_daily_halt_cancels_pending)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 137, in test_latched_daily_halt_cancels_pending
+    (s2,_),_=next_step(s,f,842);self.assertFalse(s2['positions']);self.assertFalse(s2['pending'])
+             ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 49, in next_step
+    x=snapshot(n);return advance(s,f,x,run,x['observed_at_utc'],parent or s['last_success_at'],allow_test=True),x
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/engine.py", line 273, in advance
+    validate(s,freeze);return s,dict(duplicate_input=duplicate,previous_financial_hash=financial_hash(previous),financial_hash=financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^
+  File "/workspace/work/Alert/okx-monitor/backtest/v09/forward/state.py", line 24, in validate
+    if e['seq']!=i or e['prev']!=prev or e['id'] in ids or digest({k:v for k,v in e.items() if k!='hash'})!=e['hash']:raise ValueError('journal corrupted')
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: journal corrupted
+
+======================================================================
+FAIL: test_bundle_roundtrip_reports_and_provenance (test_forward_v09.ForwardPersistenceTests.test_bundle_roundtrip_reports_and_provenance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/Alert/okx-monitor/backtest/test_forward_v09.py", line 150, in test_bundle_roundtrip_reports_and_provenance
+    self.assertEqual(restored,s);self.assertEqual(m,manifest);self.assertEqual(json.loads((p/'summary.json').read_text())['financial_hash'],financial_hash(s))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'book': 'PAPER_FORWARD', 'candidates': {},[5898 chars]000}} != {'schema_version': 1, 'study_id': 'okx-v095[5898 chars]ED']}
+Diff is 9102 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 42 tests in 1.210s
+
+FAILED (failures=1, errors=12)

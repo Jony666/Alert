@@ -1,0 +1,9 @@
+{
+  "status": "PENDING_NOT_STARTED",
+  "pinned_source_commit": "889e6769c78af4e887b9551c43115151641e9361",
+  "source_rules_sha256": "e01bf7549ee63ed951e97e7b4355bff53e9737fe8edc6e15873a2e97d1209287",
+  "observe_only_after_commit_utc": "2026-10-24T11:31:20Z",
+  "mode": "Paper only; manual/no scheduler/no notification/no orders",
+  "prohibition": "Do not tune on forward samples or call repeatedly observed 2022\u20132025 pristine",
+  "qualification": "Still requires trusted >=60%, net planned RR>=3, enough independent observations, primary hold 1\u20133d, all money rules and verified cross safety"
+}
