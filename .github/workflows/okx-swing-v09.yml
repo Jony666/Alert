@@ -35,8 +35,9 @@ jobs:
       - name: Public historical data and paper portfolios only
         run: |
           mkdir -p research_v09_cache
-          tar -xzf v09/results/ohlcv.tar.gz -C research_v09_cache
-          python -m v09 --cache research_v09_cache --instrument-snapshot v09/results/coverage.json --events v09/verified_events.json --output v09_run
+          tar -xzf v09/round2_results/ohlcv.tar.gz -C research_v09_cache
+          python -m v09 --start 2022-01-01T00:00:00Z --annual-cohorts --symbols BTC ETH SOL XRP ADA DOGE LINK AVAX LTC BCH DOT TRX ETC FIL UNI AAVE ATOM NEAR ALGO XLM SAND MANA ICP CRV --cache research_v09_cache --instrument-snapshot v09/round2_results/coverage.json --events v09/verified_events.json --output v09_run
+          python -m v09.summarize v09_run/summary.json
       - name: Export research evidence even when coverage fails
         if: always()
         uses: actions/upload-artifact@v4

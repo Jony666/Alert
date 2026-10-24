@@ -1,5 +1,7 @@
 # OKX v0.9 短波段研究（僅研究／人工決策）
 
+本輪更新請先讀 [ROUND2.md](ROUND2.md)，最新統計在 [round2_results/RESULTS.md](round2_results/RESULTS.md)。`results/`、下文首輪126情境數字與 `ACCEPTANCE.md` 保留首輪歷史紀錄；首輪精確重現須使用 commit 87c0384，不能用新版程式冒充同一版本。
+
 結論：**目前沒有合格交易策略，不能建議真實進場**。單元測試與程式成功執行不代表策略獲利。沒有 OKX 私有 API、訂單、通知或部署介面；未接觸 Render 或 v0.7／v0.8。預設分支與既有工作流程不變。
 
 ## 執行與重現
@@ -77,4 +79,4 @@ python -m v09 --cache research_v09_cache --instrument-snapshot v09/results/cover
 5. 完整一手歷史事件庫、事件勝率調整的可比樣本、實證相關性排序；目前提供事件輸入驗證與共同跳空壓力，非完整模型。
 6. 自動前瞻排程、通知、帳戶同步、實盤、Render 部署均未加入。iOS app 未建置；本次測試範圍為 Python 研究套件。
 
-新工作流程 `.github/workflows/okx-swing-v09.yml` 僅 `workflow_dispatch`、`contents: read`，不排程、不推播、不部署、不提交結果。GitHub 新工作流程在未進預設分支前可能無法 dispatch；不會為了執行 Actions 修改預設分支。請見交付報告的實際結果，不把工作流程檔案存在誤報成 Actions 已成功執行。
+新工作流程 `.github/workflows/okx-swing-v09.yml` 支援 `workflow_dispatch` 與僅匹配 `research/okx-v09`、workflow 自身檔案的 push；`contents: read`，不排程、不推播、不部署、不提交結果。新工作流程在未進預設分支前無法 dispatch，現已由上述分支限定 push 取得成功雲端紀錄，詳見 ROUND2.md；沒有改動預設分支。請見交付報告的實際結果，不把工作流程檔案存在誤報成 Actions 已成功執行。

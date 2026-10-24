@@ -114,7 +114,7 @@ def run(args):
               'limitations':['Static requested basket of currently listed instruments, NOT all-market or historical top-200; survivorship bias.',
               'Fixed predeclared parameters; temporal holdout reserved in this run but NOT certified pristine research history. No forward verification.',
               'No real cross liquidation or account synchronization; 100x rejected. No trade qualifies for user review.',
-              'Fixed assumed 32 TWD/USDT dated 2023-01-01; NOT observed FX or actual account equity.',
+              'Fixed assumed 32 TWD/USDT effective 2022-01-01, predeclared modelling assumption; NOT observed FX or actual account equity.',
               'Adverse funding assumption both sides; conservative full-bar funding even if intrabar exit precedes funding.',
               'Taker fees, adverse slippage, stop-first OHLC; no tick/mark/orderbook. All TP filled vs missed-limit stress brackets uncertainty.',
               'Partial exits fixed fractions; arbitrary partial entry fills and resting-order queues NOT simulated.',
@@ -127,7 +127,7 @@ def run(args):
     for t in all_trades:
         plan = Plan(t['entry'],t['stop'],t['tp1'],t['tp2'],t['side'],tuple(t['weights']))
         allocation = {k:t[k] for k in ('notional_twd','risk_twd','units','paper_leverage')}
-        allocation.update(cross_verified=False,fx_twd_per_usdt=32,fx_time='2023-01-01T00:00:00Z',fx_source='RESEARCH_ASSUMPTION')
+        allocation.update(cross_verified=False,fx_twd_per_usdt=32,fx_time='2022-01-01T00:00:00Z',fx_source='RESEARCH_ASSUMPTION')
         r = candidate(t['symbol'],t['strategy'],plan,evidence([]),allocation,
                       assess(events,t['entry_time'],t['symbol']),'EXPLORATORY_PAPER_NOT_QUALIFIED',t['simultaneous_risk_twd'],t['cost_mult'])
         r.update(historical_entry_time=t['entry_time'],bar=t['bar'],split=t['split'],scenario_strategy=t['scenario_strategy'],

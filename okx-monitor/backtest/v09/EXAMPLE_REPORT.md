@@ -59,15 +59,24 @@
     "notional_twd": 20539.84,
     "paper_leverage": 5,
     "fx_twd_per_usdt": 32,
-    "fx_time": "2023-01-01T00:00:00Z",
+    "fx_time": "2022-01-01T00:00:00Z",
     "fx_source": "EXAMPLE_ASSUMED_FX",
     "cross_verified": false
+  },
+  "cross_margin_assessment": {
+    "status": "NOT VERIFIED",
+    "allow_recommendation": false,
+    "reasons": [
+      "ACCOUNT_SNAPSHOT_MISSING"
+    ]
   },
   "simultaneous_risk_twd": 699.9927149391984,
   "other_positions_allowed": true,
   "events": {
     "events": [],
     "win_rate_adjustment": null,
+    "technical_context": null,
+    "technical_interaction": "No verified major event in supplied coverage; absence is not proof of no risk",
     "coverage": "USER_SUPPLIED_VERIFIED_EVENTS_ONLY; NO COMPLETE HISTORICAL NEWS FEED",
     "requires_review": false
   },

@@ -144,7 +144,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
                 counts['tick_rejected'] += 1
                 continue
             c = costs(plan, mult, cfg)
-            if c['net_rr'] < 3:
+            if not math.isfinite(c['net_rr']) or c['net_rr'] < 3:
                 counts['net_rr_rejected'] += 1
                 continue
             counts['structural_net_rr_pass'] += 1
@@ -152,7 +152,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             if budget <= 0:
                 counts['total_risk_rejected'] += 1
                 continue
-            allocated = size(plan, c['risk_per_unit'], 32., '2023-01-01T00:00:00Z',
+            allocated = size(plan, c['risk_per_unit'], 32., '2022-01-01T00:00:00Z',
                              'RESEARCH_ASSUMPTION_FIXED_32_NOT_OBSERVED_FX', markets[sym]['instrument'], budget, leverage)
             if not allocated:
                 counts['minimum_size_rejected'] += 1
@@ -244,6 +244,7 @@ def stats(trades):
     losses = -net[net < 0].sum()
     return {'trades': len(trades), 'win_rate': float(np.mean(net > 0)) if len(net) else None,
             'net_twd': float(net.sum()), 'profit_factor': float(gains/losses) if losses else None,
+            'realized_net_payoff': float(net[net>0].mean()/(-net[net<0].mean())) if len(net[net>0]) and len(net[net<0]) else (0. if losses else None),
             'avg_hold_days': float(np.mean([t['hold_days'] for t in trades])) if trades else None,
             'avg_planned_net_rr': float(np.mean([t['planned_net_rr'] for t in trades])) if trades else None,
             'avg_net_r': float(np.mean([t['net_r'] for t in trades])) if trades else None,
