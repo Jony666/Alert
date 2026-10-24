@@ -1,5 +1,5 @@
 name: OKX V09 Frozen Forward PAPER ONLY
-# Branch bootstrap. No schedule and no default-branch modification.
+# Initial branch registration: no schedule, no default-branch modification.
 on:
   workflow_dispatch:
     inputs:
