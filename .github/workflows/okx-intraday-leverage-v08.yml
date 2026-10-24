@@ -1,0 +1,73 @@
+name: OKX V08 Short-Horizon Leverage Research PAPER ONLY
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/okx-intraday-leverage-v08.yml'
+
+# Research only: no exchange orders, no push, no repository commits.
+permissions:
+  contents: read
+
+concurrency:
+  group: okx-intraday-v08-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  short-horizon-research:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - bar: 5m
+            days: 180
+          - bar: 15m
+            days: 365
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - name: Checkout current sources
+        uses: actions/checkout@v4
+      - name: Setup research Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: okx-monitor/backtest/requirements.txt
+      - name: Install existing research dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Verify all previously delivered suites and 76 new V08 tests
+        run: >-
+          python -m unittest -q
+          test_trader_strategies_v04.py
+          test_public_traders_v05.py
+          test_turtle_short_v06.py
+          test_turtle_forward_v07.py
+          test_leveraged_intraday_v08.py
+      - name: Backtest REAL confirmed public OKX OHLCV, never route orders
+        run: >-
+          python leveraged_intraday_v08.py
+          --bar '${{ matrix.bar }}'
+          --days '${{ matrix.days }}'
+          --warmup-days 35
+          --end-utc '2026-10-01T00:00:00Z'
+          --initial-equity-twd 10000
+          --min-covered 12
+          --symbols BTC ETH SOL XRP ADA DOGE LINK AVAX LTC BCH DOT TRX
+          --output 'v08_${{ matrix.bar }}.json'
+      - name: Export every run result, even on incomplete historical coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-v08-${{ matrix.bar }}-research-results
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            okx-monitor/backtest/v08_${{ matrix.bar }}.json
+            okx-monitor/backtest/v08_${{ matrix.bar }}.summary.csv
+            okx-monitor/backtest/v08_${{ matrix.bar }}.trades.csv
+            okx-monitor/backtest/v08_${{ matrix.bar }}.equity.csv
