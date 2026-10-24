@@ -1,0 +1,525 @@
+test_a_gates_equivalent_to_original_signal (test_diagnostic.DiagnosticRegressionTests.test_a_gates_equivalent_to_original_signal) ... ok
+test_b_gates_equivalent_to_original_signal (test_diagnostic.DiagnosticRegressionTests.test_b_gates_equivalent_to_original_signal) ... ok
+test_bad_gap_in_history_rejected (test_diagnostic.DiagnosticRegressionTests.test_bad_gap_in_history_rejected) ... ok
+test_entry_gates_no_future_in_raw_signal (test_diagnostic.DiagnosticRegressionTests.test_entry_gates_no_future_in_raw_signal) ... ok
+test_independent_and_cumulative_counts (test_diagnostic.DiagnosticRegressionTests.test_independent_and_cumulative_counts) ... ok
+test_trade_plan_equivalent_to_original (test_diagnostic.DiagnosticRegressionTests.test_trade_plan_equivalent_to_original) ... ok
+test_warmup_reduces_counted_window (test_diagnostic.DiagnosticRegressionTests.test_warmup_reduces_counted_window) ... ok
+test_bad_timestamp (test_leveraged_intraday_v08.DataValidationTests.test_bad_timestamp) ... ok
+test_duplicate_ts (test_leveraged_intraday_v08.DataValidationTests.test_duplicate_ts) ... ok
+test_empty (test_leveraged_intraday_v08.DataValidationTests.test_empty) ... ok
+test_invalid_high (test_leveraged_intraday_v08.DataValidationTests.test_invalid_high) ... ok
+test_invalid_low (test_leveraged_intraday_v08.DataValidationTests.test_invalid_low) ... ok
+test_iso (test_leveraged_intraday_v08.DataValidationTests.test_iso) ... ok
+test_misaligned (test_leveraged_intraday_v08.DataValidationTests.test_misaligned) ... ok
+test_missing_first (test_leveraged_intraday_v08.DataValidationTests.test_missing_first) ... ok
+test_missing_last (test_leveraged_intraday_v08.DataValidationTests.test_missing_last) ... ok
+test_missing_middle (test_leveraged_intraday_v08.DataValidationTests.test_missing_middle) ... ok
+test_nan (test_leveraged_intraday_v08.DataValidationTests.test_nan) ... ok
+test_negative_volume (test_leveraged_intraday_v08.DataValidationTests.test_negative_volume) ... ok
+test_no_eval (test_leveraged_intraday_v08.DataValidationTests.test_no_eval) ... ok
+test_overlap_splits (test_leveraged_intraday_v08.DataValidationTests.test_overlap_splits) ... ok
+test_parse_confirmed_only (test_leveraged_intraday_v08.DataValidationTests.test_parse_confirmed_only) ... ok
+test_parse_page_range (test_leveraged_intraday_v08.DataValidationTests.test_parse_page_range) ... ok
+test_requested_complete_range (test_leveraged_intraday_v08.DataValidationTests.test_requested_complete_range) ... ok
+test_valid (test_leveraged_intraday_v08.DataValidationTests.test_valid) ... ok
+test_zero_price (test_leveraged_intraday_v08.DataValidationTests.test_zero_price) ... ok
+test_download_complete (test_leveraged_intraday_v08.DownloaderTests.test_download_complete) ... ok
+test_download_detects_gap (test_leveraged_intraday_v08.DownloaderTests.test_download_detects_gap) ... ok
+test_download_fail_closed_confirm_zero (test_leveraged_intraday_v08.DownloaderTests.test_download_fail_closed_confirm_zero) ... ok
+test_download_pagination (test_leveraged_intraday_v08.DownloaderTests.test_download_pagination) ... ok
+test_max_page_protection (test_leveraged_intraday_v08.DownloaderTests.test_max_page_protection) ... ok
+test_unaligned_request (test_leveraged_intraday_v08.DownloaderTests.test_unaligned_request) ... ok
+test_30m_finite_later (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_30m_finite_later) ... ok
+test_30m_last_bar_completion (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_30m_last_bar_completion) ... ok
+test_bias_long (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_bias_long) ... ok
+test_bias_missing_context (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_bias_missing_context) ... ok
+test_bias_short (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_bias_short) ... ok
+test_breakout_long (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_breakout_long) ... ok
+test_breakout_short (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_breakout_short) ... ok
+test_breakout_volume_filter (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_breakout_volume_filter) ... ok
+test_daily_no_incomplete (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_daily_no_incomplete) ... ok
+test_features_are_point_in_time (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_features_are_point_in_time) ... ok
+test_h1_last_bar_completion (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_h1_last_bar_completion) ... ok
+test_h1_no_current_unfinished (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_h1_no_current_unfinished) ... ok
+test_indicator_finiteness_late (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_indicator_finiteness_late) ... ok
+test_macd_long (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_macd_long) ... ok
+test_macd_no_lookahead_cross (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_macd_no_lookahead_cross) ... ok
+test_macd_short (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_macd_short) ... ok
+test_no_lookahead_first_55 (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_no_lookahead_first_55) ... ok
+test_precompute_shape (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_precompute_shape) ... ok
+test_resample_complete_hour (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_resample_complete_hour) ... ok
+test_resample_reject_incomplete (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_resample_reject_incomplete) ... ok
+test_rsi_range (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_rsi_range) ... ok
+test_unknown_strategy (test_leveraged_intraday_v08.FeaturesAndSignalsTests.test_unknown_strategy) ... ok
+test_5m_aggregation_15m_30m_1h (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_5m_aggregation_15m_30m_1h) ... ok
+test_5m_full_study (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_5m_full_study) ... VERIFIED BTC-USDT-SWAP 5m 17280
+RESULT 5m BIAS25_REVERSAL 5 cost 1.0 train trades 55 ret% 35.6479 dd% 1.9892
+RESULT 5m BIAS25_REVERSAL 5 cost 1.0 validation trades 17 ret% 9.8611 dd% 1.9944
+RESULT 5m BIAS25_REVERSAL 5 cost 1.0 test_not_pristine trades 19 ret% 11.5817 dd% 1.9834
+RESULT 5m BIAS25_REVERSAL 5 cost 2.0 train trades 55 ret% 21.4248 dd% 2.2552
+RESULT 5m BIAS25_REVERSAL 5 cost 2.0 validation trades 17 ret% 6.0081 dd% 2.2674
+RESULT 5m BIAS25_REVERSAL 5 cost 2.0 test_not_pristine trades 19 ret% 7.2367 dd% 2.281
+RESULT 5m BIAS25_REVERSAL 10 cost 1.0 train trades 55 ret% 35.6479 dd% 1.9892
+RESULT 5m BIAS25_REVERSAL 10 cost 1.0 validation trades 17 ret% 9.8611 dd% 1.9944
+RESULT 5m BIAS25_REVERSAL 10 cost 1.0 test_not_pristine trades 19 ret% 11.5817 dd% 1.9834
+RESULT 5m BIAS25_REVERSAL 10 cost 2.0 train trades 55 ret% 21.4248 dd% 2.2552
+RESULT 5m BIAS25_REVERSAL 10 cost 2.0 validation trades 17 ret% 6.0081 dd% 2.2674
+RESULT 5m BIAS25_REVERSAL 10 cost 2.0 test_not_pristine trades 19 ret% 7.2367 dd% 2.281
+RESULT 5m BIAS25_REVERSAL 20 cost 1.0 train trades 55 ret% 35.6479 dd% 1.9892
+RESULT 5m BIAS25_REVERSAL 20 cost 1.0 validation trades 17 ret% 9.8611 dd% 1.9944
+RESULT 5m BIAS25_REVERSAL 20 cost 1.0 test_not_pristine trades 19 ret% 11.5817 dd% 1.9834
+RESULT 5m BIAS25_REVERSAL 20 cost 2.0 train trades 55 ret% 21.4248 dd% 2.2552
+RESULT 5m BIAS25_REVERSAL 20 cost 2.0 validation trades 17 ret% 6.0081 dd% 2.2674
+RESULT 5m BIAS25_REVERSAL 20 cost 2.0 test_not_pristine trades 19 ret% 7.2367 dd% 2.281
+RESULT 5m MACD_TREND 5 cost 1.0 train trades 15 ret% -12.1578 dd% 14.2474
+RESULT 5m MACD_TREND 5 cost 1.0 validation trades 7 ret% -4.2446 dd% 5.3629
+RESULT 5m MACD_TREND 5 cost 1.0 test_not_pristine trades 5 ret% -5.9265 dd% 6.3475
+RESULT 5m MACD_TREND 5 cost 2.0 train trades 15 ret% -19.2148 dd% 20.1714
+RESULT 5m MACD_TREND 5 cost 2.0 validation trades 7 ret% -8.1744 dd% 8.9904
+RESULT 5m MACD_TREND 5 cost 2.0 test_not_pristine trades 5 ret% -6.9439 dd% 7.2286
+RESULT 5m MACD_TREND 10 cost 1.0 train trades 15 ret% -12.1578 dd% 14.2474
+RESULT 5m MACD_TREND 10 cost 1.0 validation trades 7 ret% -4.2446 dd% 5.3629
+RESULT 5m MACD_TREND 10 cost 1.0 test_not_pristine trades 5 ret% -5.9265 dd% 6.3475
+RESULT 5m MACD_TREND 10 cost 2.0 train trades 15 ret% -19.2148 dd% 20.1714
+RESULT 5m MACD_TREND 10 cost 2.0 validation trades 7 ret% -8.1744 dd% 8.9904
+RESULT 5m MACD_TREND 10 cost 2.0 test_not_pristine trades 5 ret% -6.9439 dd% 7.2286
+RESULT 5m MACD_TREND 20 cost 1.0 train trades 15 ret% -12.1578 dd% 14.2474
+RESULT 5m MACD_TREND 20 cost 1.0 validation trades 7 ret% -4.2446 dd% 5.3629
+RESULT 5m MACD_TREND 20 cost 1.0 test_not_pristine trades 5 ret% -5.9265 dd% 6.3475
+RESULT 5m MACD_TREND 20 cost 2.0 train trades 15 ret% -19.2148 dd% 20.1714
+RESULT 5m MACD_TREND 20 cost 2.0 validation trades 7 ret% -8.1744 dd% 8.9904
+RESULT 5m MACD_TREND 20 cost 2.0 test_not_pristine trades 5 ret% -6.9439 dd% 7.2286
+RESULT 5m RANGE_VOLUME 5 cost 1.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 5 cost 1.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 5 cost 1.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 5 cost 2.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 5 cost 2.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 5 cost 2.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 10 cost 1.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 10 cost 1.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 10 cost 1.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 10 cost 2.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 10 cost 2.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 10 cost 2.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 20 cost 1.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 20 cost 1.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 20 cost 1.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 20 cost 2.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 20 cost 2.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 5m RANGE_VOLUME 20 cost 2.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+FINAL {"bar": "5m", "valid_symbols": 1, "failed_symbols": 0, "portfolios": 54, "total_simulated_trades": 708, "complete": true, "ready_for_live": false}
+ok
+test_cost_stress (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_cost_stress) ... ok
+test_entry_bar_uses_prior_signal (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_entry_bar_uses_prior_signal) ... ok
+test_fail_closed_coverage (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_fail_closed_coverage) ... VERIFIED BTC-USDT-SWAP 15m 5760
+FAILED ETH-USDT-SWAP RuntimeError: simulated unavailable historical coverage
+FINAL {"bar": "15m", "valid_symbols": 1, "failed_symbols": 1, "portfolios": 0, "total_simulated_trades": 0, "complete": false, "ready_for_live": false}
+ok
+test_fail_closed_future (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_fail_closed_future) ... ok
+test_no_intraday_future_order (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_no_intraday_future_order) ... ok
+test_simulation_20x (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_simulation_20x) ... ok
+test_simulation_5x (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_simulation_5x) ... ok
+test_single_symbol_e2e_outputs (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_single_symbol_e2e_outputs) ... VERIFIED BTC-USDT-SWAP 15m 5760
+RESULT 15m BIAS25_REVERSAL 5 cost 1.0 train trades 12 ret% 10.4 dd% 1.5315
+RESULT 15m BIAS25_REVERSAL 5 cost 1.0 validation trades 5 ret% 4.2714 dd% 1.28
+RESULT 15m BIAS25_REVERSAL 5 cost 1.0 test_not_pristine trades 3 ret% 4.3706 dd% 0.1055
+RESULT 15m BIAS25_REVERSAL 5 cost 2.0 train trades 12 ret% 7.6942 dd% 1.7811
+RESULT 15m BIAS25_REVERSAL 5 cost 2.0 validation trades 5 ret% 3.1588 dd% 1.5336
+RESULT 15m BIAS25_REVERSAL 5 cost 2.0 test_not_pristine trades 3 ret% 3.7891 dd% 0.2308
+RESULT 15m BIAS25_REVERSAL 10 cost 1.0 train trades 12 ret% 10.4 dd% 1.5315
+RESULT 15m BIAS25_REVERSAL 10 cost 1.0 validation trades 5 ret% 4.2714 dd% 1.28
+RESULT 15m BIAS25_REVERSAL 10 cost 1.0 test_not_pristine trades 3 ret% 4.3706 dd% 0.1055
+RESULT 15m BIAS25_REVERSAL 10 cost 2.0 train trades 12 ret% 7.6942 dd% 1.7811
+RESULT 15m BIAS25_REVERSAL 10 cost 2.0 validation trades 5 ret% 3.1588 dd% 1.5336
+RESULT 15m BIAS25_REVERSAL 10 cost 2.0 test_not_pristine trades 3 ret% 3.7891 dd% 0.2308
+RESULT 15m BIAS25_REVERSAL 20 cost 1.0 train trades 12 ret% 10.4 dd% 1.5315
+RESULT 15m BIAS25_REVERSAL 20 cost 1.0 validation trades 5 ret% 4.2714 dd% 1.28
+RESULT 15m BIAS25_REVERSAL 20 cost 1.0 test_not_pristine trades 3 ret% 4.3706 dd% 0.1055
+RESULT 15m BIAS25_REVERSAL 20 cost 2.0 train trades 12 ret% 7.6942 dd% 1.7811
+RESULT 15m BIAS25_REVERSAL 20 cost 2.0 validation trades 5 ret% 3.1588 dd% 1.5336
+RESULT 15m BIAS25_REVERSAL 20 cost 2.0 test_not_pristine trades 3 ret% 3.7891 dd% 0.2308
+RESULT 15m MACD_TREND 5 cost 1.0 train trades 14 ret% -9.1566 dd% 10.4336
+RESULT 15m MACD_TREND 5 cost 1.0 validation trades 3 ret% -0.9703 dd% 3.1205
+RESULT 15m MACD_TREND 5 cost 1.0 test_not_pristine trades 4 ret% -4.1559 dd% 4.6193
+RESULT 15m MACD_TREND 5 cost 2.0 train trades 14 ret% -13.9185 dd% 14.8224
+RESULT 15m MACD_TREND 5 cost 2.0 validation trades 3 ret% -4.1115 dd% 4.7159
+RESULT 15m MACD_TREND 5 cost 2.0 test_not_pristine trades 4 ret% -4.9603 dd% 5.2977
+RESULT 15m MACD_TREND 10 cost 1.0 train trades 14 ret% -9.1566 dd% 10.4336
+RESULT 15m MACD_TREND 10 cost 1.0 validation trades 3 ret% -0.9703 dd% 3.1205
+RESULT 15m MACD_TREND 10 cost 1.0 test_not_pristine trades 4 ret% -4.1559 dd% 4.6193
+RESULT 15m MACD_TREND 10 cost 2.0 train trades 14 ret% -13.9185 dd% 14.8224
+RESULT 15m MACD_TREND 10 cost 2.0 validation trades 3 ret% -4.1115 dd% 4.7159
+RESULT 15m MACD_TREND 10 cost 2.0 test_not_pristine trades 4 ret% -4.9603 dd% 5.2977
+RESULT 15m MACD_TREND 20 cost 1.0 train trades 14 ret% -9.1566 dd% 10.4336
+RESULT 15m MACD_TREND 20 cost 1.0 validation trades 3 ret% -0.9703 dd% 3.1205
+RESULT 15m MACD_TREND 20 cost 1.0 test_not_pristine trades 4 ret% -4.1559 dd% 4.6193
+RESULT 15m MACD_TREND 20 cost 2.0 train trades 14 ret% -13.9185 dd% 14.8224
+RESULT 15m MACD_TREND 20 cost 2.0 validation trades 3 ret% -4.1115 dd% 4.7159
+RESULT 15m MACD_TREND 20 cost 2.0 test_not_pristine trades 4 ret% -4.9603 dd% 5.2977
+RESULT 15m RANGE_VOLUME 5 cost 1.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 5 cost 1.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 5 cost 1.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 5 cost 2.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 5 cost 2.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 5 cost 2.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 10 cost 1.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 10 cost 1.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 10 cost 1.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 10 cost 2.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 10 cost 2.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 10 cost 2.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 20 cost 1.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 20 cost 1.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 20 cost 1.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 20 cost 2.0 train trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 20 cost 2.0 validation trades 0 ret% 0.0 dd% 0.0
+RESULT 15m RANGE_VOLUME 20 cost 2.0 test_not_pristine trades 0 ret% 0.0 dd% 0.0
+FINAL {"bar": "15m", "valid_symbols": 1, "failed_symbols": 0, "portfolios": 54, "total_simulated_trades": 246, "complete": true, "ready_for_live": false}
+ok
+test_time_axis_fail_closed (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_time_axis_fail_closed) ... ok
+test_two_accounts_independent (test_leveraged_intraday_v08.IntegratedPortfolioTests.test_two_accounts_independent) ... ok
+test_disjoint_test_bounds (test_leveraged_intraday_v08.RiskAndAccountTests.test_disjoint_test_bounds) ... ok
+test_gap_short_stop_slips_worse (test_leveraged_intraday_v08.RiskAndAccountTests.test_gap_short_stop_slips_worse) ... ok
+test_gap_stop_slips_worse (test_leveraged_intraday_v08.RiskAndAccountTests.test_gap_stop_slips_worse) ... ok
+test_leverage_not_free_profit (test_leveraged_intraday_v08.RiskAndAccountTests.test_leverage_not_free_profit) ... ok
+test_liq_long_20x (test_leveraged_intraday_v08.RiskAndAccountTests.test_liq_long_20x) ... ok
+test_liq_long_5x (test_leveraged_intraday_v08.RiskAndAccountTests.test_liq_long_5x) ... ok
+test_liq_reject_excess (test_leveraged_intraday_v08.RiskAndAccountTests.test_liq_reject_excess) ... ok
+test_liq_short_10x (test_leveraged_intraday_v08.RiskAndAccountTests.test_liq_short_10x) ... ok
+test_no_exit (test_leveraged_intraday_v08.RiskAndAccountTests.test_no_exit) ... ok
+test_pf (test_leveraged_intraday_v08.RiskAndAccountTests.test_pf) ... ok
+test_stop_long (test_leveraged_intraday_v08.RiskAndAccountTests.test_stop_long) ... ok
+test_stop_short (test_leveraged_intraday_v08.RiskAndAccountTests.test_stop_short) ... ok
+test_target_long (test_leveraged_intraday_v08.RiskAndAccountTests.test_target_long) ... ok
+test_target_short (test_leveraged_intraday_v08.RiskAndAccountTests.test_target_short) ... ok
+test_worst_case_liq_beats_stop (test_leveraged_intraday_v08.RiskAndAccountTests.test_worst_case_liq_beats_stop) ... ok
+test_worst_case_stop_beats_target (test_leveraged_intraday_v08.RiskAndAccountTests.test_worst_case_stop_beats_target) ... ok
+test_zero_trades (test_leveraged_intraday_v08.RiskAndAccountTests.test_zero_trades) ... ok
+test_completed_higher_and_btc_prefix (test_phase3_v09.Phase3Causality.test_completed_higher_and_btc_prefix) ... ok
+test_frozen_parameters (test_phase3_v09.Phase3Causality.test_frozen_parameters) ... ok
+test_future_btc_cannot_change_past (test_phase3_v09.Phase3Causality.test_future_btc_cannot_change_past) ... ok
+test_no_incomplete_week_visible (test_phase3_v09.Phase3Causality.test_no_incomplete_week_visible) ... ok
+test_risk_thresholds_unchanged (test_phase3_v09.Phase3Causality.test_risk_thresholds_unchanged) ... ok
+test_fast_schedule_equivalent_to_legacy (test_phase3_v09.Phase3Engine.test_fast_schedule_equivalent_to_legacy) ... ok
+test_three_day_override_all_costs_reconcile (test_phase3_v09.Phase3Engine.test_three_day_override_all_costs_reconcile) ... ok
+test_all_new_reject_btc_shock (test_phase3_v09.Phase3Signals.test_all_new_reject_btc_shock) ... ok
+test_all_new_reject_opposite_btc (test_phase3_v09.Phase3Signals.test_all_new_reject_opposite_btc) ... ok
+test_atr_filter (test_phase3_v09.Phase3Signals.test_atr_filter) ... ok
+test_breakout_retest_long (test_phase3_v09.Phase3Signals.test_breakout_retest_long) ... ok
+test_momentum_long (test_phase3_v09.Phase3Signals.test_momentum_long) ... ok
+test_mtf_long (test_phase3_v09.Phase3Signals.test_mtf_long) ... ok
+test_plan_is_structure_not_forced_three_r (test_phase3_v09.Phase3Signals.test_plan_is_structure_not_forced_three_r) ... ok
+test_short_retest (test_phase3_v09.Phase3Signals.test_short_retest) ... ok
+test_squeeze_long (test_phase3_v09.Phase3Signals.test_squeeze_long) ... ok
+test_sr_long (test_phase3_v09.Phase3Signals.test_sr_long) ... ok
+test_unknown_strategy (test_phase3_v09.Phase3Signals.test_unknown_strategy) ... ok
+test_empty_stats (test_phase3_v09.Phase3Statistics.test_empty_stats) ... ok
+test_family_interval_more_conservative (test_phase3_v09.Phase3Statistics.test_family_interval_more_conservative) ... ok
+test_hold_summary (test_phase3_v09.Phase3Statistics.test_hold_summary) ... ok
+test_no_live_qualification_even_all_wins (test_phase3_v09.Phase3Statistics.test_no_live_qualification_even_all_wins) ... ok
+test_nonoverlap_thinning_not_aggregate_count (test_phase3_v09.Phase3Statistics.test_nonoverlap_thinning_not_aggregate_count) ... ok
+test_ranking_cannot_read_test_results (test_phase3_v09.Phase3Statistics.test_ranking_cannot_read_test_results) ... ok
+test_three_ratios_separate (test_phase3_v09.Phase3Statistics.test_three_ratios_separate) ... ok
+test_context_requires_only_completed_explanatory_values (test_phase4_v09.Phase4ContextTests.test_context_requires_only_completed_explanatory_values) ... ok
+test_baseline_signal_identity (test_phase4_v09.Phase4DesignTests.test_baseline_signal_identity) ... ok
+test_frozen_design (test_phase4_v09.Phase4DesignTests.test_frozen_design) ... ok
+test_negative_exit_fraction_rejected (test_phase4_v09.Phase4DesignTests.test_negative_exit_fraction_rejected) ... ok
+test_only_two_registered_cores (test_phase4_v09.Phase4DesignTests.test_only_two_registered_cores) ... ok
+test_protect_and_fixed_use_same_initial_plan (test_phase4_v09.Phase4DesignTests.test_protect_and_fixed_use_same_initial_plan) ... ok
+test_public_429_retry (test_phase4_v09.Phase4DesignTests.test_public_429_retry) ... ok
+test_public_endpoint_forbids_private (test_phase4_v09.Phase4DesignTests.test_public_endpoint_forbids_private) ... ok
+test_reversal_stop_neighbor_not_signal_tuning (test_phase4_v09.Phase4DesignTests.test_reversal_stop_neighbor_not_signal_tuning) ... ok
+test_same_bar_stop_precedes_single_target (test_phase4_v09.Phase4DesignTests.test_same_bar_stop_precedes_single_target) ... ok
+test_single_short (test_phase4_v09.Phase4DesignTests.test_single_short) ... ok
+test_single_target_real_weight (test_phase4_v09.Phase4DesignTests.test_single_target_real_weight) ... ok
+test_single_tick_rounding (test_phase4_v09.Phase4DesignTests.test_single_tick_rounding) ... ok
+test_unregistered_strategy_refused (test_phase4_v09.Phase4DesignTests.test_unregistered_strategy_refused) ... ok
+test_vol_neighbor_is_predeclared (test_phase4_v09.Phase4DesignTests.test_vol_neighbor_is_predeclared) ... ok
+test_zero_weight_cannot_inflate_reward (test_phase4_v09.Phase4DesignTests.test_zero_weight_cannot_inflate_reward) ... ok
+test_all_modes_cost_and_partial_reconciliation (test_phase4_v09.Phase4EngineTests.test_all_modes_cost_and_partial_reconciliation) ... ok
+test_both_cores_simultaneous_shared_account (test_phase4_v09.Phase4EngineTests.test_both_cores_simultaneous_shared_account) ... ok
+test_exit_default_still_identical (test_phase4_v09.Phase4EngineTests.test_exit_default_still_identical) ... ok
+test_gap_stress_does_not_guarantee_budget_cap (test_phase4_v09.Phase4EngineTests.test_gap_stress_does_not_guarantee_budget_cap) ... ok
+test_hard_caps_remain (test_phase4_v09.Phase4EngineTests.test_hard_caps_remain) ... ok
+test_invalid_exit_refused (test_phase4_v09.Phase4EngineTests.test_invalid_exit_refused) ... ok
+test_distant_tp2_does_not_improve_protection_path (test_phase4_v09.Phase4PathTests.test_distant_tp2_does_not_improve_protection_path) ... ok
+test_single_path_equals_full_net_plan_both_sides (test_phase4_v09.Phase4PathTests.test_single_path_equals_full_net_plan_both_sides) ... ok
+test_abc_cannot_use_test_returns (test_phase4_v09.Phase4StatisticsTests.test_abc_cannot_use_test_returns) ... ok
+test_effective_n_not_invented (test_phase4_v09.Phase4StatisticsTests.test_effective_n_not_invented) ... ok
+test_nets_do_not_substitute_rr (test_phase4_v09.Phase4StatisticsTests.test_nets_do_not_substitute_rr) ... ok
+test_percentile_holding_distribution (test_phase4_v09.Phase4StatisticsTests.test_percentile_holding_distribution) ... ok
+test_phase4_multiple_family_label (test_phase4_v09.Phase4StatisticsTests.test_phase4_multiple_family_label) ... ok
+test_sparse_negative_is_not_stop_research_forever (test_phase4_v09.Phase4StatisticsTests.test_sparse_negative_is_not_stop_research_forever) ... ok
+test_ambiguous_same_30m_bar_never_guess_direction (test_public_traders_v05.TraderV05Tests.test_ambiguous_same_30m_bar_never_guess_direction) ... ok
+test_crabel_2026_10day_range_exact (test_public_traders_v05.TraderV05Tests.test_crabel_2026_10day_range_exact) ... ok
+test_crabel_level_uses_previous_only (test_public_traders_v05.TraderV05Tests.test_crabel_level_uses_previous_only) ... ok
+test_crabel_nr7_drops_wider_setup (test_public_traders_v05.TraderV05Tests.test_crabel_nr7_drops_wider_setup) ... ok
+test_crabel_nr7_pass_with_small_range (test_public_traders_v05.TraderV05Tests.test_crabel_nr7_pass_with_small_range) ... ok
+test_empty_stats_no_manufactured_metrics (test_public_traders_v05.TraderV05Tests.test_empty_stats_no_manufactured_metrics) ... ok
+test_end_to_end_synthetic_not_market_performance (test_public_traders_v05.TraderV05Tests.test_end_to_end_synthetic_not_market_performance) ... Downloading real OKX 30m bars BTC-USDT-SWAP 430 days
+DONE BTC-USDT-SWAP {"CRABEL_2026_ORB": 0, "CRABEL_NR7_STRETCH": 16, "TURTLE_S1_20_10_NO_SKIP": 5, "TURTLE_S2_55_20_NO_PYRAMID": 2, "MINERVINI_TREND_VCP_PROXY": 0}
+SUMMARY {"symbols_ok": 1, "failed": 0, "simulated_trades": 23, "scenarios": 5, "ready_for_live": false}
+ok
+test_first_touch_direction_order (test_public_traders_v05.TraderV05Tests.test_first_touch_direction_order) ... ok
+test_five_predeclared_unique_scenarios (test_public_traders_v05.TraderV05Tests.test_five_predeclared_unique_scenarios) ... ok
+test_funding_deducted_8h (test_public_traders_v05.TraderV05Tests.test_funding_deducted_8h) ... ok
+test_gaps_valued_at_real_open (test_public_traders_v05.TraderV05Tests.test_gaps_valued_at_real_open) ... ok
+test_invalid_data_coverage_rejected (test_public_traders_v05.TraderV05Tests.test_invalid_data_coverage_rejected) ... ok
+test_invalid_prices_rejected (test_public_traders_v05.TraderV05Tests.test_invalid_prices_rejected) ... ok
+test_long_and_short_consistent (test_public_traders_v05.TraderV05Tests.test_long_and_short_consistent) ... ok
+test_no_bnf_scanner_dependency (test_public_traders_v05.TraderV05Tests.test_no_bnf_scanner_dependency) ... ok
+test_synthetic_sample_cannot_be_called_verified_live (test_public_traders_v05.TraderV05Tests.test_synthetic_sample_cannot_be_called_verified_live) ... ok
+test_time_splits_contiguous (test_public_traders_v05.TraderV05Tests.test_time_splits_contiguous) ... ok
+test_trend_template_requires_200rising (test_public_traders_v05.TraderV05Tests.test_trend_template_requires_200rising) ... ok
+test_turtle_prior_extreme_cannot_see_current (test_public_traders_v05.TraderV05Tests.test_turtle_prior_extreme_cannot_see_current) ... ok
+test_turtle_same_bar_ambiguous (test_public_traders_v05.TraderV05Tests.test_turtle_same_bar_ambiguous) ... ok
+test_turtle_stop_is_prior_to_channel (test_public_traders_v05.TraderV05Tests.test_turtle_stop_is_prior_to_channel) ... ok
+test_vcp_no_current_bar_lookahead (test_public_traders_v05.TraderV05Tests.test_vcp_no_current_bar_lookahead) ... ok
+test_vcp_requires_range_contraction_and_volume (test_public_traders_v05.TraderV05Tests.test_vcp_requires_range_contraction_and_volume) ... ok
+test_B_3_of_8_still_requires_other_gates (test_sensitivity.ThirdRoundTests.test_B_3_of_8_still_requires_other_gates) ... ok
+test_B_confirm_only_breakout_or_volume (test_sensitivity.ThirdRoundTests.test_B_confirm_only_breakout_or_volume) ... ok
+test_each_ablation_modifies_only_one_gate (test_sensitivity.ThirdRoundTests.test_each_ablation_modifies_only_one_gate) ... ok
+test_exact_baseline_flags (test_sensitivity.ThirdRoundTests.test_exact_baseline_flags) ... ok
+test_net_rr_can_degrade_only_after_next_open (test_sensitivity.ThirdRoundTests.test_net_rr_can_degrade_only_after_next_open) ... ok
+test_original_trade_plan_does_not_change (test_sensitivity.ThirdRoundTests.test_original_trade_plan_does_not_change) ... ok
+test_performance_statistics_only_trade_sequential (test_sensitivity.ThirdRoundTests.test_performance_statistics_only_trade_sequential) ... ok
+test_research_smoke_with_real_indicators_no_network (test_sensitivity.ThirdRoundTests.test_research_smoke_with_real_indicators_no_network) ... ok
+test_rr_only_sensitivity (test_sensitivity.ThirdRoundTests.test_rr_only_sensitivity) ... ok
+test_statistics_do_not_invent_returns_for_no_trades (test_sensitivity.ThirdRoundTests.test_statistics_do_not_invent_returns_for_no_trades) ... ok
+test_temporal_split_and_embargo (test_sensitivity.ThirdRoundTests.test_temporal_split_and_embargo) ... ok
+test_unique_predeclared_scenarios (test_sensitivity.ThirdRoundTests.test_unique_predeclared_scenarios) ... ok
+test_upper_entry_only_one_gate (test_sensitivity.ThirdRoundTests.test_upper_entry_only_one_gate) ... ok
+test_utc_time_only_and_reproducible_cutoff (test_sensitivity.ThirdRoundTests.test_utc_time_only_and_reproducible_cutoff) ... ok
+test_exchange_max_leverage (test_swing_v09.ChronologyBoundaryTests.test_exchange_max_leverage) ... ok
+test_future_loss_not_counted (test_swing_v09.ChronologyBoundaryTests.test_future_loss_not_counted) ... ok
+test_adverse_boundary (test_swing_v09.CrossMarginV09Tests.test_adverse_boundary) ... ok
+test_event_after_window (test_swing_v09.CrossMarginV09Tests.test_event_after_window) ... ok
+test_future_tiers (test_swing_v09.CrossMarginV09Tests.test_future_tiers) ... ok
+test_margin_arithmetic (test_swing_v09.CrossMarginV09Tests.test_margin_arithmetic) ... ok
+test_missing_account_refused (test_swing_v09.CrossMarginV09Tests.test_missing_account_refused) ... ok
+test_missing_tiers (test_swing_v09.CrossMarginV09Tests.test_missing_tiers) ... ok
+test_no_event_future_leak (test_swing_v09.CrossMarginV09Tests.test_no_event_future_leak) ... ok
+test_nonfinite_rr_is_refused (test_swing_v09.CrossMarginV09Tests.test_nonfinite_rr_is_refused) ... ok
+test_short_and_multiple_shared_equity (test_swing_v09.CrossMarginV09Tests.test_short_and_multiple_shared_equity) ... ok
+test_stale_account (test_swing_v09.CrossMarginV09Tests.test_stale_account) ... ok
+test_tier_and_leverage_limit (test_swing_v09.CrossMarginV09Tests.test_tier_and_leverage_limit) ... ok
+test_bad_ohlc (test_swing_v09.DataTests.test_bad_ohlc) ... ok
+test_daily_context_not_early (test_swing_v09.DataTests.test_daily_context_not_early) ... ok
+test_duplicate (test_swing_v09.DataTests.test_duplicate) ... ok
+test_features_prefix_invariance (test_swing_v09.DataTests.test_features_prefix_invariance) ... ok
+test_gap (test_swing_v09.DataTests.test_gap) ... ok
+test_naive_time (test_swing_v09.DataTests.test_naive_time) ... ok
+test_nan (test_swing_v09.DataTests.test_nan) ... ok
+test_partial_history (test_swing_v09.DataTests.test_partial_history) ... ok
+test_private_endpoint_rejected (test_swing_v09.DataTests.test_private_endpoint_rejected) ... ok
+test_three_strategies_causal (test_swing_v09.DataTests.test_three_strategies_causal) ... ok
+test_unconfirmed_candle_rejected (test_swing_v09.DataTests.test_unconfirmed_candle_rejected) ... ok
+test_unknown_strategy (test_swing_v09.DataTests.test_unknown_strategy) ... ok
+test_valid (test_swing_v09.DataTests.test_valid) ... ok
+test_cross_always_required (test_swing_v09.EvidenceEventTests.test_cross_always_required) ... ok
+test_embargo (test_swing_v09.EvidenceEventTests.test_embargo) ... ok
+test_event_taipei (test_swing_v09.EvidenceEventTests.test_event_taipei) ... ok
+test_future_news_invisible (test_swing_v09.EvidenceEventTests.test_future_news_invisible) ... ok
+test_low_rr_rejected (test_swing_v09.EvidenceEventTests.test_low_rr_rejected) ... ok
+test_lower_bound_not_point_estimate (test_swing_v09.EvidenceEventTests.test_lower_bound_not_point_estimate) ... ok
+test_major_news (test_swing_v09.EvidenceEventTests.test_major_news) ... ok
+test_missing_news_neutral (test_swing_v09.EvidenceEventTests.test_missing_news_neutral) ... ok
+test_positive_evidence (test_swing_v09.EvidenceEventTests.test_positive_evidence) ... ok
+test_small_sample_rejected (test_swing_v09.EvidenceEventTests.test_small_sample_rejected) ... ok
+test_source_spoof (test_swing_v09.EvidenceEventTests.test_source_spoof) ... ok
+test_training_or_no_forward_rejected (test_swing_v09.EvidenceEventTests.test_training_or_no_forward_rejected) ... ok
+test_wilson_empty (test_swing_v09.EvidenceEventTests.test_wilson_empty) ... ok
+test_both_targets (test_swing_v09.ExitTests.test_both_targets) ... ok
+test_double_costs (test_swing_v09.ExitTests.test_double_costs) ... ok
+test_funding_14day_bound (test_swing_v09.ExitTests.test_funding_14day_bound) ... ok
+test_gap_exceeds_budget (test_swing_v09.ExitTests.test_gap_exceeds_budget) ... ok
+test_good_both_sides (test_swing_v09.ExitTests.test_good_both_sides) ... ok
+test_partial_remainder (test_swing_v09.ExitTests.test_partial_remainder) ... ok
+test_short_stop (test_swing_v09.ExitTests.test_short_stop) ... ok
+test_stop_priority (test_swing_v09.ExitTests.test_stop_priority) ... ok
+test_trailing_scenario_not_target_profit (test_swing_v09.ExitTests.test_trailing_scenario_not_target_profit) ... ok
+test_weighted_rr_not_far_tp_only (test_swing_v09.ExitTests.test_weighted_rr_not_far_tp_only) ... ok
+test_weights (test_swing_v09.ExitTests.test_weights) ... ok
+test_wrong_direction (test_swing_v09.ExitTests.test_wrong_direction) ... ok
+test_ledger_persist (test_swing_v09.IntegratedV09Tests.test_ledger_persist) ... ok
+test_ledger_reconcile_later (test_swing_v09.IntegratedV09Tests.test_ledger_reconcile_later) ... ok
+test_next_bar_entry (test_swing_v09.IntegratedV09Tests.test_next_bar_entry) ... ok
+test_portfolio_all_strategies_constraints (test_swing_v09.IntegratedV09Tests.test_portfolio_all_strategies_constraints) ... ok
+test_tick_conservative (test_swing_v09.IntegratedV09Tests.test_tick_conservative) ... ok
+test_cancel_open_rejected (test_swing_v09.LedgerReportTests.test_cancel_open_rejected) ... ok
+test_declined (test_swing_v09.LedgerReportTests.test_declined) ... ok
+test_full_pnl (test_swing_v09.LedgerReportTests.test_full_pnl) ... ok
+test_missing_details_pending (test_swing_v09.LedgerReportTests.test_missing_details_pending) ... ok
+test_no_close_without_fill (test_swing_v09.LedgerReportTests.test_no_close_without_fill) ... ok
+test_overclose (test_swing_v09.LedgerReportTests.test_overclose) ... ok
+test_paper_separate (test_swing_v09.LedgerReportTests.test_paper_separate) ... ok
+test_partial_pnl (test_swing_v09.LedgerReportTests.test_partial_pnl) ... ok
+test_proposal_not_fill (test_swing_v09.LedgerReportTests.test_proposal_not_fill) ... ok
+test_report_fields (test_swing_v09.LedgerReportTests.test_report_fields) ... ok
+test_transfer_not_profit (test_swing_v09.LedgerReportTests.test_transfer_not_profit) ... ok
+test_loss_day_ordered_taipei (test_swing_v09.MoreBoundaryV09Tests.test_loss_day_ordered_taipei) ... ok
+test_partial_entry_basis_and_fees (test_swing_v09.MoreBoundaryV09Tests.test_partial_entry_basis_and_fees) ... ok
+test_report_stressed_rr (test_swing_v09.MoreBoundaryV09Tests.test_report_stressed_rr) ... ok
+test_unrealized_does_not_raise_cap (test_swing_v09.MoreBoundaryV09Tests.test_unrealized_does_not_raise_cap) ... ok
+test_account_fourth (test_swing_v09.RiskTests.test_account_fourth) ... ok
+test_base_cap (test_swing_v09.RiskTests.test_base_cap) ... ok
+test_cross_not_verified (test_swing_v09.RiskTests.test_cross_not_verified) ... ok
+test_day_reset_only_daily (test_swing_v09.RiskTests.test_day_reset_only_daily) ... ok
+test_different_strategy_exception_only (test_swing_v09.RiskTests.test_different_strategy_exception_only) ... ok
+test_downshift (test_swing_v09.RiskTests.test_downshift) ... ok
+test_drawdown_boundary (test_swing_v09.RiskTests.test_drawdown_boundary) ... ok
+test_drawdown_persistent (test_swing_v09.RiskTests.test_drawdown_persistent) ... ok
+test_fee_boundary (test_swing_v09.RiskTests.test_fee_boundary) ... ok
+test_fee_halt_persists (test_swing_v09.RiskTests.test_fee_halt_persists) ... ok
+test_fx_required (test_swing_v09.RiskTests.test_fx_required) ... ok
+test_hwm_drawdown (test_swing_v09.RiskTests.test_hwm_drawdown) ... ok
+test_minimum (test_swing_v09.RiskTests.test_minimum) ... ok
+test_no_100x (test_swing_v09.RiskTests.test_no_100x) ... ok
+test_pending_blocks (test_swing_v09.RiskTests.test_pending_blocks) ... ok
+test_realized_loss_not_open_risk (test_swing_v09.RiskTests.test_realized_loss_not_open_risk) ... ok
+test_same_strategy_no_exception (test_swing_v09.RiskTests.test_same_strategy_no_exception) ... ok
+test_single_rejected (test_swing_v09.RiskTests.test_single_rejected) ... ok
+test_size_risk_and_lot (test_swing_v09.RiskTests.test_size_risk_and_lot) ... ok
+test_staircase (test_swing_v09.RiskTests.test_staircase) ... ok
+test_state_roundtrip (test_swing_v09.RiskTests.test_state_roundtrip) ... ok
+test_strategy_third (test_swing_v09.RiskTests.test_strategy_third) ... ok
+test_taipei_midnight (test_swing_v09.RiskTests.test_taipei_midnight) ... ok
+test_third_loss_no_fourth (test_swing_v09.RiskTests.test_third_loss_no_fourth) ... ok
+test_three_partial_budgets (test_swing_v09.RiskTests.test_three_partial_budgets) ... ok
+test_total_risk (test_swing_v09.RiskTests.test_total_risk) ... ok
+test_two_losses (test_swing_v09.RiskTests.test_two_losses) ... ok
+test_http_is_get_only (test_swing_v09.SafetyTests.test_http_is_get_only) ... ok
+test_workflow_manual_only (test_swing_v09.SafetyTests.test_workflow_manual_only) ... ok
+test_bias_long_and_short (test_swing_v09.StrategyRulesV09Tests.test_bias_long_and_short) ... ok
+test_macd_long_and_short (test_swing_v09.StrategyRulesV09Tests.test_macd_long_and_short) ... ok
+test_range_long_and_short (test_swing_v09.StrategyRulesV09Tests.test_range_long_and_short) ... ok
+test_range_volume_filter (test_swing_v09.StrategyRulesV09Tests.test_range_volume_filter) ... ok
+test_4h_from_complete_30m (test_trader_strategies_v04.IntegrityTests.test_4h_from_complete_30m) ... ok
+test_adx_no_future_leak (test_trader_strategies_v04.IntegrityTests.test_adx_no_future_leak) ... ok
+test_adx_uses_direction (test_trader_strategies_v04.IntegrityTests.test_adx_uses_direction) ... ok
+test_connors_strict_source_day1_threshold (test_trader_strategies_v04.IntegrityTests.test_connors_strict_source_day1_threshold) ... ok
+test_connors_three_day_decline_and_above_sma (test_trader_strategies_v04.IntegrityTests.test_connors_three_day_decline_and_above_sma) ... ok
+test_daily_taipei_anchor (test_trader_strategies_v04.IntegrityTests.test_daily_taipei_anchor) ... ok
+test_funding_fees_reduce_pnl (test_trader_strategies_v04.IntegrityTests.test_funding_fees_reduce_pnl) ... ok
+test_gap_rejected (test_trader_strategies_v04.IntegrityTests.test_gap_rejected) ... ok
+test_missing_entry_order_expires (test_trader_strategies_v04.IntegrityTests.test_missing_entry_order_expires) ... ok
+test_no_partial_4h (test_trader_strategies_v04.IntegrityTests.test_no_partial_4h) ... ok
+test_price_gap_invalidates_plan (test_trader_strategies_v04.IntegrityTests.test_price_gap_invalidates_plan) ... ok
+test_raschke_first_touch_long (test_trader_strategies_v04.IntegrityTests.test_raschke_first_touch_long) ... ok
+test_reject_future_end (test_trader_strategies_v04.IntegrityTests.test_reject_future_end) ... ok
+test_report_with_synthetic_data_is_only_software_check (test_trader_strategies_v04.IntegrityTests.test_report_with_synthetic_data_is_only_software_check) ... Downloading REAL OKX confirmed 30m history: BTC-USDT-SWAP
+OK BTC-USDT-SWAP 30m 19200 Connors trades 9 Raschke trades 0
+FINAL {"ok_symbols": 1, "failed_symbols": 0, "trades": 9, "train_val_test_buckets": 18, "live_enabled": false}
+ok
+test_rsi_no_future_leak (test_trader_strategies_v04.IntegrityTests.test_rsi_no_future_leak) ... ok
+test_short_pnl (test_trader_strategies_v04.IntegrityTests.test_short_pnl) ... ok
+test_source_lineage_distinct (test_trader_strategies_v04.IntegrityTests.test_source_lineage_distinct) ... ok
+test_split_nonoverlap (test_trader_strategies_v04.IntegrityTests.test_split_nonoverlap) ... ok
+test_stop_before_target_on_same_entry_bar_long (test_trader_strategies_v04.IntegrityTests.test_stop_before_target_on_same_entry_bar_long) ... ok
+test_stop_before_target_on_same_entry_bar_short (test_trader_strategies_v04.IntegrityTests.test_stop_before_target_on_same_entry_bar_short) ... ok
+test_target_fill_long (test_trader_strategies_v04.IntegrityTests.test_target_fill_long) ... ok
+test_target_fill_short (test_trader_strategies_v04.IntegrityTests.test_target_fill_short) ... ok
+test_200_day_average_history (test_turtle_forward_v07.PaperV07Tests.test_200_day_average_history) ... ok
+test_20_day_low_and_55_day_low (test_turtle_forward_v07.PaperV07Tests.test_20_day_low_and_55_day_low) ... ok
+test_all_nonexistent_pending_prevents_entries (test_turtle_forward_v07.PaperV07Tests.test_all_nonexistent_pending_prevents_entries) ... ok
+test_bad_state_version_rejected (test_turtle_forward_v07.PaperV07Tests.test_bad_state_version_rejected) ... ok
+test_bootstrap_unseen_future_bar_only (test_turtle_forward_v07.PaperV07Tests.test_bootstrap_unseen_future_bar_only) ... ok
+test_btc_bear_gate (test_turtle_forward_v07.PaperV07Tests.test_btc_bear_gate) ... ok
+test_btc_required (test_turtle_forward_v07.PaperV07Tests.test_btc_required) ... ok
+test_catchup_missing_bar_fails_closed (test_turtle_forward_v07.PaperV07Tests.test_catchup_missing_bar_fails_closed) ... ok
+test_clock_rollback_rejected (test_turtle_forward_v07.PaperV07Tests.test_clock_rollback_rejected) ... ok
+test_confirm_flag_excludes_current_bar (test_turtle_forward_v07.PaperV07Tests.test_confirm_flag_excludes_current_bar) ... ok
+test_corrupt_sha_rejected (test_turtle_forward_v07.PaperV07Tests.test_corrupt_sha_rejected) ... ok
+test_cost_validation (test_turtle_forward_v07.PaperV07Tests.test_cost_validation) ... ok
+test_daily_timezone_anchor (test_turtle_forward_v07.PaperV07Tests.test_daily_timezone_anchor) ... ok
+test_different_system_channel_periods (test_turtle_forward_v07.PaperV07Tests.test_different_system_channel_periods) ... ok
+test_drawdown_halt_next_bar (test_turtle_forward_v07.PaperV07Tests.test_drawdown_halt_next_bar) ... ok
+test_empty_daily_fails_closed (test_turtle_forward_v07.PaperV07Tests.test_empty_daily_fails_closed) ... ok
+test_first_start_no_historical_trades (test_turtle_forward_v07.PaperV07Tests.test_first_start_no_historical_trades) ... ok
+test_funding_reduces_cash (test_turtle_forward_v07.PaperV07Tests.test_funding_reduces_cash) ... ok
+test_future_pending_not_deleted_on_intermediate_scan (test_turtle_forward_v07.PaperV07Tests.test_future_pending_not_deleted_on_intermediate_scan) ... ok
+test_gap_rejected (test_turtle_forward_v07.PaperV07Tests.test_gap_rejected) ... ok
+test_gap_stop_price_conservative (test_turtle_forward_v07.PaperV07Tests.test_gap_stop_price_conservative) ... ok
+test_independent_accounts_not_combined (test_turtle_forward_v07.PaperV07Tests.test_independent_accounts_not_combined) ... ok
+test_invalid_future_order_provenance_fails (test_turtle_forward_v07.PaperV07Tests.test_invalid_future_order_provenance_fails) ... ok
+test_live_entry_after_future_order (test_turtle_forward_v07.PaperV07Tests.test_live_entry_after_future_order) ... ok
+test_missing_unarmed_bar_does_not_create_historical_entry (test_turtle_forward_v07.PaperV07Tests.test_missing_unarmed_bar_does_not_create_historical_entry) ... ok
+test_no_current_day_data_lookahead (test_turtle_forward_v07.PaperV07Tests.test_no_current_day_data_lookahead) ... ok
+test_order_not_armed_in_bull_market (test_turtle_forward_v07.PaperV07Tests.test_order_not_armed_in_bull_market) ... ok
+test_repeat_seal_same_digest (test_turtle_forward_v07.PaperV07Tests.test_repeat_seal_same_digest) ... ok
+test_replay_same_bar_not_duplicate_trade (test_turtle_forward_v07.PaperV07Tests.test_replay_same_bar_not_duplicate_trade) ... ok
+test_report_writing (test_turtle_forward_v07.PaperV07Tests.test_report_writing) ... ok
+test_restore_does_not_silently_restart_after_failed_job (test_turtle_forward_v07.PaperV07Tests.test_restore_does_not_silently_restart_after_failed_job) ... ok
+test_restore_no_previous_run_is_bootstrap_only (test_turtle_forward_v07.PaperV07Tests.test_restore_no_previous_run_is_bootstrap_only) ... ok
+test_restore_raises_when_missing_old_state (test_turtle_forward_v07.PaperV07Tests.test_restore_raises_when_missing_old_state) ... ok
+test_restore_requires_token (test_turtle_forward_v07.PaperV07Tests.test_restore_requires_token) ... ok
+test_restore_valid_state_zip (test_turtle_forward_v07.PaperV07Tests.test_restore_valid_state_zip) ... ok
+test_s1_s2_both_active (test_turtle_forward_v07.PaperV07Tests.test_s1_s2_both_active) ... ok
+test_same_bar_entry_stop_worst_fill (test_turtle_forward_v07.PaperV07Tests.test_same_bar_entry_stop_worst_fill) ... ok
+test_status_never_claims_real_trading (test_turtle_forward_v07.PaperV07Tests.test_status_never_claims_real_trading) ... ok
+test_too_many_missed_bars_rejected (test_turtle_forward_v07.PaperV07Tests.test_too_many_missed_bars_rejected) ... ok
+test_universe_swap_rejected (test_turtle_forward_v07.PaperV07Tests.test_universe_swap_rejected) ... ok
+test_previous_day_indicator_no_future_leak (test_turtle_short_v06.HistoryTests.test_previous_day_indicator_no_future_leak) ... ok
+test_reject_future_end (test_turtle_short_v06.HistoryTests.test_reject_future_end) ... ok
+test_reject_inadequate_eval_length (test_turtle_short_v06.HistoryTests.test_reject_inadequate_eval_length) ... ok
+test_strict_missing_candle_rejected (test_turtle_short_v06.HistoryTests.test_strict_missing_candle_rejected) ... ok
+test_strict_total_coverage_rejected (test_turtle_short_v06.HistoryTests.test_strict_total_coverage_rejected) ... FIRST BOOTSTRAP: no prior workflow runs; no historic trades will be invented.
+RESTORED from prior successful workflow 1 artifact 42
+DOWNLOAD BTC-USDT-SWAP 730 days
+FAIL BTC-USDT-SWAP ValueError: BTC-USDT-SWAP: incomplete 30m calendar, expected=35040 received=35039
+ok
+test_synthetic_end_to_end_files_written_and_not_live (test_turtle_short_v06.HistoryTests.test_synthetic_end_to_end_files_written_and_not_live) ... DOWNLOAD BTC-USDT-SWAP 550 days
+VERIFIED BTC-USDT-SWAP 26400 confirmed 30m bars
+RESULT S1_SHORT_BASE train trades 2 return% 3.046 mtm_dd% 0.351
+RESULT S1_SHORT_BASE validation trades 1 return% 0.104 mtm_dd% 0.237
+RESULT S1_SHORT_BASE test_not_pristine trades 1 return% 1.828 mtm_dd% 0.113
+RESULT S2_SHORT_BASE train trades 1 return% -0.311 mtm_dd% 0.521
+RESULT S2_SHORT_BASE validation trades 1 return% -0.346 mtm_dd% 0.55
+RESULT S2_SHORT_BASE test_not_pristine trades 1 return% 0.163 mtm_dd% 0.103
+FINAL {"valid_symbols": 1, "failed_symbols": 0, "scenarios": 2, "completed_buckets": 6, "trades": 7, "complete": true, "ready_for_live": false}
+ok
+test_atr_band_rejects_wrong_volatility (test_turtle_short_v06.PortfolioTests.test_atr_band_rejects_wrong_volatility) ... ok
+test_bear_filter_precludes_incorrect_regime (test_turtle_short_v06.PortfolioTests.test_bear_filter_precludes_incorrect_regime) ... ok
+test_btc_absent_bear_filter_fails (test_turtle_short_v06.PortfolioTests.test_btc_absent_bear_filter_fails) ... ok
+test_funding_never_credited_to_short (test_turtle_short_v06.PortfolioTests.test_funding_never_credited_to_short) ... ok
+test_large_gap_can_trigger_portfolio_halt (test_turtle_short_v06.PortfolioTests.test_large_gap_can_trigger_portfolio_halt) ... ok
+test_lower_fraction_saves_capital (test_turtle_short_v06.PortfolioTests.test_lower_fraction_saves_capital) ... ok
+test_mark_to_market_dd_reported (test_turtle_short_v06.PortfolioTests.test_mark_to_market_dd_reported) ... ok
+test_no_cross_split_leakage (test_turtle_short_v06.PortfolioTests.test_no_cross_split_leakage) ... ok
+test_no_lookahead_close_for_position_sizing (test_turtle_short_v06.PortfolioTests.test_no_lookahead_close_for_position_sizing) ... ok
+test_no_position_reentry_after_same_bar_exit (test_turtle_short_v06.PortfolioTests.test_no_position_reentry_after_same_bar_exit) ... ok
+test_per_split_reset_account (test_turtle_short_v06.PortfolioTests.test_per_split_reset_account) ... ok
+test_portfolio_concurrent_cap (test_turtle_short_v06.PortfolioTests.test_portfolio_concurrent_cap) ... ok
+test_s1_short_breakout_and_s2_not_triggered (test_turtle_short_v06.PortfolioTests.test_s1_short_breakout_and_s2_not_triggered) ... ok
+test_s2_regime_filter_is_independent_scenario (test_turtle_short_v06.PortfolioTests.test_s2_regime_filter_is_independent_scenario) ... ok
+test_same_bar_worst_case_stop (test_turtle_short_v06.PortfolioTests.test_same_bar_worst_case_stop) ... ok
+test_signal_enters_then_protective_stop (test_turtle_short_v06.PortfolioTests.test_signal_enters_then_protective_stop) ... ok
+test_slippage_and_fees_included (test_turtle_short_v06.PortfolioTests.test_slippage_and_fees_included) ... ok
+test_smaller_portfolio_stop_risk_budget (test_turtle_short_v06.PortfolioTests.test_smaller_portfolio_stop_risk_budget) ... ok
+test_stats_zero_trade_not_fake_profit (test_turtle_short_v06.PortfolioTests.test_stats_zero_trade_not_fake_profit) ... ok
+test_wrong_data_alignment_rejected (test_turtle_short_v06.PortfolioTests.test_wrong_data_alignment_rejected) ... ok
+test_all_scenarios_risk_limited (test_turtle_short_v06.PublicDefinitionTests.test_all_scenarios_risk_limited) ... ok
+test_baseline_channels (test_turtle_short_v06.PublicDefinitionTests.test_baseline_channels) ... ok
+test_cover_worse_stop_when_channel_also_hit (test_turtle_short_v06.PublicDefinitionTests.test_cover_worse_stop_when_channel_also_hit) ... ok
+test_day_anchor_utc_plus_eight (test_turtle_short_v06.PublicDefinitionTests.test_day_anchor_utc_plus_eight) ... ok
+test_entry_gap_below_short_channel (test_turtle_short_v06.PublicDefinitionTests.test_entry_gap_below_short_channel) ... ok
+test_entry_no_breakout (test_turtle_short_v06.PublicDefinitionTests.test_entry_no_breakout) ... ok
+test_gap_through_stop_not_favorable_price (test_turtle_short_v06.PublicDefinitionTests.test_gap_through_stop_not_favorable_price) ... ok
+test_no_cover_without_breakout (test_turtle_short_v06.PublicDefinitionTests.test_no_cover_without_breakout) ... ok
+test_original_rule_distinction (test_turtle_short_v06.PublicDefinitionTests.test_original_rule_distinction) ... ok
+test_predeclared_unique_scenarios (test_turtle_short_v06.PublicDefinitionTests.test_predeclared_unique_scenarios) ... ok
+test_risk_sizing_caps (test_turtle_short_v06.PublicDefinitionTests.test_risk_sizing_caps) ... ok
+test_train_validation_test_partition (test_turtle_short_v06.PublicDefinitionTests.test_train_validation_test_partition) ... ok
+test_daily_utc8_anchor (tests.IntegrityTest.test_daily_utc8_anchor) ... ok
+test_indicator_no_future (tests.IntegrityTest.test_indicator_no_future) ... ok
+test_native_12hour_utc8_alignment (tests.IntegrityTest.test_native_12hour_utc8_alignment) ... ok
+test_no_gaps (tests.IntegrityTest.test_no_gaps) ... ok
+test_not_count_partial_candle (tests.IntegrityTest.test_not_count_partial_candle) ... ok
+test_pivot_unconfirmed_does_not_trigger (tests.IntegrityTest.test_pivot_unconfirmed_does_not_trigger) ... ok
+test_worst_case_stop_first (tests.IntegrityTest.test_worst_case_stop_first) ... ok
+
+----------------------------------------------------------------------
+Ran 386 tests in 32.820s
+
+OK

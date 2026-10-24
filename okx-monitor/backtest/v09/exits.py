@@ -14,9 +14,9 @@ class Plan:
     def validate(self):
         if self.side not in (-1, 1) or not all(math.isfinite(v) and v > 0 for v in (self.entry, self.stop, self.tp1, self.tp2)):
             raise ValueError('invalid plan prices')
-        if len(self.weights) != 2 or min(self.weights) <= 0 or not math.isclose(sum(self.weights), 1):
+        if len(self.weights) != 2 or self.weights[0] <= 0 or self.weights[1] < 0 or not math.isclose(sum(self.weights), 1):
             raise ValueError('invalid exit weights')
-        if not (self.side*(self.entry-self.stop) > 0 and self.side*(self.tp1-self.entry) > 0 and self.side*(self.tp2-self.tp1) > 0):
+        if not (self.side*(self.entry-self.stop) > 0 and self.side*(self.tp1-self.entry) > 0 and (self.side*(self.tp2-self.tp1) > 0 or (self.weights[1] == 0 and self.tp2 == self.tp1))):
             raise ValueError('invalid directional levels')
         return self
 

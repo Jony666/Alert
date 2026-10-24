@@ -53,8 +53,10 @@ def splits(start, end):
     return {'train': (a, b), 'validation': (b+14*DAY, c), 'holdout': (c+14*DAY, end),
             'walk_1': (b+14*DAY, c), 'walk_2': (c+14*DAY, end)}
 
-def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base', cfg=CONFIG, events=None, strategy_names=None, plan_factory=None, candidate_schedule=None, hold_days_by_strategy=None):
+def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base', cfg=CONFIG, events=None, strategy_names=None, plan_factory=None, candidate_schedule=None, hold_days_by_strategy=None, exit_mode='atr', gap_fraction=0.):
     # 'ALL' is a shared portfolio; other scenarios isolate each baseline.
+    if exit_mode not in ('fixed','protect','atr','fib') or not 0<=gap_fraction<=.5:
+        raise ValueError('invalid frozen exit/stress mode')
     chosen = (strategy_names or STRATEGIES) if strategy == 'ALL' else (strategy,)
     symbols = sorted(markets)
     if not symbols:
@@ -73,7 +75,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
     counts = Counter()
     first_halt = None
     expense_budget_used = 0.
-    maximum = {'open': 0, 'risk': 0., 'joint_gap_loss': 0.}
+    maximum = {'open': 0, 'risk': 0., 'joint_gap_loss': 0., 'gross_notional':0.}
     fee, slip = cfg.fee*mult, cfg.slippage*mult
 
     def close_piece(key, fraction, px, t, reason):
@@ -131,6 +133,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
                             candidates.append((-strength, -float(markets[sym]['records'][j-1].liquidity), sym, strat, side))
         for _, negliq, sym, strat, side in sorted(candidates):
             if any(p['symbol'] == sym for p in positions.values()):
+                counts['same_bar_symbol_capacity_rejected'] += 1
                 continue
             prior = markets[sym]['records'][j-1]
             if assess(events or [], iso(t), sym,technical={'atr_fraction':prior.atr/prior.close,'trailing_daily_quote_volume':prior.liquidity})['requires_review']:
@@ -168,6 +171,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             if verdict != 'ALLOW_RESEARCH':
                 counts[verdict] += 1
                 continue
+            counts['account_gate_pass'] += 1
             # Combined margin and trailing daily volume participation cap.
             gross = sum(p['notional_twd'] for p in positions.values())
             if gross+allocated['notional_twd'] > max(0, state.capital)*cfg.margin_fraction*leverage:
@@ -176,6 +180,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             if allocated['notional_twd']/32 > -negliq*cfg.participation:
                 counts['participation_rejected'] += 1
                 continue
+            counts['all_risk_gates_pass'] += 1
             entryfee = allocated['units']*plan.entry*fee*32
             wallet -= entryfee
             expense_budget_used += entryfee
@@ -190,6 +195,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
                                   regime=getattr(prior,'phase3_regime','trend_up' if prior.close > prior.ema50 else 'trend_down'))
             state.positions.append(dict(strategy=strat, risk_twd=allocated['risk_twd'], notional_twd=allocated['notional_twd']))
             counts['entries'] += 1
+        maximum['gross_notional']=max(maximum['gross_notional'],sum(p['notional_twd'] for p in positions.values()))
         maximum['open'] = max(maximum['open'], len(positions))
         maximum['risk'] = max(maximum['risk'], sum(p['risk_twd'] for p in positions.values()))
         maximum['joint_gap_loss'] = max(maximum['joint_gap_loss'], cross_stress(list(positions.values()), max(0,state.capital))['joint_gap_loss_twd'])
@@ -218,15 +224,21 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             if execution == 'missed_limits':
                 exits = [e for e in exits if e[2] == 'stop']
             for fraction, px, reason in exits:
+                if reason=='stop' and gap_fraction:
+                    px *= 1-p['plan'].side*gap_fraction
                 close_piece(key, fraction, px, t+step, reason)
                 if key not in positions:
                     break
                 if reason == 'tp1':
                     p['tp1_done'] = True
-            if key in positions and p['tp1_done']:
-                # Completed close ATR trailing, applies NEXT bar only. Never loosen.
-                trail = q.close-p['plan'].side*2*q.atr
-                p['stop'] = max(p['stop'], p['plan'].entry, trail) if p['plan'].side == 1 else min(p['stop'], p['plan'].entry, trail)
+            if key in positions and p['tp1_done'] and exit_mode!='fixed':
+                # Closed-bar updates apply only NEXT bar. Fixed exits never move stop.
+                if exit_mode=='protect':
+                    p['stop']=max(p['stop'],p['plan'].entry) if p['plan'].side==1 else min(p['stop'],p['plan'].entry)
+                else:
+                    multiple=3 if exit_mode=='fib' else 2
+                    trail=q.close-p['plan'].side*multiple*q.atr
+                    p['stop']=max(p['stop'],p['plan'].entry,trail) if p['plan'].side==1 else min(p['stop'],p['plan'].entry,trail)
         if j == b-1:
             for key in list(positions):
                 p = positions[key]
@@ -244,6 +256,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             **stats(trades), 'return_pct': 100*(wallet/cfg.initial-1), 'max_drawdown_pct': 100*maxdd,
             'max_open': maximum['open'], 'max_planned_risk_twd': maximum['risk'],
             'max_joint_20pct_gap_loss_twd': maximum['joint_gap_loss'],
+            'max_joint_50pct_gap_plus_2pct_exit_loss_twd':maximum['gross_notional']*.52,
             'halted': state.halted, 'first_halt':first_halt, 'counts': dict(counts)}, trades, curve
 
 def stats(trades):

@@ -1,0 +1,62 @@
+{
+  "checks": [
+    {
+      "kind": "CPI",
+      "source": "https://www.bls.gov/news.release/archives/cpi_09112024.htm",
+      "usable": true,
+      "http_status": 200,
+      "time_header_verified": true,
+      "sha256": "0d933d2577073291772e8123c6f1b7def0822ae3f4a009c0ef028587bad98217"
+    },
+    {
+      "kind": "NFP",
+      "source": "https://www.bls.gov/news.release/archives/empsit_09062024.htm",
+      "usable": true,
+      "http_status": 200,
+      "time_header_verified": true,
+      "sha256": "0a8eefbcfd8e3c087160b7613af03f7c399e697f2e9eeda4661da650f3041b7e"
+    },
+    {
+      "kind": "CPI",
+      "source": "https://www.bls.gov/news.release/archives/cpi_01152025.htm",
+      "usable": true,
+      "http_status": 200,
+      "time_header_verified": true,
+      "sha256": "6e90f322584a8e8e776433678ff20e96ca1eb4f3545ecbfb067b9408a92e5abc"
+    },
+    {
+      "kind": "NFP",
+      "source": "https://www.bls.gov/news.release/archives/empsit_01102025.htm",
+      "usable": true,
+      "http_status": 200,
+      "time_header_verified": true,
+      "sha256": "696ad6dd62fb4666a2333386ca09e81e5096ddf612d32c4d2ffd716ce796084c"
+    },
+    {
+      "kind": "ELECTION",
+      "source": "https://www.eac.gov/voters/register-and-vote-in-your-state",
+      "usable": false,
+      "reason": "Historical original publication UTC not reliably established; NOT used in backtest",
+      "http_status": 200,
+      "sha256": "343eabffa34869e0aba62471382acc22a69a5878b9d9487e61db64eb8d8ef63b"
+    },
+    {
+      "kind": "REGULATORY",
+      "source": "https://www.sec.gov/newsroom/press-releases/2024-4",
+      "usable": false,
+      "reason": "Historical original publication UTC not reliably established; NOT used in backtest",
+      "http_status": 200,
+      "sha256": "584742f9adb9a401d59880affda57f5ca0926f9e6b150777a1c5682b38de8168"
+    },
+    {
+      "kind": "OKX_ANNOUNCEMENTS",
+      "source": "https://www.okx.com/help/section/announcements-new-listings",
+      "usable": false,
+      "reason": "Historical original publication UTC not reliably established; NOT used in backtest",
+      "http_status": 200,
+      "sha256": "e2a21bc76df3b18a3e76cac2b5d2001b294c6984a6483b7e984f4653fc6c7f0e"
+    }
+  ],
+  "coverage": "PARTIAL_OFFICIAL_EVENTS_ONLY",
+  "win_rate_adjustment": null
+}
