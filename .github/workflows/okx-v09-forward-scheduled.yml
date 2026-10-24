@@ -1,0 +1,414 @@
+name: OKX V09 Hourly Frozen PAPER Research
+# Only this operational workflow is installed on master. No PR merge or model upgrade.
+# UTC hourly is also every whole hour in Asia/Taipei; GitHub can delay/skip schedules.
+# Old v0.9 manual writer must be disabled; both owners use the same concurrency lock.
+# Manual acceptance runs are NOT scheduled-event acceptance.
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'resume reads confirmed public OKX data; verify_replay audits the saved snapshot'
+        type: choice
+        options: [resume, verify_replay]
+        default: resume
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okx-v095-forward-ledger
+  cancel-in-progress: false
+jobs:
+  forward:
+    if: github.repository == 'Jony666/Alert' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout reviewed immutable model (never a branch HEAD)
+        uses: actions/checkout@v4
+        with:
+          ref: e8863f819f29ef0cf2806ea06157aae7ac3a633e
+          path: frozen
+          persist-credentials: false
+      - name: Checkout reviewed freeze and genesis anchor
+        uses: actions/checkout@v4
+        with:
+          ref: 104e6acf2096f9fc507f45395aff7c82986f1207
+          path: registry
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: frozen/okx-monitor/backtest/requirements.txt
+      - name: Install research dependencies
+        working-directory: frozen/okx-monitor/backtest
+        run: python -m pip install -r requirements.txt
+      - name: Materialize operational handoff adapter outside frozen model package
+        working-directory: frozen/okx-monitor/backtest
+        run: |
+          cat > scheduled_handoff.py <<'PY'
+          """Operational Artifact-owner handoff only. Frozen financial/model source is untouched."""
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import unittest
+          from copy import deepcopy
+          from v09.forward.storage import GitHubStore, safe_extract
+          import v09.forward.__main__ as cli
+          
+          MODEL = 'e8863f819f29ef0cf2806ea06157aae7ac3a633e'
+          STUDY = 'okx-v095-4e85ee42786c6564'
+          CONFIG = '4e85ee42786c656414f4a038093fcb12ce2516bdb1f5e6cdbe6b3752b578c5fa'
+          OLD = 'okx-v09-forward-paper.yml'
+          NEW = 'okx-v09-forward-scheduled.yml'
+          SEED_RUN = 40098537490
+          SEED_ARTIFACT = 12562330593
+          SEED_SHA = '53920d342c65459d2faeabab37f9ce0783187f81083f8afe1d032a21bbab0be3'
+          PREFIX = 'forward-state-' + STUDY + '-'
+          
+          
+          def choose(old_control, old_runs, new_runs, artifact, source, current):
+              """No cross-workflow run_number comparison, silent reset, or older fallback."""
+              if old_control['state'] != 'disabled_manually':
+                  raise ValueError('old writer must remain disabled during scheduled ownership')
+              seed = [r for r in old_runs if int(r['id']) == SEED_RUN]
+              if len(seed) != 1 or seed[0]['status'] != 'completed' or seed[0]['conclusion'] != 'success':
+                  raise ValueError('reviewed handoff run missing or no longer successful')
+              if any(int(r['id']) > SEED_RUN or r['status'] != 'completed' for r in old_runs):
+                  raise ValueError('old workflow changed after handoff: stop for review')
+              if artifact is None or artifact.get('expired') or not artifact['name'].startswith(PREFIX):
+                  raise ValueError('latest state missing/expired/wrong study; never initialize')
+              if source['status'] != 'completed' or source['conclusion'] != 'success' or source.get('run_attempt', 1) != 1:
+                  raise ValueError('latest published state is not from an intact successful first attempt')
+              if int(source['id']) == int(current) or int(artifact['workflow_run']['id']) != int(source['id']):
+                  raise ValueError('state source provenance mismatch')
+              if artifact['name'] != PREFIX + str(source['id']) + '-1':
+                  raise ValueError('unexpected artifact identity')
+              prior = [r for r in new_runs if int(r['id']) != int(current)]
+              successful = [r for r in prior if r['status'] == 'completed' and r['conclusion'] == 'success']
+              expected = max(successful, key=lambda r: (r['updated_at'], int(r['id']))) if successful else seed[0]
+              if int(source['id']) != int(expected['id']):
+                  raise ValueError('latest successful owner has no latest state; no older fallback')
+              if int(source['id']) == SEED_RUN:
+                  if int(artifact['id']) != SEED_ARTIFACT or artifact.get('digest') != 'sha256:' + SEED_SHA:
+                      raise ValueError('reviewed handoff artifact changed')
+                  if source['workflow_id'] != old_control['id'] or source['head_branch'] != 'research/okx-v09':
+                      raise ValueError('seed owner mismatch')
+              else:
+                  if source['path'] != '.github/workflows/' + NEW or source['head_branch'] != 'master':
+                      raise ValueError('scheduled owner mismatch')
+                  if source['workflow_id'] != expected['workflow_id']:
+                      raise ValueError('workflow identity mismatch')
+              if not artifact.get('digest', '').startswith('sha256:') or len(artifact['digest']) != 71:
+                  raise ValueError('artifact SHA256 missing; cannot verify download')
+              return source
+          
+          
+          class ScheduledStore(GitHubStore):
+              def pages(self, path, key):
+                  result = []
+                  for page in range(1, 101):
+                      rows = self.get(path + '&per_page=100&page=' + str(page))[key]
+                      result.extend(rows)
+                      if len(rows) < 100:
+                          return result
+                  raise ValueError('history pagination exhausted; stop rather than truncate')
+          
+              def runs(self):
+                  old_control = self.get('/actions/workflows/' + OLD)
+                  old_runs = self.pages('/actions/workflows/' + OLD + '/runs?branch=research/okx-v09', 'workflow_runs')
+                  new_runs = self.pages('/actions/workflows/' + NEW + '/runs?branch=master', 'workflow_runs')
+                  # Repository artifact API is newest first. Also compare against the latest
+                  # successful owning run, so a missing/deleted latest artifact cannot roll back.
+                  artifact = None
+                  for page in range(1, 101):
+                      rows = self.get('/actions/artifacts?per_page=100&page=' + str(page))['artifacts']
+                      artifact = next((a for a in rows if a['name'].startswith(PREFIX)), None)
+                      if artifact is not None or len(rows) < 100:
+                          break
+                  else:
+                      raise ValueError('artifact discovery pagination exhausted')
+                  if artifact is None:
+                      raise ValueError('no state artifact; initialization is forbidden')
+                  source = self.get('/actions/runs/' + str(artifact['workflow_run']['id']))
+                  self.selected = choose(old_control, old_runs, new_runs, artifact, source, os.environ['GITHUB_RUN_ID'])
+                  self.checkpoint = artifact
+                  # Frozen resolver receives one validated parent, preserving its normal
+                  # checksum/anchor/manifest/state/provenance/age checks and financial engine.
+                  return [self.selected]
+          
+              def artifacts(self, run_id):
+                  rows = super().artifacts(run_id)
+                  states = [a for a in rows if a['name'].startswith(PREFIX)]
+                  if len(states) != 1 or states[0]['id'] != self.checkpoint['id']:
+                      raise ValueError('latest owner state ambiguous or changed during restore')
+                  return states
+          
+              def download(self, artifact_id, destination):
+                  if artifact_id != self.checkpoint['id']:
+                      raise ValueError('unselected artifact download refused')
+                  response = self.session.get(
+                      'https://api.github.com/repos/Jony666/Alert/actions/artifacts/' + str(artifact_id) + '/zip',
+                      timeout=(10, 120))
+                  response.raise_for_status()
+                  if 'sha256:' + hashlib.sha256(response.content).hexdigest() != self.checkpoint['digest']:
+                      raise ValueError('downloaded artifact digest mismatch')
+                  safe_extract(response.content, destination)
+          
+          
+          def guard(freeze, mode):
+              if os.environ.get('GITHUB_REPOSITORY') != 'Jony666/Alert' or os.environ.get('GITHUB_REF') != 'refs/heads/master':
+                  raise ValueError('scheduled writer must execute on repository default branch')
+              if os.environ.get('GITHUB_EVENT_NAME') not in ('schedule', 'workflow_dispatch'):
+                  raise ValueError('unregistered execution event')
+              if os.environ.get('GITHUB_RUN_ATTEMPT', '1') != '1':
+                  raise ValueError('rerun refused; use a fresh resume dispatch to preserve parent ordering')
+              if mode not in ('resume', 'verify_replay'):
+                  raise ValueError('initialization forbidden after ownership handoff')
+              if freeze['config_hash'] != CONFIG or freeze['study_id'] != STUDY or freeze['code_commit_sha'] != MODEL:
+                  raise ValueError('unreviewed freeze or model version')
+          
+          
+          def main():
+              args = cli.parser().parse_args()
+              freeze = json.loads(Path(args.freeze).read_text())
+              guard(freeze, args.mode)
+              cli.GitHubStore = ScheduledStore
+              result = cli.run(args)
+              # Extra export material is outside the frozen manifest; state files are unchanged.
+              out = Path(args.out)
+              for name, source in (('freeze.json', args.freeze), ('anchor.json', args.anchor)):
+                  (out / name).write_bytes(Path(source).read_bytes())
+              (out / 'RETENTION.md').write_text(
+                  'PAPER ONLY. Old writer disabled; scheduled owner must remain the sole writer.\n'
+                  'Model ' + MODEL + '; registry 104e6acf2096f9fc507f45395aff7c82986f1207.\n'
+                  'Artifacts expire after 90 days; latest cumulative ledger is NOT permanent storage.\n'
+                  'Every 30 days an operator must export ALL study artifacts using export_artifacts.py, '
+                  'verify SHA256, and keep two offline copies on user-controlled storage. '
+                  'Export includes freeze/anchor, complete journal/trades, cached real snapshot, manifest and SHA256 index.\n'
+                  'No external service, trading credential, repository data write or notification is configured.\n'
+                  'Hourly continued execution renews only the newest cumulative state, not all prior hourly raw snapshots. '
+                  'If runs stop, export before the oldest required artifact expires; monthly export is an operator duty.\n'
+                  'Missing/expired latest state or state age >7 days HALTS; never initialize or fall back. '
+                  'Offline recovery or model upgrade requires separate review. Do not use GitHub Re-run jobs; '
+                  'dispatch a fresh resume/verify_replay run instead.\n'
+                  'GitHub cron may be delayed or disabled by inactivity/quota; monitor Actions manually.\n')
+              return result
+          
+          
+          class HandoffTests(unittest.TestCase):
+              def setUp(self):
+                  self.old = dict(id=395120760, state='disabled_manually')
+                  self.seed = dict(id=SEED_RUN, status='completed', conclusion='success', run_attempt=1,
+                                   workflow_id=self.old['id'], head_branch='research/okx-v09', updated_at='2026-10-24T13:32:40Z')
+                  self.art = dict(id=SEED_ARTIFACT, name=PREFIX + str(SEED_RUN) + '-1', expired=False,
+                                  digest='sha256:' + SEED_SHA, workflow_run=dict(id=SEED_RUN))
+                  self.new = []
+                  self.source = self.seed.copy()
+              def pick(self):
+                  return choose(self.old, [self.seed], self.new, self.art, self.source, 99999999999)
+              def test_seed_handoff(self):
+                  self.assertEqual(self.pick()['id'], SEED_RUN)
+              def scheduled(self):
+                  self.source = dict(self.seed, id=SEED_RUN+1, workflow_id=888, head_branch='master',
+                                     path='.github/workflows/' + NEW, updated_at='2026-10-24T16:05:00Z', run_number=1)
+                  self.new = [self.source.copy()]
+                  self.art.update(id=SEED_ARTIFACT+1, name=PREFIX+str(SEED_RUN+1)+'-1', workflow_run=dict(id=SEED_RUN+1))
+              def test_new_owner_not_old_run_number(self):
+                  self.seed['run_number'] = 9999
+                  self.scheduled()
+                  self.assertEqual(self.pick()['id'], SEED_RUN+1)
+              def test_old_writer_active(self):
+                  self.old['state'] = 'active'
+                  with self.assertRaises(ValueError): self.pick()
+              def test_old_seed_no_longer_successful(self):
+                  self.seed['conclusion'] = 'failure'
+                  with self.assertRaises(ValueError): self.pick()
+              def test_old_new_execution_blocks(self):
+                  with self.assertRaises(ValueError):
+                      choose(self.old, [self.seed, dict(self.seed, id=SEED_RUN+2)], [], self.art, self.source, 99999999999)
+              def test_missing_latest_no_fallback(self):
+                  self.new = [dict(self.seed, id=SEED_RUN+1, updated_at='2026-10-24T16:00:00Z')]
+                  with self.assertRaises(ValueError): self.pick()
+              def test_expired_blocks(self):
+                  self.art['expired'] = True
+                  with self.assertRaises(ValueError): self.pick()
+              def test_digest_required(self):
+                  self.art['digest'] = None
+                  with self.assertRaises(ValueError): self.pick()
+              def test_unreviewed_seed_bytes(self):
+                  self.art['digest'] = 'sha256:' + '0'*64
+                  with self.assertRaises(ValueError): self.pick()
+              def test_wrong_study(self):
+                  self.art['name'] = 'forward-state-other'
+                  with self.assertRaises(ValueError): self.pick()
+              def test_wrong_artifact_run(self):
+                  self.art['workflow_run']['id'] += 1
+                  with self.assertRaises(ValueError): self.pick()
+              def test_failed_published_state_blocks(self):
+                  self.scheduled(); self.source['conclusion'] = 'failure'
+                  with self.assertRaises(ValueError): self.pick()
+              def test_rerun_parent_blocks(self):
+                  self.scheduled(); self.source['run_attempt'] = 2
+                  with self.assertRaises(ValueError): self.pick()
+              def test_wrong_branch_blocks(self):
+                  self.scheduled(); self.source['head_branch'] = 'research/okx-v09'
+                  with self.assertRaises(ValueError): self.pick()
+              def test_ambiguous_artifact_blocks(self):
+                  store = ScheduledStore('not-a-credential'); store.checkpoint = self.art
+                  from unittest.mock import patch
+                  with patch.object(GitHubStore, 'artifacts', return_value=[self.art, self.art.copy()]):
+                      with self.assertRaises(ValueError): store.artifacts(SEED_RUN)
+              def test_corrupt_zip_before_extract(self):
+                  store = ScheduledStore('not-a-credential'); store.checkpoint = self.art
+                  from unittest.mock import Mock
+                  store.session.get = Mock(return_value=Mock(content=b'corrupt'))
+                  with self.assertRaises(ValueError): store.download(SEED_ARTIFACT, '/never-extracted')
+              def test_guard(self):
+                  from unittest.mock import patch
+                  env = dict(GITHUB_REPOSITORY='Jony666/Alert', GITHUB_REF='refs/heads/master',
+                             GITHUB_EVENT_NAME='schedule', GITHUB_RUN_ATTEMPT='1')
+                  freeze = dict(config_hash=CONFIG, study_id=STUDY, code_commit_sha=MODEL)
+                  with patch.dict(os.environ, env):
+                      guard(freeze, 'resume')
+                      with self.assertRaises(ValueError): guard(freeze, 'initialize')
+                      with self.assertRaises(ValueError): guard(dict(freeze, code_commit_sha='HEAD'), 'resume')
+                      with patch.dict(os.environ, GITHUB_RUN_ATTEMPT='2'):
+                          with self.assertRaises(ValueError): guard(freeze, 'resume')
+          
+          
+          if __name__ == '__main__':
+              import sys
+              if sys.argv[1:] == ['--self-test']:
+                  unittest.main(argv=[sys.argv[0]], verbosity=2)
+              else:
+                  try:
+                      raise SystemExit(main())
+                  except Exception as exc:
+                      message = str(exc).split('?')[0]
+                      Path('forward_failure.json').write_text(json.dumps(dict(
+                          status='FAIL_CLOSED_SCHEDULED_HANDOFF', error_type=type(exc).__name__,
+                          message=message, state_committed=False, safe_to_reinitialize=False)) + '\n')
+                      print('FAIL_CLOSED_SCHEDULED_HANDOFF', type(exc).__name__, message)
+                      raise SystemExit(2)
+          PY
+          cat > export_artifacts.py <<'PY'
+          """Manual offline export only. Requires gh CLI login; never accepts trading credentials."""
+          import hashlib
+          import json
+          from pathlib import Path
+          import subprocess
+          
+          
+          def gh_read(arguments):
+              result = subprocess.run(['gh', 'api', *arguments], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+              if result.returncode:
+                  raise ValueError('GitHub read/export failed; no archive is accepted. Check gh login/network locally.')
+              return result.stdout
+          
+          PREFIX = 'forward-state-okx-v095-4e85ee42786c6564-'
+          REPO = 'Jony666/Alert'
+          
+          def main():
+              import argparse
+              p = argparse.ArgumentParser(description=__doc__)
+              p.add_argument('destination', type=Path)
+              args = p.parse_args()
+              args.destination.mkdir(parents=True, exist_ok=True)
+              artifacts = []
+              for page in range(1, 101):
+                  payload = json.loads(gh_read([f'repos/{REPO}/actions/artifacts?per_page=100&page={page}']))
+                  rows = payload['artifacts']
+                  artifacts.extend(a for a in rows if a['name'].startswith(PREFIX))
+                  if len(rows) < 100:
+                      break
+              else:
+                  raise ValueError('pagination exhausted: export cannot be declared complete')
+              if not artifacts:
+                  raise ValueError('no study artifacts: stop')
+              results = []
+              for a in artifacts:
+                  if a['expired']:
+                      raise ValueError('required artifact already expired: ' + str(a['id']))
+                  content = gh_read([f'repos/{REPO}/actions/artifacts/{a["id"]}/zip'])
+                  sha = hashlib.sha256(content).hexdigest()
+                  if a.get('digest') != 'sha256:' + sha:
+                      raise ValueError('artifact SHA256 mismatch: ' + str(a['id']))
+                  target = args.destination / (str(a['id']) + '.zip')
+                  if target.exists() and target.read_bytes() != content:
+                      raise ValueError('refuse to replace different archive: ' + str(a['id']))
+                  target.write_bytes(content)
+                  results.append(dict(id=a['id'], name=a['name'], created_at=a['created_at'],
+                                      expires_at=a['expires_at'], sha256=sha, file=target.name,
+                                      run_id=a['workflow_run']['id']))
+              (args.destination / 'SHA256-index.json').write_text(json.dumps(results, indent=2) + '\n')
+              print('Verified exported study artifacts:', len(results))
+          
+          if __name__ == '__main__':
+              main()
+          PY
+      - name: Verify unchanged frozen execution and safe owner handoff
+        working-directory: frozen/okx-monitor/backtest
+        run: |
+          python -m unittest test_forward_v09 -q
+          python scheduled_handoff.py --self-test
+      - name: Restore latest cumulative state before reading confirmed public OKX data
+        id: forward
+        working-directory: frozen/okx-monitor/backtest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORWARD_MODE: ${{ inputs.mode || 'resume' }}
+        run: |
+          python scheduled_handoff.py \
+            --freeze ../../../registry/okx-monitor/backtest/v09/forward/registry/freeze.json \
+            --anchor ../../../registry/okx-monitor/backtest/v09/forward/registry/anchor.json \
+            --mode "$FORWARD_MODE" --out forward_bundle
+          cp export_artifacts.py scheduled_handoff.py forward_bundle/
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          folder=Path('forward_bundle')
+          files=['freeze.json','anchor.json','RETENTION.md','export_artifacts.py','scheduled_handoff.py']
+          receipt=dict(workflow_commit=os.environ['GITHUB_SHA'],event=os.environ['GITHUB_EVENT_NAME'],
+                       run_id=os.environ['GITHUB_RUN_ID'],
+                       operational_files={n:hashlib.sha256((folder/n).read_bytes()).hexdigest() for n in files})
+          (folder/'operations_receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Publish complete state and export kit only after success
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forward-state-${{ steps.forward.outputs.study_id }}-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: error
+          path: frozen/okx-monitor/backtest/forward_bundle/
+      - name: Keep failure diagnostics separate; never publish invalid state
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forward-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: warn
+          path: frozen/okx-monitor/backtest/forward_failure.json
+      - name: Record event type, continuity, trade count and retention duty
+        if: success()
+        working-directory: frozen/okx-monitor/backtest
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          folder=Path('forward_bundle')
+          m=json.loads((folder/'run_manifest.json').read_text())
+          s=json.loads((folder/'summary.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('PAPER ONLY — strict qualification; no live orders or notifications.\n\n')
+              f.write('Event: '+os.environ['GITHUB_EVENT_NAME']+'; a manual event is not scheduled acceptance.\n\n')
+              f.write('Parent run: '+m['parent']['run_id']+'; revision: '+str(m['revision'])+'\n\n')
+              f.write('Closed true forward trades: '+str(s['portfolio']['closed_trades'])+'; open: '+str(s['open_positions'])+'\n\n')
+              f.write('90-day retention is not permanent. Every 30 days download the artifact and run '
+                      '`python export_artifacts.py /path/to/user-controlled-offline-archive`; '
+                      'keep two verified offline copies. No external service has been created.\n')
+          PY
