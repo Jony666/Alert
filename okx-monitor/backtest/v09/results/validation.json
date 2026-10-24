@@ -1,0 +1,20 @@
+{
+  "base_commit": "9ecaf27",
+  "replay": "PASS: parsed summary and all three uncompressed JSONL files identical",
+  "python_tests": "320 passed; V09 93 passed",
+  "source_sha256": {
+    "okx-monitor/backtest/v09/__init__.py": "1a1e5da16513c5012ad0036ff47f0f2c435b4628d914d50cf8ce13349fd2d5d4",
+    "okx-monitor/backtest/v09/__main__.py": "096b3eecc87658c6781d06868cfc581c47497134462ad11abf97e09c01a19152",
+    "okx-monitor/backtest/v09/config.py": "2f6948f8827fff622a8808095134427b93614d0abb3f5d724cebd40aa2ba31f4",
+    "okx-monitor/backtest/v09/data.py": "468360c93899ab3247cc912ec68f950f96294b3a5cd54fed06d9e6416bf01a03",
+    "okx-monitor/backtest/v09/events.py": "9224d339dbd46abe17b454f847a5466bc4b677a08b3e9470ff9f503655f2397d",
+    "okx-monitor/backtest/v09/exits.py": "f6f547e099bd3fa03827202167504226ffe68838ff5ec513fcdf42ff9b61a657",
+    "okx-monitor/backtest/v09/ledger.py": "b6ba7a441fd7f67f65f05a9bf72d381c009dcff5e56d959636bac06fbce55d4d",
+    "okx-monitor/backtest/v09/report.py": "5be5474467a024f1bfb84132a12d8aedb5efc3130ccdb8b689f9e3bc3909d829",
+    "okx-monitor/backtest/v09/research.py": "660f721695dc85363727433ef7121800228fb44ef1764247b6f5fb7aa2953ad9",
+    "okx-monitor/backtest/v09/risk.py": "a7cb28151b383f7a63bf9b931384ed6acdc6602b4d738e34aa49ca24769f7b35",
+    "okx-monitor/backtest/v09/strategies.py": "00bc3cb54add325efb578ca1d406684c257db250e1c8cdada857920229a63add",
+    "okx-monitor/backtest/test_swing_v09.py": "39f754c77a12bb6241167677a36669daf00138f4779771969391fe22362c98e0",
+    ".github/workflows/okx-swing-v09.yml": "775258d00689db24b1a917fbc57847618df87305e19f73c8ceea466b1b35f038"
+  }
+}

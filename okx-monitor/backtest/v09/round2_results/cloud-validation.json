@@ -1,0 +1,99 @@
+{
+  "conclusion": "success",
+  "headSha": "8abd3a1fe52f91cf4d4bb2f51f57a9bc6f69c9ad",
+  "jobs": [
+    {
+      "completedAt": "2026-10-24T11:05:34Z",
+      "conclusion": "success",
+      "databaseId": 120855126606,
+      "name": "research",
+      "startedAt": "2026-10-24T11:00:18Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Install research dependencies",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "All old and new unit tests",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Public historical data and paper portfolios only",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Export research evidence even when coverage fails",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 13,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 14,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/Jony666/Alert/actions/runs/40088129495/job/120855126606"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/Jony666/Alert/actions/runs/40088129495",
+  "artifact_id": 12557323810,
+  "artifact_sha256": "6e1e5a95617b9060aaaa0516a5803a48fad199034b382509ce2dd739c995048b",
+  "comparison": {
+    "summary_exact": true,
+    "trades": {
+      "rows": 1942,
+      "exact": true,
+      "numeric_tolerance": "relative 1e-10, absolute 1e-9"
+    },
+    "equity": {
+      "rows": 1203916,
+      "exact": true,
+      "numeric_tolerance": "relative 1e-10, absolute 1e-9"
+    },
+    "candidate_reports": {
+      "rows": 1942,
+      "exact": true,
+      "numeric_tolerance": "relative 1e-10, absolute 1e-9"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+name: OKX V09 Swing Research PAPER ONLY
+# Phase3 v0.9.3 cloud verification: GitHub dispatch requires registration on the default branch.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['research/okx-v09']
+    paths: ['.github/workflows/okx-swing-v09.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: okx-swing-v09-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    defaults:
+      run:
+        working-directory: okx-monitor/backtest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: okx-monitor/backtest/requirements.txt
+      - name: Install research dependencies
+        run: python -m pip install -r requirements.txt
+      - name: All old and new unit tests
+        run: python -m unittest discover -p 'test*.py' -v
+      - name: Frozen Phase3 public-market research, no orders
+        run: |
+          mkdir -p research_v09_cache
+          tar -xzf v09/phase3_results/ohlcv.tar.gz -C research_v09_cache
+          python -m v09.phase3 --cache research_v09_cache --snapshot v09/phase3_results/coverage.json --events v09/verified_events.json --output v09_phase3_run
+      - name: Export research evidence even when coverage fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: okx-v09-phase3-paper-research
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            okx-monitor/backtest/v09_phase3_run/
