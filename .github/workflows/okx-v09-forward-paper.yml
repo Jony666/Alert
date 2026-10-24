@@ -1,0 +1,87 @@
+name: OKX V09 Frozen Forward PAPER ONLY
+# Branch bootstrap. No schedule and no default-branch modification.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'resume normally; verify_replay audits same saved real snapshot; initialize only once'
+        type: choice
+        options: [resume, verify_replay, initialize]
+        default: resume
+  push:
+    branches: ['research/okx-v09']
+    paths: ['.github/workflows/okx-v09-forward-paper.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okx-v095-forward-ledger
+  cancel-in-progress: false
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: control
+          persist-credentials: false
+      - name: Load committed freeze and operational genesis anchor
+        id: freeze
+        run: |
+          python - <<'PY'
+          import json,os,re,shutil
+          from pathlib import Path
+          base=Path('control/okx-monitor/backtest/v09/forward/registry')
+          f=json.loads((base/'freeze.json').read_text())
+          sha=f['code_commit_sha']
+          assert re.fullmatch('[0-9a-f]{40}',sha)
+          shutil.copy(base/'freeze.json',Path(os.environ['RUNNER_TEMP'])/'forward-freeze.json')
+          shutil.copy(base/'anchor.json',Path(os.environ['RUNNER_TEMP'])/'forward-anchor.json')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('sha='+sha+'\n')
+          PY
+      - name: Checkout immutable model code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.freeze.outputs.sha }}
+          path: frozen
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: frozen/okx-monitor/backtest/requirements.txt
+      - name: Install research dependencies
+        working-directory: frozen/okx-monitor/backtest
+        run: python -m pip install -r requirements.txt
+      - name: Necessary persistence, execution, risk and fault tests
+        working-directory: frozen/okx-monitor/backtest
+        run: python -m unittest test_forward_v09 -q
+      - name: Restore before fetching real public market data and commit PAPER state
+        id: forward
+        working-directory: frozen/okx-monitor/backtest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORWARD_MODE: ${{ inputs.mode || 'initialize' }}
+        run: >-
+          python -m v09.forward
+          --freeze '${{ runner.temp }}/forward-freeze.json'
+          --anchor '${{ runner.temp }}/forward-anchor.json'
+          --mode "$FORWARD_MODE"
+          --out forward_bundle
+      - name: Publish complete cumulative state only after successful atomic commit
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forward-state-${{ steps.forward.outputs.study_id }}-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: error
+          path: frozen/okx-monitor/backtest/forward_bundle/
+      - name: Keep failure diagnostics separate from committed state
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forward-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: warn
+          path: frozen/okx-monitor/backtest/forward_failure.json

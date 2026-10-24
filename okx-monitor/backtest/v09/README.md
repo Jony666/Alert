@@ -1,5 +1,7 @@
 # OKX v0.9 短波段研究（僅研究／人工決策）
 
+第五階段：[PHASE5.md](PHASE5.md)，凍結兩套基準與跨Actions前瞻PAPER狀態；真實成交數與實際跨次雲端證據見forward_results/，不混入歷史績效。
+
 第四階段：[PHASE4.md](PHASE4.md)，只研究兩套核心、五種退出與少量敏感度；完整結果在phase4_results/，前各階段完整保留。
 
 第三階段入口：[PHASE3.md](PHASE3.md)；最新完整結果：[phase3_results/RESULTS.md](phase3_results/RESULTS.md)。先前各輪結果保留，不能互相替代版本。
