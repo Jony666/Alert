@@ -9,6 +9,7 @@ okx-monitor/backtest/v09/phase3/__main__.py
 okx-monitor/backtest/v09/phase3/evaluation.py
 okx-monitor/backtest/v09/phase3/strategies.py
 okx-monitor/backtest/v09/phase3_results/FILES.txt
+okx-monitor/backtest/v09/phase3_results/METRICS.md
 okx-monitor/backtest/v09/phase3_results/RESULTS.md
 okx-monitor/backtest/v09/phase3_results/cloud-validation.json
 okx-monitor/backtest/v09/phase3_results/coverage.json
