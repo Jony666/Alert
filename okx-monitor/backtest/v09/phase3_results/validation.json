@@ -1,0 +1,12 @@
+{
+  "local_tests": 356,
+  "phase3_tests": 25,
+  "initial_error": "test helper alias shadowed local legacy variable; fixed before final full suite",
+  "data_sha_checks": "90/90 PASS",
+  "scenario_count": 459,
+  "scenario_trades_not_independent": 2712,
+  "money_checks": "all open<=3, risk<=2000, per-trade<=1000; CONFIG/risk/exits/margin/events unchanged",
+  "plans": "all planned net RR>=3; all partial fractions sum1; all new strategies hold<=3d",
+  "source_commit": "889e6769c78af4e887b9551c43115151641e9361",
+  "input_archive_sha256": "ae87f7672b3b7ef8c339cb894374495890b56e046d2b1802ce70aa6910ec2bad"
+}
