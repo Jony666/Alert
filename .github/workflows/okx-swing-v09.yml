@@ -1,5 +1,5 @@
 name: OKX V09 Swing Research PAPER ONLY
-# Phase4 v0.9.4 two-core exit and robustness research: GitHub dispatch requires registration on the default branch.
+# Phase4 v0.9.4 full cloud validation: GitHub dispatch requires registration on the default branch.
 
 on:
   workflow_dispatch:
