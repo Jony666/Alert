@@ -1,5 +1,5 @@
 name: OKX V09 Swing Research PAPER ONLY
-# Branch-only bootstrap: GitHub dispatch requires registration on the default branch.
+# Four-year frozen-input branch bootstrap: GitHub dispatch requires registration on the default branch.
 
 on:
   workflow_dispatch:
