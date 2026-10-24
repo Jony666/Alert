@@ -53,9 +53,9 @@ def splits(start, end):
     return {'train': (a, b), 'validation': (b+14*DAY, c), 'holdout': (c+14*DAY, end),
             'walk_1': (b+14*DAY, c), 'walk_2': (c+14*DAY, end)}
 
-def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base', cfg=CONFIG, events=None):
+def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base', cfg=CONFIG, events=None, strategy_names=None, plan_factory=None, candidate_schedule=None, hold_days_by_strategy=None):
     # 'ALL' is a shared portfolio; other scenarios isolate each baseline.
-    chosen = STRATEGIES if strategy == 'ALL' else (strategy,)
+    chosen = (strategy_names or STRATEGIES) if strategy == 'ALL' else (strategy,)
     symbols = sorted(markets)
     if not symbols:
         raise ValueError('no covered assets')
@@ -110,18 +110,25 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
         state.observe()
         state.positions = [dict(strategy=p['strategy'], risk_twd=p['risk_twd'], notional_twd=p['notional_twd']) for p in positions.values()]
         candidates = []
-        if j > 0:
+        if candidate_schedule is not None:
             for strat in chosen:
-                for sym in symbols:
-                    key = (strat, sym)
-                    if key in positions or any(p['symbol'] == sym for p in positions.values()):
-                        continue
-                    x = markets[sym]['frame']
-                    side, strength = markets[sym]['signals'][strat][j-1]
-                    if side:
-                        # Deterministic signal strength, liquidity, symbol tie break.
+                for item in candidate_schedule[strat].get(j, ()):
+                    if not any(p['symbol']==item[2] for p in positions.values()):
+                        candidates.append(item)
                         counts['raw_candidate_signals'] += 1
-                        candidates.append((-strength, -float(markets[sym]['records'][j-1].liquidity), sym, strat, side))
+        else:
+            if j > 0:
+                for strat in chosen:
+                    for sym in symbols:
+                        key = (strat, sym)
+                        if key in positions or any(p['symbol'] == sym for p in positions.values()):
+                            continue
+                        x = markets[sym]['frame']
+                        side, strength = markets[sym]['signals'][strat][j-1]
+                        if side:
+                            # Deterministic signal strength, liquidity, symbol tie break.
+                            counts['raw_candidate_signals'] += 1
+                            candidates.append((-strength, -float(markets[sym]['records'][j-1].liquidity), sym, strat, side))
         for _, negliq, sym, strat, side in sorted(candidates):
             if any(p['symbol'] == sym for p in positions.values()):
                 continue
@@ -134,7 +141,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
                 counts['liquidity_rejected'] += 1
                 continue
             opening = float(markets[sym]['records'][j].open)
-            plan = structure_plan(prior, opening*(1+side*slip), side)
+            plan = (plan_factory(strat, prior, opening*(1+side*slip), side) if plan_factory else structure_plan(prior, opening*(1+side*slip), side))
             if plan is None:
                 counts['structure_rejected'] += 1
                 continue
@@ -180,7 +187,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
                                   next_funding=(t//28800000+1)*28800000,
                                   stop=plan.stop, tp1_done=False, rr=c['net_rr'],
                                   simultaneous_risk_twd=sum(p['risk_twd'] for p in positions.values())+allocated['risk_twd'],
-                                  regime='trend_up' if prior.close > prior.ema50 else 'trend_down')
+                                  regime=getattr(prior,'phase3_regime','trend_up' if prior.close > prior.ema50 else 'trend_down'))
             state.positions.append(dict(strategy=strat, risk_twd=allocated['risk_twd'], notional_twd=allocated['notional_twd']))
             counts['entries'] += 1
         maximum['open'] = max(maximum['open'], len(positions))
@@ -191,8 +198,9 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             q = markets[p['symbol']]['records'][j]
             held = t-p['entry_ts']
             # Time exit known at open, before this bar's funding/high/low.
-            if held >= cfg.time_exit_days*DAY:
-                close_piece(key, p['remaining'], q.open*(1-p['plan'].side*slip), t, 'time_exit_7d')
+            time_days=min(cfg.max_days,(hold_days_by_strategy or {}).get(p['strategy'],cfg.time_exit_days))
+            if held >= time_days*DAY:
+                close_piece(key, p['remaining'], q.open*(1-p['plan'].side*slip), t, f'time_exit_{time_days}d')
                 continue
             # Invalidation uses previous completed close; execution is this open.
             if held >= DAY and ((prior_close := markets[p['symbol']]['records'][j-1].close)-p['plan'].stop)*p['plan'].side < 0:

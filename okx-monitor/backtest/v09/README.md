@@ -1,5 +1,7 @@
 # OKX v0.9 短波段研究（僅研究／人工決策）
 
+第三階段入口：[PHASE3.md](PHASE3.md)；最新完整結果：[phase3_results/RESULTS.md](phase3_results/RESULTS.md)。先前各輪結果保留，不能互相替代版本。
+
 本輪更新請先讀 [ROUND2.md](ROUND2.md)，最新統計在 [round2_results/RESULTS.md](round2_results/RESULTS.md)。`results/`、下文首輪126情境數字與 `ACCEPTANCE.md` 保留首輪歷史紀錄；首輪精確重現須使用 commit 87c0384，不能用新版程式冒充同一版本。
 
 結論：**目前沒有合格交易策略，不能建議真實進場**。單元測試與程式成功執行不代表策略獲利。沒有 OKX 私有 API、訂單、通知或部署介面；未接觸 Render 或 v0.7／v0.8。預設分支與既有工作流程不變。
