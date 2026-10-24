@@ -1,5 +1,5 @@
 name: OKX V09 Frozen Forward PAPER ONLY
-# Initial branch registration: no schedule, no default-branch modification.
+# Initialized ledger: every subsequent trigger restores state; no schedule, no default-branch modification.
 on:
   workflow_dispatch:
     inputs:
@@ -62,7 +62,7 @@ jobs:
         working-directory: frozen/okx-monitor/backtest
         env:
           GH_TOKEN: ${{ github.token }}
-          FORWARD_MODE: ${{ inputs.mode || 'initialize' }}
+          FORWARD_MODE: ${{ inputs.mode || 'resume' }}
         run: >-
           python -m v09.forward
           --freeze '${{ runner.temp }}/forward-freeze.json'
