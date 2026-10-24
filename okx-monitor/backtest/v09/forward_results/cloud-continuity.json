@@ -1,0 +1,46 @@
+{
+  "study_id": "okx-v095-4e85ee42786c6564",
+  "config_hash": "4e85ee42786c656414f4a038093fcb12ce2516bdb1f5e6cdbe6b3752b578c5fa",
+  "strategy_version": "0.9.5-6ecc69ea1107513b",
+  "frozen_code_commit": "e8863f819f29ef0cf2806ea06157aae7ac3a633e",
+  "freeze_timestamp_utc": "2026-10-24T13:20:30.509400+00:00",
+  "research_start_timestamp_utc": "2026-10-24T13:24:55.950187+00:00",
+  "real_public_market_runs": [
+    40097744951,
+    40098344209
+  ],
+  "saved_real_snapshot_replay_run": 40098537490,
+  "artifact_chain": [
+    12562075458,
+    12562106009,
+    12562330593
+  ],
+  "revisions": [
+    1,
+    2,
+    3
+  ],
+  "initial_archive_sha256": "ed0642c135d16f9e7ca8dedf705690c225588095b4897a67305eeba83c89cfb4",
+  "resume_archive_sha256": "b6daa47cd9a6af829f7f246bc336f11014115aa41ac54f5a2274e4d8ebb2cf89",
+  "replay_archive_sha256": "53920d342c65459d2faeabab37f9ce0783187f81083f8afe1d032a21bbab0be3",
+  "verified_checks": {
+    "root_anchor_unchanged": true,
+    "all_bundle_hashes": true,
+    "journal_prefix_retained": true,
+    "restore_before_feed": true,
+    "replay_financial_hash_equal": true,
+    "replay_trades_equity_positions_byte_equal": true,
+    "cloud_corrupt_missing_refused": true
+  },
+  "true_forward_closed_trades": 0,
+  "true_forward_open_positions": 0,
+  "pending_orders": 0,
+  "candidate_signals": 0,
+  "cash_twd": 10000.0,
+  "fee_budget_remaining": 1000.0,
+  "live_positions_in_actual_cloud_not_yet_exercised": true,
+  "nonzero_lifecycle_coverage": "50 synthetic unit tests; never counted as real forward trades",
+  "no_schedule": true,
+  "artifact_retention_days": 90,
+  "permanent_storage_authorized": false
+}

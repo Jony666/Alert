@@ -1,0 +1,24 @@
+{
+  "local_tests": 436,
+  "new_forward_tests": 50,
+  "cloud_necessary_tests_per_run": 50,
+  "unresolved_test_failures": 0,
+  "actual_cloud_runs": [
+    40097744951,
+    40098344209,
+    40098537490
+  ],
+  "native_dispatch_runs": [
+    40098344209,
+    40098537490
+  ],
+  "state_chain_verified": true,
+  "idempotent_financial_hash_verified": true,
+  "corrupt_missing_safe_stop_verified": true,
+  "real_forward_entry_count": 0,
+  "real_forward_closed_count": 0,
+  "nonzero_positions_verified_only_in_synthetic_tests": true,
+  "actual_account_api_used": false,
+  "user_admission_policy": "STRICT_QUALIFICATION_OBSERVE_REJECTED_CANDIDATES_ONLY",
+  "root_default_branch_sha": "9ecaf2743aed0ac956d174067ed003f3d178a183"
+}

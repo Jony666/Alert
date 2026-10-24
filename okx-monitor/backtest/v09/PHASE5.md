@@ -64,3 +64,12 @@ GitHub schedule通常只從預設分支生效。本階段不新增任何schedule
 新增test_forward_v09涵蓋初始化、二/三次非零部位恢復、同資料成交/平倉/funding冪等、缺棒/延遲/cursor修訂、版本改變、Artifact缺失/過期/不回退、partial entry、TP/stop保守順序、現金成本對帳、全部風控與日內鎖定、未知新聞、隔離、atomic中斷、併發與zip路徑安全。合成資料只用在明示測試，生產CLI不接受SYNTHETIC_TEST來源。
 
 開發時曾抓到匯入語法、事件payload共享參照及tuple/list序列化差異，均於雲端凍結前修正。完整舊測試與新測試結果及實際雲端I/II/III證據會存forward_results/，不拿歷史10筆/3筆當新前瞻績效。
+
+
+## 最終真實驗收與使用者政策
+
+使用者已明確確認「維持嚴格資格門檻，只記錄拒絕候選，暫不建紙上部位」。現行凍結版已符合，沒有更動或重置版本。真實I/II/III均success，後兩次真正workflow_dispatch；root state revision 1→2→3、parent Artifact與journal前綴均驗證。第三輪財務指紋及trades/equity/positions檔案完全相同，損毀/缺失副本安全停止。詳細實際連結、scope與數字在forward_results/RESULTS.md，不以歷史績效冒充前瞻。
+
+完整本地436項（含50項新測試）全通過；每次雲端均執行固定版50項必要測試。真實前瞻候選0、進場0、平倉0、cash10000、費用預算1000。實際兩次行情仍在相同已完成K線水位，只有新公開mark與觀測曲線點，未等待新完整K線或1–3日交易結果；非零部位只在明示合成測試中驗證。這是狀態與資料管線驗收，不是策略獲利驗收。
+
+手動恢復及重跑指令已實際成功，首次註冊404限制已解除；不代表schedule已啟用。長期封存目的地、正式外部自動觸發及過期後人工恢復仍需使用者另外授權/操作。沒有取得交易Secret，沒有修改master/Render/正式推播或下單設定。
