@@ -1,0 +1,15 @@
+{
+  "scenarios_checked": 732,
+  "pass_check": true,
+  "identities": [
+    "technical_pass = candidate_signals + held_symbol_exclusions",
+    "candidate_signals = all terminal rejection counts + entries",
+    "entries = fully closed paper trades"
+  ],
+  "internal_nonterminal_counters_excluded": [
+    "account_gate_pass",
+    "all_risk_gates_pass",
+    "raw_candidate_signals",
+    "structural_net_rr_pass"
+  ]
+}
