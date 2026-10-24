@@ -1,0 +1,23 @@
+{
+  "source_commit": "8abd3a1",
+  "python_tests": "331 passed; 104 v09 tests",
+  "data_checks": "72 SHA256 matches; 1086984 confirmed candles",
+  "scenario_checks": "294 complete; all positions<=3, planned risk<=2000, per trade risk<=1000, planned net RR>=3, hold<=14d",
+  "source_sha256": {
+    "__init__.py": "1a1e5da16513c5012ad0036ff47f0f2c435b4628d914d50cf8ce13349fd2d5d4",
+    "__main__.py": "41fcf912c4bef57e591fdcec673b3823456a4bc7aa84826e50471ae040be3412",
+    "config.py": "2f6948f8827fff622a8808095134427b93614d0abb3f5d724cebd40aa2ba31f4",
+    "data.py": "468360c93899ab3247cc912ec68f950f96294b3a5cd54fed06d9e6416bf01a03",
+    "events.py": "3cc21b4eb11faac335e57f91e5d58604ff3cf70c43c68a9970fd2c196d4ad7ab",
+    "exits.py": "f6f547e099bd3fa03827202167504226ffe68838ff5ec513fcdf42ff9b61a657",
+    "ledger.py": "b6ba7a441fd7f67f65f05a9bf72d381c009dcff5e56d959636bac06fbce55d4d",
+    "margin.py": "61fc9b2ae4d4cfa9de5658436430d332e66c8f4315a511b5eaf6820d72be7e09",
+    "report.py": "f552d73704e7a662bc7ea6f1329c39149ae27a75724398601f597a88fe48f48a",
+    "research.py": "cd4e783452a7da140bf9314fe3eb9bbd7b801a56dc9ab592b9718515d6e0119b",
+    "risk.py": "a7cb28151b383f7a63bf9b931384ed6acdc6602b4d738e34aa49ca24769f7b35",
+    "strategies.py": "00bc3cb54add325efb578ca1d406684c257db250e1c8cdada857920229a63add",
+    "summarize.py": "42abbb642824d303ded33effc39f906913f994b63820b9f2871eb5884fe02d4d"
+  },
+  "events_sha256": "94146eb1aeffb3e9211289621b1109e8c55266b272b423eb69ecfb430cf477aa",
+  "input_archive_sha256": "f08ea8eaa23ae75efd474cb8104521fc29d3048787b7d3b2c435a5bf261ad6de"
+}
