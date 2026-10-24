@@ -30,7 +30,7 @@ def evidence(trades, forward_verified=False, pristine=False, cfg=CONFIG):
 
 def qualification(plan_cost, ev, cross_verified=False, event_review=False, risk_state='ALLOW_RESEARCH'):
     reasons = []
-    if plan_cost['net_rr'] < 3:
+    if not math.isfinite(plan_cost['net_rr']) or plan_cost['net_rr'] < 3:
         reasons.append('NET_RR_BELOW_3')
     if not ev['trusted_60_percent']:
         reasons.append('WIN_RATE_NOT_VERIFIED')
@@ -71,6 +71,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
     positions = {}
     trades, curve = [], []
     counts = Counter()
+    first_halt = None
     expense_budget_used = 0.
     maximum = {'open': 0, 'risk': 0., 'joint_gap_loss': 0.}
     fee, slip = cfg.fee*mult, cfg.slippage*mult
@@ -119,11 +120,13 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
                     side, strength = markets[sym]['signals'][strat][j-1]
                     if side:
                         # Deterministic signal strength, liquidity, symbol tie break.
+                        counts['raw_candidate_signals'] += 1
                         candidates.append((-strength, -float(markets[sym]['records'][j-1].liquidity), sym, strat, side))
         for _, negliq, sym, strat, side in sorted(candidates):
             if any(p['symbol'] == sym for p in positions.values()):
                 continue
-            if assess(events or [], iso(t), sym)['requires_review']:
+            prior = markets[sym]['records'][j-1]
+            if assess(events or [], iso(t), sym,technical={'atr_fraction':prior.atr/prior.close,'trailing_daily_quote_volume':prior.liquidity})['requires_review']:
                 counts['MAJOR_EVENT_REVIEW'] += 1
                 continue
             prior = markets[sym]['records'][j-1]
@@ -144,6 +147,7 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             if c['net_rr'] < 3:
                 counts['net_rr_rejected'] += 1
                 continue
+            counts['structural_net_rr_pass'] += 1
             budget = min(1000., 2000-sum(p['risk_twd'] for p in positions.values()))
             if budget <= 0:
                 counts['total_risk_rejected'] += 1
@@ -168,6 +172,8 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
             entryfee = allocated['units']*plan.entry*fee*32
             wallet -= entryfee
             expense_budget_used += entryfee
+            state.reserve = max(0.,cfg.reserve-expense_budget_used)
+            state.capital = max(0.,state.capital-entryfee)
             key = (strat, sym)
             positions[key] = dict(**allocated, plan=plan, strategy=strat, symbol=sym, entry_ts=t,
                                   remaining=1., net=-entryfee, fees=entryfee, funding=0., fills=[],
@@ -223,12 +229,14 @@ def simulate(markets, strategy, span, step, mult=1., leverage=5, execution='base
         state.reserve = max(0., cfg.reserve-expense_budget_used)
         state.capital = max(0, equity)
         state.observe()
+        if state.halted and first_halt is None:
+            first_halt = dict(time=iso(t+step),reasons=list(state.halt_reasons),capital_twd=state.capital,reserve_twd=state.reserve)
         curve.append(dict(time=iso(t+step), equity_twd=equity, positions=len(positions)))
     return {'strategy': strategy, 'cost_mult': mult, 'leverage': leverage, 'execution': execution,
             **stats(trades), 'return_pct': 100*(wallet/cfg.initial-1), 'max_drawdown_pct': 100*maxdd,
             'max_open': maximum['open'], 'max_planned_risk_twd': maximum['risk'],
             'max_joint_20pct_gap_loss_twd': maximum['joint_gap_loss'],
-            'halted': state.halted, 'counts': dict(counts)}, trades, curve
+            'halted': state.halted, 'first_halt':first_halt, 'counts': dict(counts)}, trades, curve
 
 def stats(trades):
     net = np.array([t['net_twd'] for t in trades])
@@ -237,5 +245,6 @@ def stats(trades):
     return {'trades': len(trades), 'win_rate': float(np.mean(net > 0)) if len(net) else None,
             'net_twd': float(net.sum()), 'profit_factor': float(gains/losses) if losses else None,
             'avg_hold_days': float(np.mean([t['hold_days'] for t in trades])) if trades else None,
+            'avg_planned_net_rr': float(np.mean([t['planned_net_rr'] for t in trades])) if trades else None,
             'avg_net_r': float(np.mean([t['net_r'] for t in trades])) if trades else None,
             'cost_twd': sum(t['cost_twd'] for t in trades)}

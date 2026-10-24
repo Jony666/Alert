@@ -1,10 +1,12 @@
 import json
 from .exits import costs
 from .research import qualification
+from .margin import cross_account
 
 def candidate(symbol, strategy, plan, evidence, allocation, event_state, risk_state, simultaneous_risk, cost_mult=1.):
     c = costs(plan,cost_mult)
-    q = qualification(c, evidence, allocation.get('cross_verified', False), event_state['requires_review'], risk_state)
+    cross = allocation.get('cross_assessment') or cross_account(None,[],{},allocation.get('fx_time','2025-01-01T00:00:00Z'))
+    q = qualification(c, evidence, cross.get('allow_recommendation',False), event_state['requires_review'], risk_state)
     return {'example_only': True, 'strategy': strategy, 'strategy_selected_symbol': symbol,
             'direction': 'LONG' if plan.side == 1 else 'SHORT', 'entry': plan.entry, 'stop': plan.stop,
             'tp1': {'price': plan.tp1, 'fraction': plan.weights[0], 'reason': 'prior 55-bar structure'},
@@ -14,7 +16,7 @@ def candidate(symbol, strategy, plan, evidence, allocation, event_state, risk_st
             'logic': 'Frozen strategy before ranking by signal strength and trailing liquidity; no symbol tuning.',
             'why_now': 'EXAMPLE historical completed-bar condition; NOT a current market signal',
             'evidence': evidence, 'costs': c, 'ideal_hold_days': [1,3], 'general_hold_days': [1,7], 'max_hold_days':14,
-            'allocation': allocation, 'simultaneous_risk_twd': simultaneous_risk,
+            'allocation': allocation, 'cross_margin_assessment':cross, 'simultaneous_risk_twd': simultaneous_risk,
             'other_positions_allowed': risk_state == 'ALLOW_RESEARCH' and simultaneous_risk < 2000,
             'events': event_state, 'risk_state': risk_state, **q,
             'decision': '最終是否下單由使用者決定；此報告不是訂單。',

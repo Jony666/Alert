@@ -11,7 +11,7 @@ def aware(value):
         raise ValueError('event timezone required')
     return dt
 
-def assess(events, at, symbol):
+def assess(events, at, symbol, technical=None):
     now = aware(at)
     visible = []
     for e in events:
@@ -27,11 +27,18 @@ def assess(events, at, symbol):
         if e.get('symbols') and symbol not in e['symbols']:
             continue
         event_time = aware(e['event_utc'])
-        if abs((event_time-now).total_seconds()) > 86400:
+        before = float(e.get('valid_hours_before',24))
+        after = float(e.get('valid_hours_after',24))
+        if not (0 <= before <= 168 and 0 <= after <= 168):
+            raise ValueError('invalid bounded event risk window')
+        hours=(now-event_time).total_seconds()/3600
+        if not -before <= hours <= after:
             continue
         visible.append({**e, 'published_taipei': published.astimezone(ZoneInfo('Asia/Taipei')).isoformat(),
                         'win_rate_adjustment': None, 'quantification': '無法可靠量化',
                         'warning': e.get('major', False) or e['kind'] in ('FED', 'US_ELECTION', 'QUADRUPLE_WITCHING')})
     return {'events': visible, 'win_rate_adjustment': None,
+            'technical_context': technical,
+            'technical_interaction': 'Major public event: gaps may invalidate ATR stops and historical win-rate transfer; manual review required' if any(e['warning'] for e in visible) else 'No verified major event in supplied coverage; absence is not proof of no risk',
             'coverage': 'USER_SUPPLIED_VERIFIED_EVENTS_ONLY; NO COMPLETE HISTORICAL NEWS FEED',
             'requires_review': any(e['warning'] for e in visible)}

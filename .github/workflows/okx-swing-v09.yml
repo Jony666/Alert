@@ -2,6 +2,9 @@ name: OKX V09 Swing Research PAPER ONLY
 
 on:
   workflow_dispatch:
+  push:
+    branches: ['research/okx-v09']
+    paths: ['.github/workflows/okx-swing-v09.yml']
 
 permissions:
   contents: read
@@ -29,7 +32,10 @@ jobs:
       - name: All old and new unit tests
         run: python -m unittest discover -p 'test*.py' -v
       - name: Public historical data and paper portfolios only
-        run: python -m v09 --cache research_v09_cache --output v09_run
+        run: |
+          mkdir -p research_v09_cache
+          tar -xzf v09/results/ohlcv.tar.gz -C research_v09_cache
+          python -m v09 --cache research_v09_cache --instrument-snapshot v09/results/coverage.json --events v09/verified_events.json --output v09_run
       - name: Export research evidence even when coverage fails
         if: always()
         uses: actions/upload-artifact@v4

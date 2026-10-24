@@ -22,6 +22,7 @@ def parser():
     p.add_argument('--bars', nargs='+', choices=list(STEPS), default=list(STEPS))
     p.add_argument('--cache', default='research_v09_cache')
     p.add_argument('--output', default='v09/results')
+    p.add_argument('--annual-cohorts', action='store_true', help='Independent annual hypothetical accounts; overlapping studies NEVER pooled')
     p.add_argument('--events', help='Optional verified point-in-time event JSON list')
     p.add_argument('--instrument-snapshot', help='Reuse coverage.json contract metadata for exact reproduction')
     p.add_argument('--fetch-only', action='store_true')
@@ -30,6 +31,15 @@ def parser():
 def run(args):
     start, end = timestamp(args.start), timestamp(args.end)
     spans = splits(start, end)
+    measured = ['train','validation','holdout']
+    if args.annual_cohorts:
+        for year in range(int(args.start[:4]),int(args.end[:4])):
+            lo=max(start+60*86400000,timestamp(f'{year}-01-01T00:00:00Z'))
+            hi=min(end,timestamp(f'{year+1}-01-01T00:00:00Z'))
+            if hi>lo:
+                key=f'independent_cohort_{year}'
+                spans[key]=(lo,hi)
+                measured.append(key)
     if len(set(args.symbols)) != len(args.symbols) or not args.symbols:
         raise ValueError('duplicate/empty symbols')
     out = Path(args.output)
@@ -73,7 +83,7 @@ def run(args):
             continue
         for strat in (*STRATEGIES,'ALL'):
             for mult, execution in ((1.,'base'),(2.,'base'),(1.,'missed_limits')):
-                for split in ('train','validation','holdout'):
+                for split in measured:
                     row,trades,curve = simulate(markets,strat,spans[split],STEPS[bar],mult,5,execution,events=events)
                     meta = dict(bar=bar,split=split,scenario_strategy=strat,cost_mult=mult,execution=execution,leverage=5)
                     row.update(meta)
@@ -89,7 +99,7 @@ def run(args):
                     grouped.extend(dict(**meta,dimension=dim,value=value,**stats(ts)) for (dim,value),ts in sorted(groups.items()))
                     print('RESULT',bar,strat,mult,execution,split,row['trades'],round(row['return_pct'],3),flush=True)
         for lev in (10,20):
-            for split in ('train','validation','holdout'):
+            for split in measured:
                 row,trades,curve = simulate(markets,'ALL',spans[split],STEPS[bar],1.,lev,events=events)
                 meta = dict(bar=bar,split=split,scenario_strategy='ALL',cost_mult=1.,execution='base',leverage=lev)
                 row.update(meta)
@@ -97,9 +107,9 @@ def run(args):
                 all_trades.extend(dict(t,**meta) for t in trades)
                 all_curves.extend(dict(t,**meta) for t in curve)
     result = {'version':'0.9.0','status':'NO QUALIFIED SIGNAL','ready_for_live':False,
-              'config':asdict(CONFIG),'config_sha256':CONFIG.digest(),'event_input':events,'interval':[args.start,args.end],
+              'config':asdict(CONFIG),'config_sha256':CONFIG.digest(),'event_input':events,'annual_cohorts_are_overlapping_independent_accounts_not_pooled':args.annual_cohorts,'interval':[args.start,args.end],
               'splits':{k:[iso(t) for t in v] for k,v in spans.items()},
-              'coverage':coverage,'failures':failures,'complete':not failures and len(rows)==42*len(args.bars),
+              'coverage':coverage,'failures':failures,'complete':not failures and len(rows)==14*len(measured)*len(args.bars),
               'results':rows,'grouped_results':grouped,
               'limitations':['Static requested basket of currently listed instruments, NOT all-market or historical top-200; survivorship bias.',
               'Fixed predeclared parameters; temporal holdout reserved in this run but NOT certified pristine research history. No forward verification.',

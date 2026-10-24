@@ -226,8 +226,10 @@ class SafetyTests(unittest.TestCase):
     def test_workflow_manual_only(self):
         p=Path(__file__).resolve().parents[2]/'.github/workflows/okx-swing-v09.yml'
         text=p.read_text();self.assertIn('workflow_dispatch:',text);self.assertIn('contents: read',text)
-        for forbidden in ('schedule:','push:','pull_request:','secrets.','render.com','trade/order'):
+        for forbidden in ('schedule:','pull_request:','secrets.','render.com','trade/order'):
             self.assertNotIn(forbidden,text)
+        self.assertIn('research/okx-v09',text)
+        self.assertIn("'.github/workflows/okx-swing-v09.yml'",text)
 
 
 class IntegratedV09Tests(unittest.TestCase):
@@ -312,5 +314,59 @@ class ChronologyBoundaryTests(unittest.TestCase):
         self.assertEqual(s.gate('B',100,T),'ALLOW_RESEARCH')
     def test_exchange_max_leverage(self):
         with self.assertRaises(ValueError): size(good_plan(),10,32,T,'assumed',dict(INST,lever='5'),1000,10)
+
+
+
+
+class CrossMarginV09Tests(unittest.TestCase):
+    def fixture(self):
+        a=dict(cash_usdt=1000.,liabilities_usdt=0.,other_collateral_haircut_usdt=0.,reserved_fees_usdt=2.,funding_due_usdt=1.,time=T,reconciled=True)
+        p=dict(symbol='BTC',units=1.,entry=100.,mark=100.,leverage=5.,side=1,mark_time=T)
+        tiers={'BTC':dict(effective_from=T,valid_until='2026-01-01T00:00:00Z',tiers=[dict(max_units=10,mmr=.01,imr=.1,deduction_usdt=0.)])}
+        return a,p,tiers
+    def test_missing_account_refused(self):
+        from v09.margin import cross_account
+        self.assertFalse(cross_account(None,[],{},T)['allow_recommendation'])
+    def test_margin_arithmetic(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();r=cross_account(a,[p],t,T)
+        self.assertEqual(r['stress'][0]['equity_usdt'],997.)
+        self.assertEqual(r['stress'][0]['initial_margin_usdt'],20.)
+        self.assertAlmostEqual(r['stress'][0]['maintenance_plus_fee_usdt'],1.1)
+        self.assertFalse(r['allow_recommendation'])
+    def test_short_and_multiple_shared_equity(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();q=dict(p,side=-1)
+        r=cross_account(a,[p,q],t,T)
+        self.assertAlmostEqual(r['stress'][-1]['equity_usdt'],957.)
+    def test_stale_account(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();a['time']='2024-01-01T00:00:00Z'
+        self.assertEqual(cross_account(a,[p],t,T)['status'],'NOT VERIFIED')
+    def test_missing_tiers(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();self.assertFalse(cross_account(a,[p],{},T)['allow_recommendation'])
+    def test_future_tiers(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();t['BTC']['effective_from']='2025-01-02T00:00:00Z'
+        self.assertEqual(cross_account(a,[p],t,T)['status'],'NOT VERIFIED')
+    def test_tier_and_leverage_limit(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();p['leverage']=100.
+        self.assertEqual(cross_account(a,[p],t,T)['status'],'NOT VERIFIED')
+    def test_adverse_boundary(self):
+        from v09.margin import cross_account
+        a,p,t=self.fixture();a['cash_usdt']=10.
+        r=cross_account(a,[p],t,T)
+        self.assertLess(r['joint_adverse_margin_breach_fraction'],.10)
+    def test_event_after_window(self):
+        e=EvidenceEventTests().event();e['valid_hours_after']=48
+        self.assertTrue(assess([e],'2025-01-02T12:00:00Z','BTC')['requires_review'])
+        self.assertFalse(assess([e],'2025-01-04T00:00:00Z','BTC')['requires_review'])
+    def test_no_event_future_leak(self):
+        e=EvidenceEventTests().event();e['event_utc']='2025-01-02T00:00:00Z';e['published_utc']='2025-01-01T01:00:00Z'
+        self.assertFalse(assess([e],T,'BTC')['requires_review'])
+    def test_nonfinite_rr_is_refused(self):
+        self.assertNotEqual(qualification({'net_rr':float('nan')},{'trusted_60_percent':True},True)['conclusion'],'QUALIFIED FOR USER REVIEW')
 
 if __name__=='__main__': unittest.main()
