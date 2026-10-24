@@ -61,3 +61,20 @@ python -m v09.phase3 --cache phase3_cache --snapshot v09/phase3_results/coverage
 修改：research.py僅加可選策略/結構計畫/預算不變的加速排程/每策略持倉時限介面，保留原預設；新workflow改為第三階段封存重播；README加入入口。
 
 phase3_results/freeze.json保存策略/排名/財務規則；sources.json保存源碼SHA；coverage.json保存每組資料SHA、來源、時間與合約快照；ohlcv.tar.gz保存真實公開資料；summary.json含全部統計與排名；trades/equity.jsonl.gz含逐筆淨R與資金曲線；RESULTS.md為人類可讀表。freeze.created_utc為執行元資料，各次重播可不同，不作績效比較欄位。
+
+
+## 最終驗證與交付
+
+- [第三階段 Actions 40090239836](https://github.com/Jony666/Alert/actions/runs/40090239836)：success，source `889e6769c78af4e887b9551c43115151641e9361`。本地/雲端356項全通過，其中第三階段25項，前兩階段331項保留。
+- 第一輪完整測試曾有1項測試輔助變數遮蔽錯誤，改用不衝突模組別名後重新完整通過；test-initial-failure.txt保存原始失敗、unit-tests.txt保存最後成功，沒有修改v0.7/v0.8測試。
+- 459情境、90組真實資料SHA全部驗證、共1358730根已收盤K線。2712筆情境交易含重疊研究，不視為2712獨立樣本。所有新策略模擬持倉≤3日、每筆計畫淨RR≥3、單筆風險≤1000、總風險≤2000、部位≤3，CONFIG/risk/exits/margin/events與第二階段未變。
+- 已下載artifact `12559155852`，SHA256 `6baba3cdcd0279c524a1abd077f466f4ba11b8d63926b6fd86b95bc2e93cafad`；摘要、2712筆交易、1067082筆資金曲線逐位元組完全吻合。比較不把freeze.created_utc當績效欄位。
+- 24個策略/週期組合：10個需要改進、14個淘汰此凍結版本、0個保留研究。淘汰不是聲稱整個策略家族永遠無效。全部原始數據仍保存。
+- 2025表與第二階段的24幣/不同分區不是同一樣本，不直接宣稱績效改善。此輪30幣共同比較有明確資料與時間分區，仍不是pristine。
+- 1H支撐阻力反轉2/3勝，普通95%CI約20.8%–93.9%；1D多週期9/14勝，CI約38.8%–83.7%、稀疏代理樣本8筆。點估計達60%不能取代可信下界、獨立性、前瞻與全倉條件。
+
+完整檔案清單見 phase3_results/FILES.txt。真正未完成：歷史上市/下市/前200全集與交易規格、完整大選/宏觀/監管/專案事件庫、官方全倉模式與ADL、歷史實際funding/委託簿/任意部分成交、群聚相依推論及凍結commit後前瞻驗證。沒有用合成資料冒充真實OKX驗證。
+
+**目前沒有任何一套策略，具有足夠可信的證據，同時符合勝率至少60%、規劃淨RR至少1:3、持倉以1–3天為主及全部資金風控要求。**
+
+未修改或合併master（仍9ecaf2743aed0ac956d174067ed003f3d178a183），未修改v0.7/v0.8、Render、正式推播或任何真實下單接口。最後補證據的提交使用[skip ci]，研究程式與成功雲端source相同。

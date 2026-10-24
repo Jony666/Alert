@@ -1,0 +1,62 @@
+[
+  {
+    "published_utc": "2022-06-15T18:00:00Z",
+    "event_utc": "2022-06-15T18:00:00Z",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20220615a.htm",
+    "kind": "FED",
+    "major": true,
+    "expected": true,
+    "title": "FOMC statement publication",
+    "source_checked_on": "2026-10-24",
+    "valid_hours_after": 48,
+    "valid_hours_before": 24,
+    "direction": "UNKNOWN",
+    "evidence": "Official statement page: For release at 2:00 p.m. EDT/EST; no quantified return effect.",
+    "knowledge_basis": "Scheduled meeting, but this input only uses the statement when published; no pre-event calendar reconstruction."
+  },
+  {
+    "published_utc": "2023-07-26T18:00:00Z",
+    "event_utc": "2023-07-26T18:00:00Z",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20230726a.htm",
+    "kind": "FED",
+    "major": true,
+    "expected": true,
+    "title": "FOMC statement publication",
+    "source_checked_on": "2026-10-24",
+    "valid_hours_after": 48,
+    "valid_hours_before": 24,
+    "direction": "UNKNOWN",
+    "evidence": "Official statement page: For release at 2:00 p.m. EDT/EST; no quantified return effect.",
+    "knowledge_basis": "Scheduled meeting, but this input only uses the statement when published; no pre-event calendar reconstruction."
+  },
+  {
+    "published_utc": "2024-09-18T18:00:00Z",
+    "event_utc": "2024-09-18T18:00:00Z",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm",
+    "kind": "FED",
+    "major": true,
+    "expected": true,
+    "title": "FOMC statement publication",
+    "source_checked_on": "2026-10-24",
+    "valid_hours_after": 48,
+    "valid_hours_before": 24,
+    "direction": "UNKNOWN",
+    "evidence": "Official statement page: For release at 2:00 p.m. EDT/EST; no quantified return effect.",
+    "knowledge_basis": "Scheduled meeting, but this input only uses the statement when published; no pre-event calendar reconstruction."
+  },
+  {
+    "published_utc": "2025-01-29T19:00:00Z",
+    "event_utc": "2025-01-29T19:00:00Z",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250129a.htm",
+    "kind": "FED",
+    "major": true,
+    "expected": true,
+    "title": "FOMC statement publication",
+    "source_checked_on": "2026-10-24",
+    "valid_hours_after": 48,
+    "valid_hours_before": 24,
+    "direction": "UNKNOWN",
+    "evidence": "Official statement page: For release at 2:00 p.m. EDT/EST; no quantified return effect.",
+    "knowledge_basis": "Scheduled meeting, but this input only uses the statement when published; no pre-event calendar reconstruction."
+  }
+]
