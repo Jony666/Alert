@@ -1,0 +1,6 @@
+{
+  "url": "https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=BCH-USDT-SWAP",
+  "fetched_at_utc": "2026-10-28T14:50:13.571986+00:00",
+  "sha256": "2794891bb4892c181bfa010f1ca53f78eab997b549cbc68b5c45363eddb13906",
+  "http_status": 200
+}

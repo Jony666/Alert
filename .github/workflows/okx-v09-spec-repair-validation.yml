@@ -1,0 +1,82 @@
+name: OKX V09 Contract Spec Repair READ ONLY Validation
+# Branch-only acceptance; never creates a production forward-state artifact or writes a ledger.
+on:
+  push:
+    branches: ['fix/okx-v09-reviewed-contract-spec']
+    paths:
+      - '.github/okx-v09-ops/**'
+      - '.github/workflows/okx-v09-spec-repair-validation.yml'
+      - '.github/workflows/okx-v09-forward-scheduled.yml'
+      - 'docs/okx-v09/contract-spec-*'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okx-v09-spec-repair-validation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: ${{ github.workspace }}/candidate/.github/okx-v09-ops:${{ github.workspace }}/frozen/okx-monitor/backtest
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Checkout exact validation commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          persist-credentials: false
+      - name: Checkout unchanged frozen financial model
+        uses: actions/checkout@v4
+        with:
+          ref: e8863f819f29ef0cf2806ea06157aae7ac3a633e
+          path: frozen
+          persist-credentials: false
+      - name: Checkout original freeze and genesis anchor
+        uses: actions/checkout@v4
+        with:
+          ref: 104e6acf2096f9fc507f45395aff7c82986f1207
+          path: registry
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: frozen/okx-monitor/backtest/requirements.txt
+      - name: Install frozen research requirements
+        working-directory: frozen/okx-monitor/backtest
+        run: python -m pip install -r requirements.txt
+      - name: Run original v09, v07 and v08 regression tests
+        working-directory: frozen/okx-monitor/backtest
+        run: |
+          python -m unittest test_swing_v09 test_phase3_v09 test_phase4_v09 test_forward_v09 \
+            test_turtle_forward_v07 test_leveraged_intraday_v08 -q > "$RUNNER_TEMP/regression.log" 2>&1 || {
+              tail -100 "$RUNNER_TEMP/regression.log"
+              exit 1
+            }
+          tail -5 "$RUNNER_TEMP/regression.log"
+      - name: Test scoped spec migration, rejection paths and ledger preservation
+        working-directory: frozen/okx-monitor/backtest
+        run: python -m unittest test_spec_review -v
+      - name: Restore original artifact then preview with real confirmed public OKX data
+        working-directory: frozen/okx-monitor/backtest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python "$GITHUB_WORKSPACE/candidate/.github/okx-v09-ops/validate_recovery.py" \
+            --freeze "$GITHUB_WORKSPACE/registry/okx-monitor/backtest/v09/forward/registry/freeze.json" \
+            --anchor "$GITHUB_WORKSPACE/registry/okx-monitor/backtest/v09/forward/registry/anchor.json" \
+            --download --out "$RUNNER_TEMP/repair-validation"
+      - name: Save validation evidence separately from production ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repair-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/repair-validation/
+            ${{ runner.temp }}/regression.log
+            candidate/.github/okx-v09-ops/

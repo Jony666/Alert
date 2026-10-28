@@ -1,0 +1,44 @@
+{
+  "status": "READ_ONLY_RECOVERY_PREVIEW_PASSED",
+  "production_state_committed": false,
+  "source_run": "40247022530",
+  "source_artifact": 12619340530,
+  "source_state_hash": "03398ed091e558f3fd889c87b4877a90e7e198e1fa3b4fe5c56b86c76cd66b1d",
+  "differences": [
+    {
+      "instId": "BCH-USDT-SWAP",
+      "field": "tickSz",
+      "previous": "0.1",
+      "current": "0.01"
+    }
+  ],
+  "review_id": "BCH-TICK-20261028-v1",
+  "model_commit": "e8863f819f29ef0cf2806ea06157aae7ac3a633e",
+  "preview_revisions": [
+    14,
+    15,
+    16
+  ],
+  "source_unchanged": true,
+  "journal_prefix_unchanged": true,
+  "financials_unchanged_during_migration": true,
+  "replay_financial_hash_unchanged": true,
+  "historical_fills_created": 0,
+  "closed_forward_trades": 0,
+  "pending": 0,
+  "positions": 0,
+  "real_public_market_groups": 90,
+  "market_observed_at_utc": "2026-10-28T14:56:15.673000+00:00",
+  "official_effective_time_known": false,
+  "freeze_hash": "4e85ee42786c656414f4a038093fcb12ce2516bdb1f5e6cdbe6b3752b578c5fa",
+  "qualification": {
+    "n": 0,
+    "win_ci_lower": 0.0,
+    "independence_verified": false,
+    "pristine_or_forward_verified": false,
+    "official_cross_verified": false,
+    "status": "NOT VERIFIED"
+  },
+  "news_status": "UNKNOWN_COVERAGE",
+  "note": "Preview only: branch validation never replaces or advances the production checkpoint"
+}

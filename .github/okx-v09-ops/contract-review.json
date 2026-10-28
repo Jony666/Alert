@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "review_id": "BCH-TICK-20261028-v1",
+  "operational_version": "okx-v09-contract-review-1",
+  "study_id": "okx-v095-4e85ee42786c6564",
+  "config_hash": "4e85ee42786c656414f4a038093fcb12ce2516bdb1f5e6cdbe6b3752b578c5fa",
+  "model_commit": "e8863f819f29ef0cf2806ea06157aae7ac3a633e",
+  "source": {
+    "run_id": "40247022530",
+    "artifact_id": 12619340530,
+    "artifact_sha256": "856697738b8ae33812c3a68bf031f2175ec4c873292f84d16aabf3984cbfed6c",
+    "state_hash": "03398ed091e558f3fd889c87b4877a90e7e198e1fa3b4fe5c56b86c76cd66b1d",
+    "revision": 14,
+    "artifact_created_at_utc": "2026-10-25T23:58:21Z"
+  },
+  "changes": [
+    {
+      "instId": "BCH-USDT-SWAP",
+      "field": "tickSz",
+      "previous": "0.1",
+      "current": "0.01"
+    }
+  ],
+  "evidence": {
+    "url": "https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=BCH-USDT-SWAP",
+    "fetched_at_utc": "2026-10-28T14:50:13.571986+00:00",
+    "sha256": "2794891bb4892c181bfa010f1ca53f78eab997b549cbc68b5c45363eddb13906",
+    "http_status": 200
+  },
+  "official_effective_time_utc": null,
+  "activation": "ONLY_AFTER_SEPARATE_FIX_PR_REVIEW",
+  "require_no_open_or_pending": true
+}
