@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      PYTHONPATH: ${{ github.workspace }}/candidate/.github/okx-v09-ops
+      PYTHONPATH: ${{ github.workspace }}/candidate/.github/okx-v09-ops:${{ github.workspace }}/frozen/okx-monitor/backtest
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout exact validation commit
