@@ -24,6 +24,9 @@ jobs:
     if: github.repository == 'Jony666/Alert' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      PYTHONPATH: ${{ github.workspace }}/operations/.github/okx-v09-ops
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - name: Checkout reviewed immutable model (never a branch HEAD)
         uses: actions/checkout@v4
@@ -36,6 +39,12 @@ jobs:
         with:
           ref: 104e6acf2096f9fc507f45395aff7c82986f1207
           path: registry
+          persist-credentials: false
+      - name: Checkout independently reviewed contract-spec operations payload
+        uses: actions/checkout@v4
+        with:
+          ref: f2f56aed416d540a71156dd58f5bc9a28a6a0baf
+          path: operations
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
@@ -177,6 +186,8 @@ jobs:
               freeze = json.loads(Path(args.freeze).read_text())
               guard(freeze, args.mode)
               cli.GitHubStore = ScheduledStore
+              from spec_review import install
+              install(cli)
               result = cli.run(args)
               # Extra export material is outside the frozen manifest; state files are unchanged.
               out = Path(args.out)
@@ -355,6 +366,7 @@ jobs:
         run: |
           python -m unittest test_forward_v09 -q
           python scheduled_handoff.py --self-test
+          python -m unittest test_spec_review -q
       - name: Restore latest cumulative state before reading confirmed public OKX data
         id: forward
         working-directory: frozen/okx-monitor/backtest
@@ -367,13 +379,17 @@ jobs:
             --anchor ../../../registry/okx-monitor/backtest/v09/forward/registry/anchor.json \
             --mode "$FORWARD_MODE" --out forward_bundle
           cp export_artifacts.py scheduled_handoff.py forward_bundle/
+          cp -R "$GITHUB_WORKSPACE/operations/.github/okx-v09-ops" forward_bundle/contract-review-ops
           python - <<'PY'
           import hashlib,json,os
           from pathlib import Path
+          from spec_review import REVIEW_SHA256
           folder=Path('forward_bundle')
           files=['freeze.json','anchor.json','RETENTION.md','export_artifacts.py','scheduled_handoff.py']
           receipt=dict(workflow_commit=os.environ['GITHUB_SHA'],event=os.environ['GITHUB_EVENT_NAME'],
                        run_id=os.environ['GITHUB_RUN_ID'],
+                       spec_review_payload_commit='f2f56aed416d540a71156dd58f5bc9a28a6a0baf',
+                       contract_review_file_sha256=REVIEW_SHA256,
                        operational_files={n:hashlib.sha256((folder/n).read_bytes()).hexdigest() for n in files})
           (folder/'operations_receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
           PY
