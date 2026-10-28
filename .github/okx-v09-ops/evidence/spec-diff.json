@@ -1,0 +1,11 @@
+[
+  {
+    "instId": "BCH-USDT-SWAP",
+    "changes": {
+      "tickSz": {
+        "previous": "0.1",
+        "current": "0.01"
+      }
+    }
+  }
+]
