@@ -1,0 +1,145 @@
+{
+  "checked_date_asia_taipei": "2026-10-30",
+  "sources": [
+    {
+      "key": "scopes",
+      "url": "https://developers.google.com/apps-script/concepts/scopes",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.010263+00:00",
+      "text_sha256": "05f7c931eaeacdc5a53097b76888884fa6e44f60ec169824fe0a5c83433f8f7e"
+    },
+    {
+      "key": "authorization",
+      "url": "https://developers.google.com/apps-script/guides/services/authorization",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.033617+00:00",
+      "text_sha256": "430407fb74059c1affe503f78332c75052d827142312e95a0a76c3eb63312eda"
+    },
+    {
+      "key": "verification",
+      "url": "https://developers.google.com/apps-script/guides/client-verification",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.069614+00:00",
+      "text_sha256": "61a38347d7d2ecf68d4ff7940302f4d8f9a1cd236b45a303f6abe3197ca5ffe7"
+    },
+    {
+      "key": "advanced-drive",
+      "url": "https://developers.google.com/apps-script/advanced/drive",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.211852+00:00",
+      "text_sha256": "a72ee5f4c089ce23e725cb3ade8cb6f8dd24ed17d0a5bea336c0949c34022864"
+    },
+    {
+      "key": "picker",
+      "url": "https://developers.google.com/apps-script/guides/dialogs#file-open_dialogs",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.266475+00:00",
+      "text_sha256": "e07e0676fa901f7ae22572a5d8669113c4d04d5d0214c92150c4132038689b59"
+    },
+    {
+      "key": "drive-app",
+      "url": "https://developers.google.com/apps-script/reference/drive/drive-app",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.393915+00:00",
+      "text_sha256": "1b2741b737c7ca21e7c98c23c04cebd9237e2270e62235d4a2b97b002e68c6d4"
+    },
+    {
+      "key": "triggers",
+      "url": "https://developers.google.com/apps-script/guides/triggers/installable",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.311333+00:00",
+      "text_sha256": "a5f586bb960a296c64b54b7526509936b8f9595aa1626887bc3ec5fb7154fffe"
+    },
+    {
+      "key": "clock",
+      "url": "https://developers.google.com/apps-script/reference/script/clock-trigger-builder",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:27.990563+00:00",
+      "text_sha256": "259514e82199bd216d573c9a0cdf0596a08a9b653461ea7211c141589317e7ff"
+    },
+    {
+      "key": "quotas",
+      "url": "https://developers.google.com/apps-script/guides/services/quotas",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.272505+00:00",
+      "text_sha256": "60d6cff8d77ea17506f6ecd1ea9df430714a10c49a4c99ab75a4c07aac98f5ce"
+    },
+    {
+      "key": "properties",
+      "url": "https://developers.google.com/apps-script/guides/properties",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.001449+00:00",
+      "text_sha256": "963959a27546c86b685047c38a9309f15d5e224d62b7ec5e4411f1708601d502"
+    },
+    {
+      "key": "urlfetch",
+      "url": "https://developers.google.com/apps-script/reference/url-fetch/url-fetch-app",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.311599+00:00",
+      "text_sha256": "189e4b367a3d3abf595eaaaad18fa764d733cec9ba868be46061605999f939e7"
+    },
+    {
+      "key": "v8",
+      "url": "https://developers.google.com/apps-script/guides/v8-runtime",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.395200+00:00",
+      "text_sha256": "58c8da87a5089562056eeada93cd8bdcbbd172ef18b71041a61a71265e7f3894"
+    },
+    {
+      "key": "oauth-production",
+      "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/policy-compliance",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.749502+00:00",
+      "text_sha256": "25e217b6f318749ed7225219265c87d1897a072ed564e81eb1a77ea3bdfe9630"
+    },
+    {
+      "key": "oauth-testing",
+      "url": "https://developers.google.com/identity/protocols/oauth2",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.647249+00:00",
+      "text_sha256": "203b2cb91ac882a36ad77eb7062864597431aee77a151b7dba73d69d5ad11959"
+    },
+    {
+      "key": "picker-desktop",
+      "url": "https://developers.google.com/workspace/drive/picker/guides/desktop-mobile-picker",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:29.197452+00:00",
+      "text_sha256": "94d52a3bc893ace4365d4dacdf38625b666c59c6bd23e136a2e98b67ee387c81"
+    },
+    {
+      "key": "drive-scopes",
+      "url": "https://developers.google.com/workspace/drive/api/guides/api-specific-auth",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:29.280382+00:00",
+      "text_sha256": "7346fda966962dd0b03060fa82f7570491c77b156f192634d442098eb2c6fc7e"
+    },
+    {
+      "key": "github-artifacts",
+      "url": "https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#download-an-artifact",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:30.319125+00:00",
+      "text_sha256": "5fbf3c0b1fa449bc9c83ab7cecf95cfff65a23b072d76d2db500ce79e9d9c253"
+    },
+    {
+      "key": "github-fgpat",
+      "url": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens",
+      "status": 200,
+      "checked_at_utc": "2026-10-29T16:45:28.866716+00:00",
+      "text_sha256": "f8b8e35a544653a708b5cce6f09ba352da77f11cfe1c43ea87cccfbd0362171c"
+    },
+    {
+      "key": "oauth-personal-policy",
+      "url": "https://developers.google.com/identity/protocols/oauth2/policies",
+      "status": 200,
+      "checked_date_asia_taipei": "2026-10-30",
+      "text_sha256": "ceacbc98550216c1de49108892344eeff338b29cb04ef6c047e1453123f17b67"
+    },
+    {
+      "key": "verification-faq",
+      "url": "https://support.google.com/cloud/answer/9110914?hl=en",
+      "status": 200,
+      "checked_date_asia_taipei": "2026-10-30",
+      "text_sha256": "882bcce9d9e5a1b0ae7170178c061a8bff4086be4bc34925123297803ab3f2f0"
+    }
+  ]
+}

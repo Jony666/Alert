@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>v0.9 資料夾授權</title>
+<p id="status">只授權指定資料夾，不上傳備份。</p>
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+'use strict';
+gapi.load('picker',{callback:function(){google.script.run.withSuccessHandler(function(c){
+  var view=new google.picker.DocsView(google.picker.ViewId.FOLDERS).setIncludeFolders(true).setSelectFolderEnabled(true).setMimeTypes('application/vnd.google-apps.folder');
+  var picker=new google.picker.PickerBuilder().setAppId(c.appId).setOAuthToken(c.token).setDeveloperKey(c.apiKey).setOrigin(google.script.host.origin).addView(view).setCallback(function(data){
+    if(data.action===google.picker.Action.CANCEL){document.getElementById('status').textContent='已取消，未擴大權限。';return;}
+    if(data.action!==google.picker.Action.PICKED)return;
+    if(!data.docs||data.docs.length!==1||data.docs[0].id!==c.folderId){document.getElementById('status').textContent='請只選取指定資料夾，未授權備份。';return;}
+    google.script.run.withSuccessHandler(function(message){document.getElementById('status').textContent=message;}).withFailureHandler(function(){document.getElementById('status').textContent='資料夾授權驗證失敗；不會擴大權限或上傳。';}).confirmPickedFolder(data.docs[0].id);
+  }).build();picker.setVisible(true);c.token=null;
+}).withFailureHandler(function(){document.getElementById('status').textContent='Picker 設定或授權失敗。';}).pickerSetup();}});
+</script></html>
