@@ -1,0 +1,49 @@
+{
+  "profile": "okx-v095-scheduled-spec-review-v1",
+  "source_reference_artifact": 12886458799,
+  "source_reference_zip_sha256": "f0892dd6befc4ae1574a263f8a9624aa9856d64947449d9ff1c1dc13b62830d3",
+  "expected_paths": [
+    "RETENTION.md",
+    "anchor.json",
+    "contract-review-ops/README.md",
+    "contract-review-ops/contract-review.json",
+    "contract-review-ops/evidence/official-bch-provenance.json",
+    "contract-review-ops/evidence/official-bch-response.json",
+    "contract-review-ops/evidence/spec-diff.json",
+    "contract-review-ops/spec_review.py",
+    "contract-review-ops/test_spec_review.py",
+    "contract-review-ops/validate_recovery.py",
+    "equity.csv",
+    "events.csv",
+    "export_artifacts.py",
+    "freeze.json",
+    "operations_receipt.json",
+    "positions.json",
+    "run_manifest.json",
+    "scheduled_handoff.py",
+    "snapshot.json",
+    "state.json",
+    "summary.json",
+    "trades.csv"
+  ],
+  "fixed_files": {
+    "RETENTION.md": "799351aed693fe2dadaf39398177b800d0a5eb7ec8a94f8a6fb737171fb228f7",
+    "anchor.json": "ba429a27a5b472e1dfe51c142ab7a769875f6a6166b2f1f6f520c870e44d3b17",
+    "contract-review-ops/README.md": "da0492e418f3678527b0e670bb38a8ba8bf3bccbc70135ad07daabb3ccb3082b",
+    "contract-review-ops/contract-review.json": "e161205333341bb0e95ea73bc8f681c04f31104216e0909dc889beaef9b29a4f",
+    "contract-review-ops/evidence/official-bch-provenance.json": "91c8f03df4c5ea3f3ba08f77670820b8d7f392be0eb9f4467915d2e2fe329aea",
+    "contract-review-ops/evidence/official-bch-response.json": "2794891bb4892c181bfa010f1ca53f78eab997b549cbc68b5c45363eddb13906",
+    "contract-review-ops/evidence/spec-diff.json": "971bc13c4f7ee40f6db1fff779ccb35f592cfc23c133c0b6b9fac428522bc823",
+    "contract-review-ops/spec_review.py": "3dceaca0a32bbeb26ce3d924f775c8f169167a088c27d4ae0b76c703d0f67fd2",
+    "contract-review-ops/test_spec_review.py": "9b61a5269a5f6e532ebf7b76c397ba4eacf5418789c66223beeb6d9aff996969",
+    "contract-review-ops/validate_recovery.py": "2e4345b723d20f33a3f7b2aeda0c501d1e47bc6f963c637164b8670e014820bf",
+    "export_artifacts.py": "54d21395f6f43eb211dbd9d4a4a82978447e3bb40e59ce06095d583b70404c7d",
+    "freeze.json": "cd7bc5b00815385bbe2bd967abd92145bc14163b07ffd3966573f96d7f655bbe",
+    "scheduled_handoff.py": "e0432214d0d1ec092e39c0b5ca6563c957c94509e0bc22dc0d56a1dfed55e2e6"
+  },
+  "model_commit": "e8863f819f29ef0cf2806ea06157aae7ac3a633e",
+  "workflow_commits": [
+    "f4ff35a088282a37264b82108e32f6c2e31dc28c"
+  ],
+  "operations_commit": "f2f56aed416d540a71156dd58f5bc9a28a6a0baf"
+}
