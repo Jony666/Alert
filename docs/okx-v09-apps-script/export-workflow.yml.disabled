@@ -1,0 +1,48 @@
+# DESIGN ONLY, no current deployment. Approve separately before putting in workflows/.
+name: OKX V09 Prepared Export for Apps Script (proposed)
+on:
+  schedule:
+    - cron: '15 23 * * *' # Taipei 07:15, allows producer time before ~08:00 consumer.
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okx-v09-prepared-export-single-writer
+  cancel-in-progress: false
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: ${{ github.workspace }}/exporter/tools
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: REVIEW_REQUIRED_FIXED_COMMIT_SHA
+          path: exporter
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: e8863f819f29ef0cf2806ea06157aae7ac3a633e
+          path: frozen
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r frozen/okx-monitor/backtest/requirements.txt
+      - name: Full unchanged Python verify, report, backup and offline restore; no Drive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python exporter/.github/scripts/apps_script_export.py \
+            --model-root frozen/okx-monitor/backtest --out '${{ runner.temp }}/prepared'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: okx-v09-drive-export-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/prepared/package.zip
+            ${{ runner.temp }}/prepared/export.json
