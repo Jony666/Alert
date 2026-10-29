@@ -1,0 +1,72 @@
+# DESIGN ONLY. This file is outside .github/workflows and is NOT active.
+# Requires separate user approval, real single-upload/restore acceptance, a reviewed
+# deployment PR and enabled config in a separately reviewed fixed code SHA.
+name: OKX V09 Daily Drive Backup (proposed)
+on:
+  schedule:
+    - cron: '0 0 * * *' # Asia/Taipei 08:00; GitHub may delay runs.
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'GET-only plan is the default; upload requires separate approval'
+        type: choice
+        options: [plan, upload]
+        default: plan
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okx-v09-drive-backup-single-writer
+  cancel-in-progress: false
+jobs:
+  backup:
+    environment: okx-v09-drive-backup-approval
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONPATH: ${{ github.workspace }}/exporter/tools
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Checkout separately reviewed exporter payload; never branch HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: REVIEW_REQUIRED_FIXED_40_HEX_COMMIT_SHA
+          path: exporter
+          persist-credentials: false
+      - name: Checkout unchanged frozen model
+        uses: actions/checkout@v4
+        with:
+          ref: e8863f819f29ef0cf2806ea06157aae7ac3a633e
+          path: frozen
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install frozen dependencies
+        run: python -m pip install -r frozen/okx-monitor/backtest/requirements.txt
+      - name: Preview latest source without Google credentials
+        if: github.event_name == 'workflow_dispatch' && inputs.operation == 'plan'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -m okx_v09_drive_backup plan \
+            --config exporter/docs/okx-v09-drive-backup/config.json \
+            --model-root frozen/okx-monitor/backtest --result '${{ runner.temp }}/drive-result.json'
+      - name: Approved upload, download SHA and offline restore; no production checkpoint writes
+        if: github.event_name == 'schedule' || inputs.operation == 'upload'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OKX_V09_DRIVE_APPROVAL: ${{ vars.OKX_V09_DRIVE_UPLOAD_APPROVAL }}
+          OKX_V09_DRIVE_OAUTH: ${{ secrets.OKX_V09_DRIVE_OAUTH }}
+        run: |
+          python -m okx_v09_drive_backup upload \
+            --config exporter/docs/okx-v09-drive-backup/config.json \
+            --model-root frozen/okx-monitor/backtest --result '${{ runner.temp }}/drive-result.json'
+      - name: Publish sanitized receipt, never credentials, session URLs or source ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drive-backup-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/drive-result.json

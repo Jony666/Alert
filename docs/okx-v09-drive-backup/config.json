@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "folder_id": "1OlXqvYUPTl7sK5Eds71X_3gcRUQv1G-q",
+  "oauth_scopes": ["https://www.googleapis.com/auth/drive.file"],
+  "timezone": "Asia/Taipei",
+  "planned_utc_cron": "0 0 * * *",
+  "live_upload_enabled": false,
+  "overwrite_existing": false,
+  "delete_existing": false,
+  "historical_restore_interval_days": 7
+}
