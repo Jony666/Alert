@@ -1,0 +1,119 @@
+name: OKX V09 Drive Backup Development Validation
+# Branch-only test workflow. No schedule, production checkpoint writes, orders or backup uploads.
+on:
+  push:
+    branches: ['research/okx-v09-phase7-drive-backup']
+    paths:
+      - 'tools/okx_v09_drive_backup/**'
+      - 'tests/drive_backup/**'
+      - 'docs/okx-v09-drive-backup/**'
+      - '.github/scripts/drive_backup_*.py'
+      - '.github/workflows/okx-v09-drive-backup-validation.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: okx-v09-drive-development-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONPATH: ${{ github.workspace }}/candidate/tools:${{ github.workspace }}/operations/.github/okx-v09-ops:${{ github.workspace }}/frozen/okx-monitor/backtest
+      PYTHONDONTWRITEBYTECODE: '1'
+      FROZEN_MODEL_ROOT: ${{ github.workspace }}/frozen/okx-monitor/backtest
+      PHASE7_SOURCE_ARCHIVE: ${{ github.workspace }}/phase7-input/current/artifact.zip
+      PHASE7_SOURCE_CONTEXT: ${{ github.workspace }}/phase7-input/current/source-context.json
+      PHASE7_PARENT_ARCHIVE: ${{ github.workspace }}/phase7-input/parent/artifact.zip
+      PHASE7_PARENT_CONTEXT: ${{ github.workspace }}/phase7-input/parent/source-context.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          persist-credentials: false
+      - name: Checkout exact unchanged financial/strategy model
+        uses: actions/checkout@v4
+        with:
+          ref: e8863f819f29ef0cf2806ea06157aae7ac3a633e
+          path: frozen
+          persist-credentials: false
+      - name: Checkout approved existing spec-review tests
+        uses: actions/checkout@v4
+        with:
+          ref: f2f56aed416d540a71156dd58f5bc9a28a6a0baf
+          path: operations
+          persist-credentials: false
+      - name: Checkout immutable production workflow for unchanged-file assertion
+        uses: actions/checkout@v4
+        with:
+          ref: f4ff35a088282a37264b82108e32f6c2e31dc28c
+          path: control
+          persist-credentials: false
+          sparse-checkout: .github/workflows/okx-v09-forward-scheduled.yml
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: frozen/okx-monitor/backtest/requirements.txt
+      - name: Install frozen dependencies and CI YAML parser
+        run: |
+          python -m pip install -r frozen/okx-monitor/backtest/requirements.txt
+          python -m pip install 'PyYAML>=6,<7'
+      - name: Fetch pinned regression fixtures only; these are not the backup source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python candidate/.github/scripts/phase7_fetch_source.py --run 40851188958 --artifact 12886458799 --out '${{ github.workspace }}/phase7-input/current'
+          python candidate/.github/scripts/phase7_fetch_source.py --run 40805798260 --artifact 12868550750 --out '${{ github.workspace }}/phase7-input/parent'
+      - name: All existing frozen and deployed operational tests
+        run: |
+          python candidate/.github/scripts/phase7_existing_checks.py \
+            --model-root "$FROZEN_MODEL_ROOT" --control "$GITHUB_WORKSPACE/control" \
+            --candidate "$GITHUB_WORKSPACE/candidate" --out '${{ runner.temp }}/phase7-regression'
+      - name: Phase 7 adversarial validation, reporting and local restore tests
+        working-directory: candidate
+        run: |
+          python -m unittest discover -s tests/phase7 -v > '${{ runner.temp }}/phase7-tests.log' 2>&1 || {
+            tail -100 '${{ runner.temp }}/phase7-tests.log'
+            exit 1
+          }
+          tail -8 '${{ runner.temp }}/phase7-tests.log'
+      - name: Real source report and local-only backup/restore acceptance
+        run: |
+          python candidate/.github/scripts/phase7_acceptance.py \
+            --artifact "$PHASE7_SOURCE_ARCHIVE" --source-context "$PHASE7_SOURCE_CONTEXT" \
+            --parent-artifact "$PHASE7_PARENT_ARCHIVE" --parent-context "$PHASE7_PARENT_CONTEXT" \
+            --model-root "$FROZEN_MODEL_ROOT" --plan "$GITHUB_WORKSPACE/candidate/docs/okx-v09-phase7/backup-plan.json" \
+            --out '${{ runner.temp }}/phase7-acceptance'
+      - name: Drive OAuth, retry, immutable index and recovery tests; Google is simulated
+        working-directory: candidate
+        run: |
+          python -m unittest discover -s tests/drive_backup -v > '${{ runner.temp }}/drive-backup-tests.log' 2>&1 || {
+            tail -100 '${{ runner.temp }}/drive-backup-tests.log'
+            exit 1
+          }
+          tail -8 '${{ runner.temp }}/drive-backup-tests.log'
+      - name: Latest real production source; simulated Drive upload, deduplication and full restore
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python candidate/.github/scripts/drive_backup_acceptance.py \
+            --model-root "$FROZEN_MODEL_ROOT" --out '${{ runner.temp }}/drive-backup-acceptance'
+      - name: Publish review evidence only; never a production forward-state or external backup
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drive-backup-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/phase7-regression/
+            ${{ runner.temp }}/phase7-tests.log
+            ${{ runner.temp }}/phase7-acceptance/acceptance.json
+            ${{ runner.temp }}/phase7-acceptance/report/
+            ${{ runner.temp }}/phase7-acceptance/local-test-vault/backup-index.jsonl
+            ${{ runner.temp }}/drive-backup-tests.log
+            ${{ runner.temp }}/drive-backup-acceptance/acceptance.json
