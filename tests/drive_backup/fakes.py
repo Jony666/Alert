@@ -58,7 +58,8 @@ class MemoryDrive:
             if fault=='before':return Response(503)
             if fault=='expire':del self.sessions[url];return Response(410)
             start,end=map(int,re.search(r'bytes (\d+)-(\d+)/',cr).groups())
-            assert start==len(session['data']);payload=kw['data']
+            if start!=len(session['data']):return Response(400)
+            payload=kw['data']
             if fault=='partial':payload=payload[:max(1,len(payload)//2)]
             session['data'].extend(payload)
             if len(session['data'])==total:
